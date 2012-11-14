@@ -1,0 +1,20 @@
+                          ___       ___       ___   
+                         /\  \     /\  \     /\  \  
+                         \ \  \   /  \  \   /  \  \ 
+                         /  \__\ /\ \ \__\ / /\ \__\***
+                        / /\/__/ \ \ \/__/ \ \ \/__/
+                        \/__/     \  /  /   \ \__\  
+                                   \/__/     \/__/  
+
+This is the repository for my role-playing rogue-like game: The Sepertine Caves
+
+The game is still in early development, but I hope to have a fully functioning
+version in the near future.
+
+I am currently redesigning the code to make use of state machines, which will
+make the code more organized and make it easier to incorporate new components.
+
+*** This is my current progress on the above mentioned conversion, however ***
+*** most things are not working.                                           ***
+
+Chris Capobianco
