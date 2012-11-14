@@ -28,8 +28,8 @@ MapWorld *MapWorld::Instance()
 void MapWorld::Enter(MapClass *map)
 {
 	int w, h;
-	map->Img(new TCODImage("data/img/worldmap_new.png"));
-	map->ImgThumb(new TCODImage("data/img/worldmap_new.png"));
+	map->Img(new TCODImage("data/img/worldmap.png"));
+	map->ImgThumb(new TCODImage("data/img/worldmap.png"));
 	map->ImgThumb()->getSize(&w, &h);
 	map->ImgThumb()->scale(2*w/31, 2*h/31);
 }
@@ -65,8 +65,8 @@ MapTemple *MapTemple::Instance()
 void MapTemple::Enter(MapClass *map)
 {
 	int w, h;
-	map->Img(new TCODImage("data/img/templemap_new.png"));
-	map->ImgThumb(new TCODImage("data/img/templemap_new.png"));
+	map->Img(new TCODImage("data/img/templemap.png"));
+	map->ImgThumb(new TCODImage("data/img/templemap.png"));
 	map->ImgThumb()->getSize(&w, &h);
 	map->ImgThumb()->scale(2*w/15, 2*h/15);
 
@@ -111,8 +111,8 @@ MapTown *MapTown::Instance()
 void MapTown::Enter(MapClass *map)
 {
 	int w, h;
-	map->Img(new TCODImage("data/img/townmap_new.png"));
-	map->ImgThumb(new TCODImage("data/img/townmap_new.png"));
+	map->Img(new TCODImage("data/img/townmap.png"));
+	map->ImgThumb(new TCODImage("data/img/townmap.png"));
 	map->ImgThumb()->getSize(&w, &h);
 	map->ImgThumb()->scale(2*w/15, 2*h/15);
 

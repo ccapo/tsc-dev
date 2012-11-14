@@ -71,7 +71,7 @@ public:
 		m_StateManager[m_ActiveStateID]->SetCurrentState(MenuMainState);
 
 		// Background image for main menu
-		m_ImgBG = new TCODImage("data/img/menu_bg_new.png");
+		m_ImgBG = new TCODImage("data/img/menu_bg.png");
 
 		// Magic Icon
 		m_MagicIcon = new TCODImage("data/img/magic_light.png");
