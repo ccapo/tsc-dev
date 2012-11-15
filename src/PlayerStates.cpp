@@ -14,8 +14,11 @@ void PlayerIdle::Enter(PlayerClass *player){}
 bool PlayerIdle::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse){return true;}
 void PlayerIdle::Render(PlayerClass *player)
 {
-	TCODConsole::root->setChar(player->X(), player->Y() + 3, player->Sym());
-	TCODConsole::root->setCharForeground(player->X(), player->Y() + 3, player->Colour());
+	if(GameEngine()->Game()->InGame())
+	{
+		TCODConsole::root->setChar(player->X(), player->Y() + 3, player->Sym());
+		TCODConsole::root->setCharForeground(player->X(), player->Y() + 3, player->Colour());
+	}
 }
 
 //------------------------------------------------------------------------

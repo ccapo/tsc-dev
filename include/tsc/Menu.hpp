@@ -12,9 +12,9 @@
 //
 //------------------------------------------------------------------------
 #include "Global.hpp"
+#include "MenuStates.hpp"
 #include "Module.hpp"
 #include "StateManager.hpp"
-#include "MenuStates.hpp"
 
 class MenuClass : public Module
 {
@@ -128,7 +128,7 @@ public:
 			}
 			else
 			{
-				status = status && m_StateManager[i]->Update(elapsed, key, mouse);
+				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
 			}
 		}
 		return status;
@@ -147,7 +147,14 @@ public:
 	// Accessors
 	//----------------------------------------------------
 	StateManager<MenuClass> *StateMgr(int id) const {return m_StateManager[id];}
-	void ResetAll(){for(int i = 0; i < NCONSOLES; i++){m_StateManager[i]->ChangeState(MenuIdleState);} m_ActiveStateID = -1;}
+	void ResetAll()
+	{
+		for(int i = 0; i < NCONSOLES; i++)
+		{
+			m_StateManager[i]->ChangeState(MenuIdleState);
+		}
+		m_ActiveStateID = -1;
+	}
 
 	TCODConsole *Con(int id) const {return m_Con[id];}
 	void Con(int id, TCODConsole *pCon){m_Con[id] = pCon;}

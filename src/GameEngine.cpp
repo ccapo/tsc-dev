@@ -304,7 +304,7 @@ void GameEngineClass::Shutdown()
 	EntityManager()->RemoveAll();
 
 	// Fade Out
-  for(int i = 1; i <= 2*MAXFPS; i++)
+	for(int i = 1; i <= 2*MAXFPS; i++)
 	{
 		int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
 		TCODConsole::setFade(fade, TCODColor::black);
@@ -423,6 +423,7 @@ bool GameEngineClass::Receive(const Message &msg)
 		{
 			FadeIn(true);
 			FadeOut(true);
+
 			Game()->StateMgr()->ChangeState(GameSaveState);
 			Player()->StateMgr()->ChangeState(PlayerIdleState);
 			Menu()->ResetAll();
@@ -503,6 +504,8 @@ bool GameEngineClass::Receive(const Message &msg)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
 				Menu()->ResetAll();
+				key.vk = TCODK_NONE;	// Not sure why this was necessary,
+				key.c = 0;						// possibly something funny going on
 				if(Game()->InGame())
 				{
 					Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
