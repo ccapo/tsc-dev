@@ -96,9 +96,6 @@ public:
 		TCOD_key_t k0 = {TCODK_NONE, 0};
 		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0};
 
-		//for(int i = 0; i < NCONSOLES; i++) cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
-		//cout << "Active State ID: " << m_ActiveStateID << endl;
-
 		for(int i = 0; i < NCONSOLES; i++)
 		{
 			if(i == m_ActiveStateID)
@@ -109,7 +106,9 @@ public:
 			{
 				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
 			}
+			//cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
 		}
+		//cout << "Active State ID: " << m_ActiveStateID << endl;
 		return status;
 	}
 
@@ -126,18 +125,14 @@ public:
 	// Accessors
 	//----------------------------------------------------
 	StateManager<MenuClass> *StateMgr(int id) const {return m_StateManager[id];}
-	void ResetAll()
-	{
-		for(int i = 0; i < NCONSOLES; i++) m_StateManager[i]->ChangeState(MenuIdleState);
-		m_ActiveStateID = -1;
-	}
 
 	TCODConsole *Con(int id) const {return m_Con[id];}
 	void Con(int id, TCODConsole *pCon){m_Con[id] = pCon;}
 
 	int ActiveStateID() const {return m_ActiveStateID;}
+	void ActiveStateID(int pActiveStateID){m_ActiveStateID = pActiveStateID;}
 	void IncreaseStateID(){m_ActiveStateID++; Clamp<int>(m_ActiveStateID, 0, NCONSOLES);}
-	void DecreaseStateID(){m_ActiveStateID--; Clamp<int>(m_ActiveStateID, 0, NCONSOLES);}
+	void DecreaseStateID(){m_ActiveStateID--; Clamp<int>(m_ActiveStateID, -1, NCONSOLES);}
 
 	int IntroPage() const {return m_IntroPage;}
 	bool IsIntroComplete() const {return m_IntroPage >= NINTRO;}
@@ -154,10 +149,10 @@ public:
 	void IncrementMagicID(){m_MagicID = (m_MagicID + 1) % NMAGIC;}
 
 	TCODImage *ImgBG() const {return m_ImgBG;}
-	void ImgBG(TCODImage *pImgBG){m_ImgBG = NULL; m_ImgBG = pImgBG;}
+	void ImgBG(TCODImage *pImgBG){m_ImgBG = pImgBG;}
 
 	TCODImage *MagicIcon() const {return m_MagicIcon;}
-	void MagicIcon(TCODImage *pMagicIcon){m_MagicIcon = NULL; m_MagicIcon = pMagicIcon;}
+	void MagicIcon(TCODImage *pMagicIcon){m_MagicIcon = pMagicIcon;}
 
 	void DisplayProgress(const char msg[], float fraction)
 	{
