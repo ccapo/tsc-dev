@@ -93,32 +93,11 @@ public:
 	bool Update(float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 	{
 		bool status = true;
-		TCOD_key_t k0 = {TCODK_NONE, 0}, k1, k2, k3;
-		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0}, m1, m2, m3;
+		TCOD_key_t k0 = {TCODK_NONE, 0};
+		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0};
 
-		//k1 = k2 = k3 = key;
-		//m1 = m2 = m3 = mouse;
-
-		for(int i = 0; i < NCONSOLES; i++) cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
-		cout << "Active State ID: " << m_ActiveStateID << endl;
-
-		//status = status && m_StateManager[CON_04]->Update(elapsed, k0, m0);
-
-		//if(!m_StateManager[CON_03]->isInState(MenuIdleState))
-		//{
-		//	k1 = k2 = k0;
-		//	m1 = m2 = m0;
-		//}
-
-		//status = status && m_StateManager[CON_03]->Update(elapsed, k3, m3);
-
-		//if(!m_StateManager[CON_02]->isInState(MenuIdleState))
-		//{
-		//	k1 = k0; m1 = m0;
-		//}
-
-		//status = status && m_StateManager[CON_02]->Update(elapsed, k2, m2);
-		//status = status && m_StateManager[CON_01]->Update(elapsed, k1, m1);
+		//for(int i = 0; i < NCONSOLES; i++) cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
+		//cout << "Active State ID: " << m_ActiveStateID << endl;
 
 		for(int i = 0; i < NCONSOLES; i++)
 		{
@@ -141,7 +120,7 @@ public:
 	}
 
 	// Handle Messages for the Message Log
-	bool HandleMessage(const Message &msg){return m_StateManager[CON_04]->HandleMessage(msg);}
+	bool HandleMessage(const Message &msg){return m_StateManager[CON_01]->HandleMessage(msg);}
 
 	//----------------------------------------------------
 	// Accessors
@@ -149,10 +128,7 @@ public:
 	StateManager<MenuClass> *StateMgr(int id) const {return m_StateManager[id];}
 	void ResetAll()
 	{
-		for(int i = 0; i < NCONSOLES; i++)
-		{
-			m_StateManager[i]->ChangeState(MenuIdleState);
-		}
+		for(int i = 0; i < NCONSOLES; i++) m_StateManager[i]->ChangeState(MenuIdleState);
 		m_ActiveStateID = -1;
 	}
 

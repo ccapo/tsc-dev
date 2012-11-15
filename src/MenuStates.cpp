@@ -95,6 +95,8 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 		}
 		default: break;
 	}
+	key.vk = TCODK_NONE;
+	key.c = 0;
 
 	// Print game title and by line
 	menu->Con(CON_01)->setAlignment(TCOD_LEFT);
@@ -1483,16 +1485,16 @@ void MenuDeath::Render(MenuClass *menu)
 
 //------------------------------------------------------------------------
 //
-// Methods for MenuAux
+// Methods for MenuUI
 //
 //------------------------------------------------------------------------
-MenuAux *MenuAux::Instance()
+MenuUI *MenuUI::Instance()
 {
-	static MenuAux instance;
+	static MenuUI instance;
 	return &instance;
 }
 
-bool MenuAux::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
+bool MenuUI::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
   int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
@@ -1516,7 +1518,7 @@ bool MenuAux::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 	return status;
 }
 
-void MenuAux::Render(MenuClass *menu)
+void MenuUI::Render(MenuClass *menu)
 {
   int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
   int x = 0, y = DISPLAY_HEIGHT + 3;
@@ -1619,7 +1621,7 @@ void MenuAux::Render(MenuClass *menu)
 	}
 }
 
-bool MenuAux::Receive(MenuClass *menu, const Message &msg)
+bool MenuUI::Receive(MenuClass *menu, const Message &msg)
 {
 	if(msg.Msg == MSG_MSGLOG)
 	{

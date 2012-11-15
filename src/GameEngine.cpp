@@ -406,7 +406,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			FadeOut(true);
 			Game()->StateMgr()->ChangeState(GameNewState);
 			Sound()->StateMgr()->ChangeState(SoundNewState);
-			Menu()->ResetAll();
 			Menu()->StateMgr(CON_01)->ChangeState(MenuNewState);
 			break;
 		}
@@ -415,7 +414,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			FadeIn(true);
 			FadeOut(true);
 			Game()->StateMgr()->ChangeState(GameLoadState);
-			Menu()->ResetAll();
 			Menu()->StateMgr(CON_01)->ChangeState(MenuLoadState);
 			break;
 		}
@@ -426,9 +424,7 @@ bool GameEngineClass::Receive(const Message &msg)
 
 			Game()->StateMgr()->ChangeState(GameSaveState);
 			Player()->StateMgr()->ChangeState(PlayerIdleState);
-			Menu()->ResetAll();
 			Menu()->StateMgr(CON_01)->ChangeState(MenuSaveState);
-			//Menu()->StateMgr(CON_04)->ChangeState(MenuIdleState);
 			break;
 		}
 		case MSG_QUITGAME:
@@ -445,8 +441,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			Sound()->StateMgr()->ChangeState(SoundTempleState);
 			Map()->StateMgr()->ChangeState(MapTempleState);
 			Player()->StateMgr()->ChangeState(PlayerIntroState);
-			Menu()->ResetAll();
-			Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+			Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 			Menu()->StateMgr(CON_02)->ChangeState(MenuIntroState);
 			break;
 		}
@@ -465,9 +460,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			Sound()->StateMgr()->ChangeState(SoundWorldState);
 			Map()->StateMgr()->ChangeState(MapWorldState);
 			Player()->StateMgr()->ChangeState(PlayerWorldState);
-			Menu()->ResetAll();
-			Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
-			//Menu()->StateMgr(CON_01)->ChangeState(MenuIdleState);
+			Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 			break;
 		}
 		case MSG_ENTERTOWN:
@@ -503,12 +496,9 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(HelpFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				key.vk = TCODK_NONE;	// Not sure why this was necessary,
-				key.c = 0;						// possibly something funny going on
 				if(Game()->InGame())
 				{
-					Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+					Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				}
 				else
 				{
@@ -529,8 +519,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(MenuFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 			}
 			else
@@ -545,8 +534,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipInvFlag = !EquipInvFlag;
 			if(EquipInvFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipInvState);
 			}
@@ -561,8 +549,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemInvFlag = !ItemInvFlag;
 			if(ItemInvFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemInvState);
 			}
@@ -578,8 +565,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(ItemShopFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 			}
 			else
@@ -594,8 +580,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemShopBuyFlag = !ItemShopBuyFlag;
 			if(ItemShopBuyFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemShopBuyState);
 			}
@@ -610,8 +595,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemShopSellFlag = !ItemShopSellFlag;
 			if(ItemShopSellFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemShopSellState);
 			}
@@ -627,8 +611,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(EquipShopFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 			}
 			else
@@ -643,8 +626,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipShopBuyFlag = !EquipShopBuyFlag;
 			if(EquipShopBuyFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipShopBuyState);
 			}
@@ -659,8 +641,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipShopSellFlag = !EquipShopSellFlag;
 			if(EquipShopSellFlag)
 			{
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipShopSellState);
 			}
@@ -676,8 +657,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(FerryFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuFerryState);
 			}
 			else
@@ -693,8 +673,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(InnFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuInnState);
 			}
 			else
@@ -712,8 +691,7 @@ bool GameEngineClass::Receive(const Message &msg)
 				FadeOut(true);
 				Sound()->StateMgr()->ChangeState(SoundRestState);
 				Player()->StateMgr()->ChangeState(PlayerRestState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuRestState);
 			}
 			else
@@ -732,8 +710,7 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(DeathFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->ResetAll();
-				Menu()->StateMgr(CON_01)->ChangeState(MenuAuxState);
+				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuDeathState);
 			}
 			else

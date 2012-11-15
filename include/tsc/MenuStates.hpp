@@ -38,7 +38,7 @@ class MenuClass;
 #define MenuFerryState MenuFerry::Instance()
 #define MenuRestState MenuRest::Instance()
 #define MenuDeathState MenuDeath::Instance()
-#define MenuAuxState MenuAux::Instance()
+#define MenuUIState MenuUI::Instance()
 
 //------------------------------------------------------------------------
 //
@@ -661,20 +661,20 @@ public:
 // This is the Aux State for the MenuClass
 //
 //------------------------------------------------------------------------
-class MenuAux : public State<MenuClass>
+class MenuUI : public State<MenuClass>
 {
 private:
 	
-	MenuAux(){}
+	MenuUI(){}
 
 	// Copy ctor and assignment should be private
-	MenuAux(const MenuAux&);
-	MenuAux &operator=(const MenuAux&);
+	MenuUI(const MenuUI&);
+	MenuUI &operator=(const MenuUI&);
  
 public:
 
 	// This is a singleton
-	static MenuAux *Instance();
+	static MenuUI *Instance();
 	
 	void Enter(MenuClass *menu){}
 	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
