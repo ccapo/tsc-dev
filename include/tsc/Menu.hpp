@@ -106,9 +106,9 @@ public:
 			{
 				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
 			}
-			//cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
+			cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
 		}
-		//cout << "Active State ID: " << m_ActiveStateID << endl;
+		cout << "Active State ID: " << m_ActiveStateID << endl;
 		return status;
 	}
 

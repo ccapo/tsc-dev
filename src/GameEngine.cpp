@@ -496,14 +496,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(HelpFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				if(Game()->InGame())
-				{
-					Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				}
-				else
-				{
-					Menu()->StateMgr(CON_01)->ChangeState(MenuMainState);
-				}
 				Menu()->StateMgr(CON_02)->ChangeState(MenuHelpState);
 			}
 			else
@@ -519,7 +511,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(MenuFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 			}
 			else
@@ -534,8 +525,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipInvFlag = !EquipInvFlag;
 			if(EquipInvFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipInvState);
 			}
 			else
@@ -549,8 +538,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemInvFlag = !ItemInvFlag;
 			if(ItemInvFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuGameState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemInvState);
 			}
 			else
@@ -565,7 +552,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(ItemShopFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 			}
 			else
@@ -580,8 +566,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemShopBuyFlag = !ItemShopBuyFlag;
 			if(ItemShopBuyFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemShopBuyState);
 			}
 			else
@@ -595,8 +579,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			ItemShopSellFlag = !ItemShopSellFlag;
 			if(ItemShopSellFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuItemShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuItemShopSellState);
 			}
 			else
@@ -611,7 +593,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(EquipShopFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 			}
 			else
@@ -626,8 +607,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipShopBuyFlag = !EquipShopBuyFlag;
 			if(EquipShopBuyFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipShopBuyState);
 			}
 			else
@@ -641,8 +620,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			EquipShopSellFlag = !EquipShopSellFlag;
 			if(EquipShopSellFlag)
 			{
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
-				Menu()->StateMgr(CON_02)->ChangeState(MenuEquipShopState);
 				Menu()->StateMgr(CON_03)->ChangeState(MenuEquipShopSellState);
 			}
 			else
@@ -657,7 +634,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(FerryFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuFerryState);
 			}
 			else
@@ -673,7 +649,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(InnFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuInnState);
 			}
 			else
@@ -691,7 +666,6 @@ bool GameEngineClass::Receive(const Message &msg)
 				FadeOut(true);
 				Sound()->StateMgr()->ChangeState(SoundRestState);
 				Player()->StateMgr()->ChangeState(PlayerRestState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuRestState);
 			}
 			else
@@ -710,7 +684,6 @@ bool GameEngineClass::Receive(const Message &msg)
 			if(DeathFlag)
 			{
 				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(CON_01)->ChangeState(MenuUIState);
 				Menu()->StateMgr(CON_02)->ChangeState(MenuDeathState);
 			}
 			else
