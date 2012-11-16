@@ -318,7 +318,6 @@ bool GameEngineClass::Update(float elapsed, TCOD_key_t key, TCOD_mouse_t mouse)
 {
 	bool status = true;
 
-	//elapsed = TCODSystem::getLastFrameLength();
 	UpdateElapsedTime(elapsed);
 
 	status = status && Game()->Update(elapsed, key, mouse);						// Update Game
