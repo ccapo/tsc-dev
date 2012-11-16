@@ -188,27 +188,6 @@ using namespace std;
 #define ACUMIN 1
 #define ACUMAX 50
 
-// List of Offscreen Consoles
-enum OffscreenConsole
-{
-	CON_01,
-	CON_02,
-	CON_03,
-	CON_04,
-	NCONSOLES
-};
-
-// List of Magic Types
-enum MagicType
-{
-	MAGIC_LIGHT,
-	MAGIC_FIRE,
-	MAGIC_WATER,
-	MAGIC_WIND,
-	MAGIC_EARTH,
-	NMAGIC
-};
-
 // List of Entities
 enum EntityType
 {
@@ -234,7 +213,28 @@ enum LocationType
 	NLOCATIONS
 };
 
-// Main menu option identifiers
+// List of Magic Types
+enum MagicType
+{
+	MAGIC_LIGHT,
+	MAGIC_FIRE,
+	MAGIC_WATER,
+	MAGIC_WIND,
+	MAGIC_EARTH,
+	NMAGIC
+};
+
+// List of Menu States
+enum MenuStates
+{
+	STATE_01,
+	STATE_02,
+	STATE_03,
+	STATE_04,
+	NSTATES
+};
+
+// Main Menu Pption Identifiers
 enum MainMenu
 {
 	NONE = -1,
@@ -245,7 +245,7 @@ enum MainMenu
 	NMAIN
 };
 
-// Intro page identifiers
+// Intro Page Identifiers
 enum IntroPage
 {
 	INTRO_01,
@@ -253,7 +253,7 @@ enum IntroPage
 	NINTRO
 };
 
-// Game menu option identifiers
+// Game Menu Option Identifiers
 enum GameMenu
 {
 	GAME_EQUIP,
@@ -263,7 +263,7 @@ enum GameMenu
 	CHANGE_EQUIP
 };
 
-// Item shop menu option identifiers
+// Item Shop Menu Option Identifiers
 enum ItemShopMenu
 {
 	ITEMSHOP_BUY,
@@ -272,7 +272,7 @@ enum ItemShopMenu
 	NITEMSHOP
 };
 
-// Equip shop menu option identifiers
+// Equip Shop Menu Option Identifiers
 enum EquipShopMenu
 {
 	EQUIPSHOP_BUY,
@@ -281,7 +281,7 @@ enum EquipShopMenu
 	NEQUIPSHOP
 };
 
-// Inn menu option identifiers
+// Inn Menu Option Identifiers
 enum InnMenu
 {
 	INN_STAY,
@@ -289,7 +289,7 @@ enum InnMenu
 	NINN
 };
 
-// Ferry menu option identifiers
+// Ferry Menu Option Identifiers
 enum FerryMenu
 {
 	FERRY_TAKE,
@@ -310,7 +310,7 @@ enum HealthStatus
 };
 
 
-// List of possible messages
+// List Of Possible Messages
 enum MsgType
 {
 	MSG_DEFAULT = -1,
@@ -355,10 +355,10 @@ enum MsgType
 // List of Tile Character Types
 enum CharType
 {
-	// Default character tile
+	// Default Character Tile
 	CHAR_DEFAULT = -1,
 
-	// Magic charge bar
+	// Magic Charge Bar
 	CHAR_CHARGEBAR = 256,
 
 	// Player Tiles

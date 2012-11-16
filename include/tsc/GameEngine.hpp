@@ -54,10 +54,6 @@ private:
 
 public:
 
-	TCOD_key_t key;
-	TCOD_mouse_t mouse;
-	float elapsed;
-
 	static GameEngineClass *Instance();
 
 	// Startup Game Engine
@@ -67,7 +63,7 @@ public:
 	void Shutdown();
 
 	// Update all the Modules
-	bool Update();
+	bool Update(float elapsed, TCOD_key_t key, TCOD_mouse_t mouse);
 
 	// Render all the Modules
 	void Render();

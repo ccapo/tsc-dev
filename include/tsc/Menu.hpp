@@ -21,7 +21,7 @@ class MenuClass : public Module
 private:
 
 	// The instances of the State Manager class
-	StateManager<MenuClass> *m_StateManager[NCONSOLES];
+	StateManager<MenuClass> *m_StateManager[NSTATES];
 
 	// Dialog Page Indicators
 	int m_IntroPage;
@@ -39,7 +39,7 @@ private:
   TCODImage *m_MagicIcon;
 
 	// Off-Screen Consoles
-	TCODConsole *m_Con[NCONSOLES];
+	TCODConsole *m_Con[NSTATES];
 
 	// Highest Active State Index
 	int m_ActiveStateID;
@@ -57,7 +57,7 @@ public:
 	MenuClass() : m_IntroPage(INTRO_01), m_Selection(NONE), m_SubSelection(NONE), m_MagicID(0), m_ActiveStateID(0)
 	{
 		// Setup State Managers and Off-Screen Consoles
-		for(int i = 0; i < NCONSOLES; i++)
+		for(int i = 0; i < NSTATES; i++)
 		{
 			// State Manager
 			m_StateManager[i] = new StateManager<MenuClass>(this);
@@ -96,7 +96,7 @@ public:
 		TCOD_key_t k0 = {TCODK_NONE, 0};
 		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0};
 
-		for(int i = 0; i < NCONSOLES; i++)
+		for(int i = 0; i < NSTATES; i++)
 		{
 			if(i == m_ActiveStateID)
 			{
@@ -106,20 +106,20 @@ public:
 			{
 				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
 			}
-			cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
+			//cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
 		}
-		cout << "Active State ID: " << m_ActiveStateID << endl;
+		//cout << "Active State ID: " << m_ActiveStateID << endl;
 		return status;
 	}
 
 	// Render the Menu
 	void Render()
 	{
-		for(int i = 0; i < NCONSOLES; i++) m_StateManager[i]->Render();
+		for(int i = 0; i < NSTATES; i++) m_StateManager[i]->Render();
 	}
 
 	// Handle Messages for the Message Log
-	bool HandleMessage(const Message &msg){return m_StateManager[CON_01]->HandleMessage(msg);}
+	bool HandleMessage(const Message &msg){return m_StateManager[STATE_01]->HandleMessage(msg);}
 
 	//----------------------------------------------------
 	// Accessors
@@ -131,8 +131,8 @@ public:
 
 	int ActiveStateID() const {return m_ActiveStateID;}
 	void ActiveStateID(int pActiveStateID){m_ActiveStateID = pActiveStateID;}
-	void IncreaseStateID(){m_ActiveStateID++; Clamp<int>(m_ActiveStateID, 0, NCONSOLES);}
-	void DecreaseStateID(){m_ActiveStateID--; Clamp<int>(m_ActiveStateID, -1, NCONSOLES);}
+	void IncreaseStateID(){m_ActiveStateID++; Clamp<int>(m_ActiveStateID, 0, NSTATES);}
+	void DecreaseStateID(){m_ActiveStateID--; Clamp<int>(m_ActiveStateID, -1, NSTATES);}
 
 	int IntroPage() const {return m_IntroPage;}
 	bool IsIntroComplete() const {return m_IntroPage >= NINTRO;}
