@@ -407,9 +407,9 @@ MenuGame *MenuGame::Instance()
 
 bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int menuCursor = 0;
-  static int subMenuCursor = 0;
-  static int subSubMenuCursor = -1;
+  static int cursor = 0;
+  static int subCursor = 0;
+  static int subSubCursor = -1;
   bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
   int ws = w - 17, hs = h - 2, i = 0;
@@ -435,19 +435,19 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
     case TCODK_DOWN:
     {
       // Move the cursor position down
-      menuCursor = (menuCursor + 1) % NGAME;
+      cursor = (cursor + 1) % NGAME;
       break;
     }
     case TCODK_UP:
     {
       // Move the cursor position up
-      menuCursor--;
-      if(menuCursor < 0) menuCursor = NGAME - 1;
+      cursor--;
+      if(cursor < 0) cursor = NGAME - 1;
       break;
     }
     case TCODK_ESCAPE:
     {
-			menuCursor = 0;
+			cursor = 0;
 			Transmit->Send(GameEngine(), MSG_GAMEMENU);
       break;
     }
@@ -460,7 +460,7 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
     case TCODK_ENTER:
     {
       // Select the item at the current cursor position
-			switch(menuCursor)
+			switch(cursor)
       {
 				case GAME_EQUIP:
 				{
@@ -489,6 +489,7 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
   TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
   TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
   TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+  TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 
   // Set colours for frame and title
   menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
@@ -555,10 +556,174 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
   for(int i = 0; i < NGAME; i++)
   {
     y += 2;
-    if(i == menuCursor)
+    if(i == cursor)
     {
       // Print each item
       menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+
+      switch(cursor)
+      {
+        case GAME_EQUIP:
+        {
+					int NEQUIPTYPE = 4;
+					int xe = 2, ye = 2;
+					menu->Con(STATE_03)->printFrame(0, 0, ws, NEQUIPTYPE + 6, false, TCOD_BKGND_SET);
+					menu->Con(STATE_03)->printFrame(0, NEQUIPTYPE + 6, 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
+					menu->Con(STATE_03)->printFrame(20, NEQUIPTYPE + 6, ws - 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
+
+					// Equipment
+  				menu->Con(STATE_03)->print(xe, ye, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					ye += 2;
+
+					for(int i = 0; i < NEQUIPTYPE; i++)
+					{
+						//menu->Con(STATE_03)->print(xe, ye, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xe + 13, ye, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xe, ye, "%cEquipment%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xe + 13, ye, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+						ye++;
+					}
+
+					ye = NEQUIPTYPE + 8;
+					menu->Con(STATE_03)->print(xe, ye, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->putChar(xe + 8, ye, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+					ye += 2;
+
+//					float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+//					int xpbar = static_cast<int>(15.0f*xpfraction);
+//					if(xpbar > 0)
+//					{
+//							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
+//							menu->Con(STATE_03)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+//					}
+//					if(xpbar < 15)
+//					{
+//							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
+//							menu->Con(STATE_03)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+//					}
+//					menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+//					menu->Con(STATE_03)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.lvl);
+//					menu->Con(STATE_03)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+					float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+					int xpbar = static_cast<int>(15.0f*xpfraction);
+					if(xpbar > 0)
+					{
+							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
+							menu->Con(STATE_03)->rect(xe, ye + 1, xpbar, 1, true, TCOD_BKGND_SET);
+					}
+					if(xpbar < 15)
+					{
+							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
+							menu->Con(STATE_03)->rect(xe + xpbar, ye + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+					}
+					menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+					menu->Con(STATE_03)->print(xe, ye, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 1);
+					menu->Con(STATE_03)->printEx(xe + 7, ye, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+//					y += 2;
+//					menu->Con(STATE_03)->print(x, y,   "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+//					menu->Con(STATE_03)->print(x, y,   "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+
+					ye++;
+					menu->Con(STATE_03)->print(xe, ye,   "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 20);
+					menu->Con(STATE_03)->print(xe, ye,   "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
+
+//					y++;
+//					menu->Con(STATE_03)->print(x, y,   "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
+//					menu->Con(STATE_03)->print(x, y,   "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
+
+					ye++;
+					menu->Con(STATE_03)->print(xe, ye,   "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 4);
+					menu->Con(STATE_03)->print(xe, ye,   "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 2);
+
+//					menu->Con(STATE_03)->print(x, y,   "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
+//					menu->Con(STATE_03)->print(x, y,   "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
+
+					menu->Con(STATE_03)->print(xe, ye,   "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
+					menu->Con(STATE_03)->print(xe, ye,   "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 12);
+
+//					y++;
+//					menu->Con(STATE_03)->print(x, y,   "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
+//					menu->Con(STATE_03)->print(x, y,   "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
+
+					menu->Con(STATE_03)->print(xe, ye,   "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 5);
+					menu->Con(STATE_03)->print(xe, ye,   "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 2);
+
+//					menu->Con(STATE_03)->print(x, y,   "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
+//					menu->Con(STATE_03)->print(x, y,   "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
+
+					menu->Con(STATE_03)->print(xe, ye,   "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 6);
+					menu->Con(STATE_03)->print(xe, ye,   "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 3);
+
+          break;
+        }
+        case GAME_ITEMS:
+        {
+					int NITEMS = 4, NHIDES = 7;
+					int xi = 2, yi = 2;
+					//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+
+					menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
+					menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
+
+					// Item Inventory
+					menu->Con(STATE_03)->print(xi, yi, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xi + 27, yi++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+					//for(int i = 0; i < game.player.itemInv.nitems; i++)
+					for(int i = 0; i < NITEMS; i++)
+					{
+						//int j = game.player.itemInv.index[i];
+						//menu->Con(STATE_03)->print(xi, ++yi, game.player.itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xi + 24, yi, " :: %2d", game.player.itemInv.count[j]);
+						menu->Con(STATE_03)->print(xi, ++yi, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xi + 24, yi, "  : %2d", 2);
+					}
+
+					// Hide Invetory
+					yi = DISPLAY_HEIGHT/2 - 3;
+					menu->Con(STATE_03)->print(xi, yi, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xi + 27, yi++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+					//for(int i = 0; i < game.player.hideInv.nhides; i++)
+					for(int i = 0; i < NHIDES; i++)
+					{
+						//int j = game.player.hideInv.index[i];
+						//menu->Con(STATE_03)->print(xi, ++yi, game.player.hideInv.hides[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xi + 24, yi, " :: %2d", game.player.hideInv.count[j]);
+						menu->Con(STATE_03)->print(xi, ++yi, "%cRare Hide%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xi + 24, yi, "  : %2d", 3);
+					}
+          break;
+        }
+        default:
+        {
+					//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+          break;
+        }
+      }
     }
     else
     {
@@ -596,6 +761,7 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 	bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
   int ws = w - 17, hs = h - 2;
+	int NEQUIPTYPE = 4;
 
   // Game submenu screen
   menu->Con(STATE_03, new TCODConsole(ws, hs));
@@ -640,10 +806,12 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
   menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
   menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
 
-	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, 0, ws, NEQUIPTYPE + 6, false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, NEQUIPTYPE + 6, 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(20, NEQUIPTYPE + 6, ws - 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
 
   // Equipment
-  int x = 3, y = 3;
+  int x = 2, y = 2;
   menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	return status;
@@ -722,7 +890,7 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
   // Equipment
-  int x = 3, y = 3;
+  int x = 2, y = 2;
   menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	return status;
@@ -1127,7 +1295,7 @@ MenuFerry *MenuFerry::Instance()
 
 bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int menuCursor = 0;
+  static int cursor = 0;
   bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
   int ws = w - 17, hs = h - 2, i = 0;
@@ -1156,14 +1324,14 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
     case TCODK_DOWN:
     {
       // Move the cursor position down
-      menuCursor = (menuCursor + 1) % NFERRY;
+      cursor = (cursor + 1) % NFERRY;
       break;
     }
     case TCODK_UP:
     {
       // Move the cursor position up
-      menuCursor--;
-      if(menuCursor < 0) menuCursor = NFERRY - 1;
+      cursor--;
+      if(cursor < 0) cursor = NFERRY - 1;
       break;
     }
 		case TCODK_BACKSPACE:
@@ -1175,7 +1343,7 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
     case TCODK_ENTER:
     {
       // Select the item at the current cursor position
-      if(menuCursor == FERRY_TAKE)
+      if(cursor == FERRY_TAKE)
       {
         //if(game.player.gp >= 25)
         //{
@@ -1186,7 +1354,7 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
       }
       else
       {
-				menuCursor = 0;
+				cursor = 0;
 				//GameEngine()->Sound()->ToggleVolume(0.5f);
 				Transmit->Send(GameEngine(), MSG_FERRYMENU);
       }
@@ -1237,12 +1405,12 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
   for(int i = 0; i < NFERRY; i++)
   {
     y += 2;
-    if(i == menuCursor)
+    if(i == cursor)
     {
       // Print each item
       menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-      if(menuCursor == FERRY_TAKE)
+      if(cursor == FERRY_TAKE)
       {
         // Travel to the previous town
         menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -1286,7 +1454,7 @@ MenuInn *MenuInn::Instance()
 
 bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int menuCursor = 0;
+  static int cursor = 0;
   bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
   int ws = w - 17, hs = h - 2, i = 0;
@@ -1308,14 +1476,14 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
     case TCODK_DOWN:
     {
       // Move the cursor position down
-      menuCursor = (menuCursor + 1) % NINN;
+      cursor = (cursor + 1) % NINN;
       break;
     }
     case TCODK_UP:
     {
       // Move the cursor position up
-      menuCursor--;
-      if(menuCursor < 0) menuCursor = NINN - 1;
+      cursor--;
+      if(cursor < 0) cursor = NINN - 1;
       break;
     }
 		case TCODK_BACKSPACE:
@@ -1327,7 +1495,7 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
     case TCODK_ENTER:
     {
       // Select the item at the current cursor position
-      if(menuCursor == INN_STAY)
+      if(cursor == INN_STAY)
       {
         //if(GameEngine()->Player()->GP() >= 15)
         //{
@@ -1345,7 +1513,7 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
       }
       else
       {
-				menuCursor = 0;
+				cursor = 0;
 				//GameEngine()->Sound()->ToggleVolume(0.5f);
 				Transmit->Send(GameEngine(), MSG_INNMENU);
       }
@@ -1396,12 +1564,12 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
   for(int i = 0; i < NINN; i++)
   {
     y += 2;
-    if(i == menuCursor)
+    if(i == cursor)
     {
       // Print each item
       menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-      if(menuCursor == INN_STAY)
+      if(cursor == INN_STAY)
       {
         // Stay Night at Inn
         menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Hello there young traveller.\n\n\nCan I interest you in a nice hearty meal, and a warm comfortable bed?\n\n\nWe charge %c15 GP%c per night, meal included.\n\n\nWould you care to stay?", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
