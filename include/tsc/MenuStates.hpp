@@ -27,21 +27,22 @@ class MenuClass;
 #define MenuNpcState MenuNpc::Instance()
 #define MenuGameState MenuGame::Instance()
 #define MenuEquipInvState MenuEquipInv::Instance()
-
 #define MenuWeaponInvState MenuWeaponInv::Instance()
 #define MenuShieldInvState MenuShieldInv::Instance()
 #define MenuArmourInvState MenuArmourInv::Instance()
 #define MenuAccessoryInvState MenuAccessoryInv::Instance()
-
 #define MenuItemInvState MenuItemInv::Instance()
+
 #define MenuItemShopState MenuItemShop::Instance()
 #define MenuItemShopBuyState MenuItemShopBuy::Instance()
 #define MenuItemShopSellState MenuItemShopSell::Instance()
+
 #define MenuEquipShopState MenuEquipShop::Instance()
 #define MenuEquipShopBuyState MenuEquipShopBuy::Instance()
 #define MenuEquipShopSellState MenuEquipShopSell::Instance()
-#define MenuInnState MenuInn::Instance()
+
 #define MenuFerryState MenuFerry::Instance()
+#define MenuInnState MenuInn::Instance()
 #define MenuRestState MenuRest::Instance()
 #define MenuDeathState MenuDeath::Instance()
 #define MenuUIState MenuUI::Instance()

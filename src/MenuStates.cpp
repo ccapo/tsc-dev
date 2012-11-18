@@ -1974,7 +1974,6 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 	menu->Con(STATE_03)->clear();
 
 	// Print frames
-	//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
@@ -2080,12 +2079,41 @@ MenuItemShop *MenuItemShop::Instance()
 
 bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
+	static int cursor = 0;
 	bool status = true;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2, i = 0;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = hs - 6;
+	int NITEMS = 9, NHIDES = 7;
+
+	map<int, string> Options;
+	Options.insert(make_pair(i++, "%cBuy Items %c"));
+	Options.insert(make_pair(i++, "%cSell Items%c"));
+	Options.insert(make_pair(i++, "%cExit Shop %c"));
+
+	// Game menu screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
+
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
+
+	//int id = game.worldID - 1;
+	//WorldMap *wmap = &game.world[0];
+
+	// Key handler
 	switch(key.vk)
 	{
-		case TCODK_ESCAPE:
+		case TCODK_DOWN:
 		{
-			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENU);
+			// Move the cursor position down
+			cursor = (cursor + 1) % NITEMSHOP;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NITEMSHOP - 1;
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -2094,18 +2122,27 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 			TCODSystem::saveScreenshot(NULL);
 			break;
 		}
-		case TCODK_CHAR:
+		case TCODK_ENTER:
 		{
-			switch(key.c)
+			switch(cursor)
 			{
-				case 'b':
+				case ITEMSHOP_BUY:
 				{
+					// Buy Something!
 					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUBUY);
 					break;
 				}
-				case 's':
+				case ITEMSHOP_SELL:
 				{
+					// Got anything I can take off your hands?
 					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUSELL);
+					break;
+				}
+				case ITEMSHOP_EXIT:
+				{
+					// Exit Menu
+					//GameEngine()->Sound()->ToggleVolume(0.5f);
+					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENU);
 					break;
 				}
 				default: break;
@@ -2114,6 +2151,138 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 		}
 		default: break;
 	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+  // Set default colours for console
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_02)->clear();
+
+  // Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
+
+  // Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Item Shop");
+	menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NITEMSHOP + 3, false, TCOD_BKGND_SET);
+	menu->Con(STATE_02)->printFrame(1, 2*NITEMSHOP + 4, 15, h - 11, false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
+
+	// Compute the elapsed time in convenient units
+	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
+	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nmins = static_cast<int>(time/60.0f);
+	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
+
+	int x = 3, y = 24;
+	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
+	y++;
+
+	menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
+
+	// Print the menu options
+	y = NITEMSHOP - 2;
+	for(int i = 0; i < NITEMSHOP; i++)
+	{
+		y += 2;
+		if(i == cursor)
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+
+			switch(cursor)
+			{
+				case ITEMSHOP_BUY:
+				{
+					// Item Inventory
+					int xb = 2, yb = 2;
+					menu->Con(STATE_03)->print(xb, yb, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xb + 27, yb++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+					//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
+					for(int i = 0; i < NITEMS; i++)
+					{
+						//int j = wmap->locations[id].itemInv.index[i];
+						//menu->Con(STATE_03)->print(xb, ++yb, wmap->locations[id].itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xb + 24, yb, " : %2d", wmap->locations[id].itemInv.count[j]);
+						//menu->Con(STATE_03)->print(xb + 30, yb, " %3d", wmap->locations[id].itemInv.price[j]);
+						menu->Con(STATE_03)->print(xb, ++yb, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xb + 24, yb, " : %2d", 2);
+						menu->Con(STATE_03)->print(xb + 29, yb, " %3d", 20);
+					}
+					break;
+				}
+				case ITEMSHOP_SELL:
+				{
+					// Item Inventory
+					int xs = 2, ys = 2;
+					menu->Con(STATE_03)->print(xs, ys, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xs + 27, ys++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+					//for(int i = 0; i < game.player.itemInv.nitems; i++)
+					for(int i = 0; i < NITEMS; i++)
+					{
+						//int j = game.player.itemInv.index[i];
+						//menu->Con(STATE_03)->print(xs, ++ys, game.player.itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xs + 24, ys, " : %2d", game.player.itemInv.count[j]);
+						//menu->Con(STATE_03)->print(xs + 30, ys, " %3d", MAX(1, wmap->locations[id].itemInv.price[j]/2));
+						menu->Con(STATE_03)->print(xs, ++ys, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xs + 24, ys, " : %2d", 2);
+						menu->Con(STATE_03)->print(xs + 29, ys, " %3d", 10);
+					}
+
+					// Hide Invetory
+					ys = DISPLAY_HEIGHT/2 - 3;
+					menu->Con(STATE_03)->print(xs, ys, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xs + 27, ys++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+					//for(int i = 0; i < game.player.hideInv.nhides; i++)
+					for(int i = 0; i < NHIDES; i++)
+					{
+						//int j = game.player.hideInv.index[i];
+						//menu->Con(STATE_03)->print(xs, ++ys, game.player.hideInv.hides[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						//menu->Con(STATE_03)->print(xs + 24, ys, " : %2d", game.player.hideInv.count[j]);
+						//menu->Con(STATE_03)->print(xs + 30, ys, " %3d", MAX(1, wmap->locations[id].hideInv.price[j]));
+						menu->Con(STATE_03)->print(xs, ++ys, "%cRare Hide%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xs + 24, ys, " : %2d", 3);
+						menu->Con(STATE_03)->print(xs + 29, ys, " %3d", 5);
+					}
+					break;
+				}
+				case ITEMSHOP_EXIT:
+				{
+					// Hurry Back!
+					menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Come back any time.");
+					break;
+				}
+				default: break;
+			}
+		}
+		else
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	if(cursor == ITEMSHOP_EXIT && key.vk == TCODK_ENTER) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
@@ -2141,12 +2310,35 @@ MenuItemShopBuy *MenuItemShopBuy::Instance()
 
 bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
+	static int cursor = 0;
 	bool status = true;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2;
+	int NITEMS = 9, NHIDES = 7;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = NITEMS + 5;
+
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
+
+	//int id = game.worldID - 1;
+	//WorldMap *wmap = &game.world[0];
+
+	// Key handler
 	switch(key.vk)
 	{
-		case TCODK_ESCAPE:
+		case TCODK_DOWN:
 		{
-			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUBUY);
+			// Move the cursor position down
+			//cursor = (cursor + 1) % MAX(1, wmap->locations[id].itemInv.nitems);
+			cursor = (cursor + 1) % MAX(1, NITEMS);
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			//if(cursor < 0) cursor = MAX(0, wmap->locations[id].itemInv.nitems - 1);
+			if(cursor < 0) cursor = MAX(0, NITEMS - 1);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -2155,21 +2347,67 @@ bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TC
 			TCODSystem::saveScreenshot(NULL);
 			break;
 		}
-		case TCODK_CHAR:
+		case TCODK_ESCAPE:
 		{
-			switch(key.c)
-			{
-				case 'u':
-				{
-					//Transmit->Send(GameEngine(), MSG_ITEMPURCHASE);
-					break;
-				}
-				default: break;
-			}
+			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUBUY);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			//GameEngine()->Player()->BuyItem(&cursor);
 			break;
 		}
 		default: break;
 	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+  // Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
+
+  // Print frame and title
+	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
+
+	// Item Inventory
+	int x = 2, y = 2;
+	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+	//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
+	for(int i = 0; i < NITEMS; i++)
+	{
+		//int j = wmap->locations[id].itemInv.index[i];
+		if(i == cursor)
+		{
+			//menu->Con(STATE_03)->print(x, ++y, wmap->locations[id].itemInv.items[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x, yend, wmap->locations[id].itemInv.items[j].desc);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, yend, "Very Rare");
+		}
+		else
+		{
+			//menu->Con(STATE_03)->print(x, ++y, wmap->locations[id].itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+		//menu->Con(STATE_03)->print(x + 24, y, " : %2d", wmap->locations[id].itemInv.count[j]);
+		//menu->Con(STATE_03)->print(x + 29, y, " %3d", wmap->locations[id].itemInv.price[j]);
+		menu->Con(STATE_03)->print(x + 24, y, " : %2d", 2);
+		menu->Con(STATE_03)->print(x + 29, y, " %3d", 20);
+	}
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
@@ -2197,12 +2435,35 @@ MenuItemShopSell *MenuItemShopSell::Instance()
 
 bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
+	static int cursor = 0;
 	bool status = true;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2;
+	int NITEMS = 9, NHIDES = 7;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = NITEMS + 5;
+
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
+
+	//int id = game.worldID - 1;
+	//WorldMap *wmap = &game.world[0];
+
+	// Key handler
 	switch(key.vk)
 	{
-		case TCODK_ESCAPE:
+		case TCODK_DOWN:
 		{
-			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUSELL);
+			// Move the cursor position down
+			//cursor = (cursor + 1) % MAX(1, game.player.itemInv.nitems + game.player.hideInv.nhides);
+			cursor = (cursor + 1) % MAX(1, NITEMS + NHIDES);
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			//if(cursor < 0) cursor = MAX(0, game.player.itemInv.nitems + game.player.hideInv.nhides - 1);
+			if(cursor < 0) cursor = MAX(0, NITEMS + NHIDES - 1);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -2211,21 +2472,100 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 			TCODSystem::saveScreenshot(NULL);
 			break;
 		}
-		case TCODK_CHAR:
+		case TCODK_ESCAPE:
 		{
-			switch(key.c)
-			{
-				case 'u':
-				{
-					//Transmit->Send(GameEngine(), MSG_ITEMSALE);
-					break;
-				}
-				default: break;
-			}
+			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUSELL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			//if(cursor < GameEngine()->Player()->ItemInv()->Nitems)
+			//{
+			//	GameEngine()->Player()->SellItem(&cursor);
+			//}
+			//else
+			//{
+			//	GameEngine()->Player()->SellHide(&cursor);
+			//}
 			break;
 		}
 		default: break;
 	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+  // Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
+
+  // Print frame and title
+	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
+
+	// Item Inventory
+	int x = 2, y = 2;
+	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+	//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
+	for(int i = 0; i < NITEMS; i++)
+	{
+		//int j = wmap->locations[id].itemInv.index[i];
+		if(i == cursor)
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.itemInv.items[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x, yend, game.player.itemInv.items[j].desc);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, yend, "Very Rare");
+		}
+		else
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+		//menu->Con(STATE_03)->print(x + 24, y, " : %2d", game.player.itemInv.count[j]);
+		//menu->Con(STATE_03)->print(x + 29, y, " %3d", MAX(1, wmap->locations[id].itemInv.price[j]/2));
+		menu->Con(STATE_03)->print(x + 24, y, " : %2d", 2);
+		menu->Con(STATE_03)->print(x + 29, y, " %3d", 20);
+	}
+
+	y = DISPLAY_HEIGHT/2 - 3;
+	menu->Con(STATE_03)->print(x, y, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty  GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+	//for(int i = 0; i < game.player.hideInv.nhides; i++)
+	for(int i = 0; i < NHIDES; i++)
+	{
+		//int j = game.player.hideInv.index[i];
+		//if(i == cursor - game.player.itemInv.nitems)
+		if(i == cursor - NITEMS)
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.hideInv.hides[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x, yend, game.player.hideInv.hides[j].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Hide%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+		}
+		else
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.hideInv.hides[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Hide%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+		//menu->Con(STATE_03)->print(x + 24, y, " : %2d", game.player.hideInv.count[j]);
+		//menu->Con(STATE_03)->print(x + 29, y, " %3d", MAX(1, wmap->locations[id].hideInv.price[j]));
+		menu->Con(STATE_03)->print(x + 24, y, " : %2d", 3);
+		menu->Con(STATE_03)->print(x + 29, y, " %3d", 5);
+	}
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
@@ -2253,12 +2593,43 @@ MenuEquipShop *MenuEquipShop::Instance()
 
 bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
+	static int cursor = 0;
 	bool status = true;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2, i = 0;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = hs - 6;
+	map<int, string> Options;
+	Options.insert(make_pair(i++, "%cBuy Equip %c"));
+	Options.insert(make_pair(i++, "%cSell Equip%c"));
+	Options.insert(make_pair(i++, "%cExit Shop %c"));
+
+	// Game menu screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
+
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
+
+	//int id = game.worldID - 1;
+	//WorldMap *wmap = &game.world[0];
+
+	// Key handler
 	switch(key.vk)
 	{
-		case TCODK_ESCAPE:
+		case TCODK_DOWN:
 		{
-			Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENU);
+			// Move the cursor position down
+			cursor = (cursor + 1) % NEQUIPSHOP;
+			//cursor = (cursor + 1) % MAX(1, wmap->locations[id].itemInv.nitems);
+			//cursor = (cursor + 1) % MAX(1, game.player.itemInv.nitems + game.player.hideInv.nhides);
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NEQUIPSHOP - 1;
+			//if(cursor < 0) cursor = MAX(0, wmap->locations[id].itemInv.nitems - 1);
+			//if(cursor < 0) cursor = MAX(0, game.player.itemInv.nitems + game.player.hideInv.nhides - 1);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -2267,18 +2638,29 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 			TCODSystem::saveScreenshot(NULL);
 			break;
 		}
-		case TCODK_CHAR:
+		case TCODK_ENTER:
 		{
-			switch(key.c)
+			//GameEngine()->Player()->BuyEquip(&cursor);
+			//GameEngine()->Player()->SellEquip(&cursor);
+			switch(cursor)
 			{
-				case 'b':
+				case EQUIPSHOP_BUY:
 				{
+					// Buy Something!
 					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUBUY);
 					break;
 				}
-				case 's':
+				case EQUIPSHOP_SELL:
 				{
+					// Got anything I can take off your hands?
 					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUSELL);
+					break;
+				}
+				case EQUIPSHOP_EXIT:
+				{
+					// Exit Menu
+					//GameEngine()->Sound()->ToggleVolume(0.5f);
+					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENU);
 					break;
 				}
 				default: break;
@@ -2287,6 +2669,74 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		}
 		default: break;
 	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+
+  // Set default colours for console
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_02)->clear();
+
+  // Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
+
+  // Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Equip Shop");
+	menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NEQUIPSHOP + 3, false, TCOD_BKGND_SET);
+	menu->Con(STATE_02)->printFrame(1, 2*NEQUIPSHOP + 4, 15, h - 11, false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+
+	// Compute the elapsed time in convenient units
+	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
+	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nmins = static_cast<int>(time/60.0f);
+	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
+
+	int x = 3, y = 24;
+	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
+	y++;
+
+	menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
+
+	// Print the menu options
+	y = NEQUIPSHOP - 2;
+	for(int i = 0; i < NEQUIPSHOP; i++)
+	{
+		y += 2;
+		if(i == cursor)
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+
+			if(cursor == EQUIPSHOP_EXIT)
+			{
+				// Hurry Back!
+				menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Come back any time.");
+			}
+		}
+		else
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	if(cursor == EQUIPSHOP_EXIT && key.vk == TCODK_ENTER) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
@@ -2431,7 +2881,7 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int ws = w - 17, hs = h - 2, i = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
-	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = hs - 6;
 	//int id = game.worldID - 1, idprev = id - 1, idnext = id + 1;
 	map<int, string> Options;
 	Options.insert(make_pair(i++, "%cTake Ferry%c"));
@@ -2590,7 +3040,7 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int ws = w - 17, hs = h - 2, i = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
-	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
+	int xstart = 2, ystart = 2, xend = ws - 6, yend = hs - 6;
 	map<int, string> Options;
 	Options.insert(make_pair(i++, "%cStay at Inn%c"));
 	Options.insert(make_pair(i++, "%cExit Inn   %c"));

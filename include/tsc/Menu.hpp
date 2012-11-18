@@ -145,6 +145,7 @@ public:
 	TCODImage *MagicIcon() const {return m_MagicIcon;}
 	void MagicIcon(TCODImage *pMagicIcon){m_MagicIcon = pMagicIcon;}
 
+	// Displays Progress Bar
 	void DisplayProgress(const char msg[], float fraction)
 	{
 		int length = static_cast<int>(fraction*SCREEN_WIDTH/2);
@@ -164,6 +165,7 @@ public:
 		}
 	}
 
+	// Displays Preview of Player Stats 
 	void DisplayUpdatedStat(int x, int y, int oldstat, int newstat)
 	{
 		char str[STRMAX];
