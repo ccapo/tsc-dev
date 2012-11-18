@@ -26,9 +26,6 @@ private:
 	// Dialog Page Indicators
 	int m_IntroPage;
 
-	// Menu Selection and Subselection
-	int m_Selection, m_SubSelection;
-
 	// Magic ID
 	int m_MagicID;
 
@@ -54,7 +51,7 @@ public:
 	std::map<int, string> MessageLog;
 
 	// The Menu Constructor
-	MenuClass() : m_IntroPage(INTRO_01), m_Selection(NONE), m_SubSelection(NONE), m_MagicID(0), m_ActiveStateID(0)
+	MenuClass() : m_IntroPage(INTRO_01), m_MagicID(0), m_ActiveStateID(0)
 	{
 		// Setup State Managers and Off-Screen Consoles
 		for(int i = 0; i < NSTATES; i++)
@@ -96,8 +93,10 @@ public:
 		TCOD_key_t k0 = {TCODK_NONE, 0};
 		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0};
 
+		//cout << "Active State ID: " << m_ActiveStateID << endl;
 		for(int i = 0; i < NSTATES; i++)
 		{
+			//cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
 			if(i == m_ActiveStateID)
 			{
 				status = status && m_StateManager[i]->Update(elapsed, key, mouse);
@@ -106,9 +105,7 @@ public:
 			{
 				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
 			}
-			//cout << i << " Menu State: " << m_StateManager[i]->GetNameOfCurrentState() << endl;
 		}
-		//cout << "Active State ID: " << m_ActiveStateID << endl;
 		return status;
 	}
 
@@ -139,12 +136,6 @@ public:
 	void ResetIntroPage(){m_IntroPage = INTRO_01;}
 	void IncrementIntroPage(){m_IntroPage++;}
 
-	int Selection() const {return m_Selection;}
-	void Selection(int pSelection){m_Selection = pSelection;}
-
-	int SubSelection() const {return m_SubSelection;}
-	void SubSelection(int pSubSelection){m_SubSelection = pSubSelection;}
-
 	int MagicID() const {return m_MagicID;}
 	void IncrementMagicID(){m_MagicID = (m_MagicID + 1) % NMAGIC;}
 
@@ -170,6 +161,33 @@ public:
 		{
 			TCODConsole::root->setDefaultBackground(TCODColor::darkestRed);
 			TCODConsole::root->rect(SCREEN_WIDTH/4 + length, SCREEN_HEIGHT/2, SCREEN_WIDTH/2 - length, 2, false, TCOD_BKGND_SET);
+		}
+	}
+
+	void DisplayUpdatedStat(int x, int y, int oldstat, int newstat)
+	{
+		char str[STRMAX];
+
+		// Set text colours
+		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+		TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
+
+		Con(STATE_04)->print(x + 10, y, "%c", TCOD_CHAR_ARROW_E);
+		sprintf(str, "%s%2d%s", "%c", newstat, "%c");
+		if(newstat > oldstat)
+		{
+			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_5, TCOD_COLCTRL_STOP);
+		}
+		else if(newstat < oldstat)
+		{
+			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+		}
+		else
+		{
+			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 		}
 	}
 };

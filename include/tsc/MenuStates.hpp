@@ -26,8 +26,14 @@ class MenuClass;
 #define MenuGuardianState MenuGuardian::Instance()
 #define MenuNpcState MenuNpc::Instance()
 #define MenuGameState MenuGame::Instance()
-#define MenuItemInvState MenuItemInv::Instance()
 #define MenuEquipInvState MenuEquipInv::Instance()
+
+#define MenuWeaponInvState MenuWeaponInv::Instance()
+#define MenuShieldInvState MenuShieldInv::Instance()
+#define MenuArmourInvState MenuArmourInv::Instance()
+#define MenuAccessoryInvState MenuAccessoryInv::Instance()
+
+#define MenuItemInvState MenuItemInv::Instance()
 #define MenuItemShopState MenuItemShop::Instance()
 #define MenuItemShopBuyState MenuItemShopBuy::Instance()
 #define MenuItemShopSellState MenuItemShopSell::Instance()
@@ -266,34 +272,6 @@ public:
 
 //------------------------------------------------------------------------
 //
-// This is the Item Inventory Menu State for the MenuClass
-//
-//------------------------------------------------------------------------
-class MenuItemInv : public State<MenuClass>
-{
-private:
-
-	MenuItemInv(){}
-	
-	// Copy ctor and assignment should be private
-	MenuItemInv(const MenuItemInv&);
-	MenuItemInv &operator=(const MenuItemInv&);
-
-public:
-
-	// This is a singleton
-	static MenuItemInv *Instance();
-	
-	void Enter(MenuClass *menu){}
-	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
-	void Render(MenuClass *menu);
-	void Exit(MenuClass *menu){}
-	bool Receive(MenuClass *menu, const Message &msg){return true;}
-
-};
-
-//------------------------------------------------------------------------
-//
 // This is the Equip Inventory Menu State for the MenuClass
 //
 //------------------------------------------------------------------------
@@ -311,6 +289,146 @@ public:
 
 	// This is a singleton
 	static MenuEquipInv *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Weapon Inventory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuWeaponInv : public State<MenuClass>
+{
+private:
+
+	MenuWeaponInv(){}
+	
+	// Copy ctor and assignment should be private
+	MenuWeaponInv(const MenuWeaponInv&);
+	MenuWeaponInv &operator=(const MenuWeaponInv&);
+
+public:
+
+	// This is a singleton
+	static MenuWeaponInv *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Shield Inventory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuShieldInv : public State<MenuClass>
+{
+private:
+
+	MenuShieldInv(){}
+	
+	// Copy ctor and assignment should be private
+	MenuShieldInv(const MenuShieldInv&);
+	MenuShieldInv &operator=(const MenuShieldInv&);
+
+public:
+
+	// This is a singleton
+	static MenuShieldInv *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Armour Inventory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuArmourInv : public State<MenuClass>
+{
+private:
+
+	MenuArmourInv(){}
+	
+	// Copy ctor and assignment should be private
+	MenuArmourInv(const MenuShieldInv&);
+	MenuArmourInv &operator=(const MenuShieldInv&);
+
+public:
+
+	// This is a singleton
+	static MenuArmourInv *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Accessory Inventory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuAccessoryInv : public State<MenuClass>
+{
+private:
+
+	MenuAccessoryInv(){}
+	
+	// Copy ctor and assignment should be private
+	MenuAccessoryInv(const MenuShieldInv&);
+	MenuAccessoryInv &operator=(const MenuShieldInv&);
+
+public:
+
+	// This is a singleton
+	static MenuAccessoryInv *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Item Inventory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuItemInv : public State<MenuClass>
+{
+private:
+
+	MenuItemInv(){}
+	
+	// Copy ctor and assignment should be private
+	MenuItemInv(const MenuItemInv&);
+	MenuItemInv &operator=(const MenuItemInv&);
+
+public:
+
+	// This is a singleton
+	static MenuItemInv *Instance();
 	
 	void Enter(MenuClass *menu){}
 	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);

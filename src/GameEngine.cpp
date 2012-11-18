@@ -378,8 +378,12 @@ bool GameEngineClass::Receive(const Message &msg)
 	bool status = true;
 	static bool HelpFlag = false;
 	static bool MenuFlag = false;
-	static bool ItemInvFlag = false;
 	static bool EquipInvFlag = false;
+	static bool WeaponInvFlag = false;
+	static bool ShieldInvFlag = false;
+	static bool ArmourInvFlag = false;
+	static bool AccessoryInvFlag = false;
+	static bool ItemInvFlag = false;
 	static bool ItemShopFlag = false;
 	static bool ItemShopBuyFlag = false;
 	static bool ItemShopSellFlag = false;
@@ -523,6 +527,59 @@ bool GameEngineClass::Receive(const Message &msg)
 			else
 			{
 				Menu()->StateMgr(STATE_03)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+
+		case MSG_WEAPONINV:
+		{
+			WeaponInvFlag = !WeaponInvFlag;
+			if(WeaponInvFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuWeaponInvState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_SHIELDINV:
+		{
+			ShieldInvFlag = !ShieldInvFlag;
+			if(ShieldInvFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuShieldInvState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_ARMOURINV:
+		{
+			ArmourInvFlag = !ArmourInvFlag;
+			if(ArmourInvFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuArmourInvState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_ACCESSORYINV:
+		{
+			AccessoryInvFlag = !AccessoryInvFlag;
+			if(AccessoryInvFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuAccessoryInvState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
 			}
 			break;
 		}

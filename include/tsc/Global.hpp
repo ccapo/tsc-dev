@@ -156,38 +156,6 @@ using namespace std;
 // Maximum size for character strings
 #define CHARMAX 128
 
-#define LEVELMAX 50
-
-#define HPMIN 25
-#define HPMAX 750
-
-#define APMIN 4
-#define APMAX 50
-
-#define DPMIN 2
-#define DPMAX 50
-
-#define STRMIN 10
-#define STRMAX 50
-
-#define SPDMIN 1
-#define SPDMAX FPSMAX
-
-#define MPMIN 15
-#define MPMAX 250
-
-#define MAPMIN 2
-#define MAPMAX 50
-
-#define MDPMIN 1
-#define MDPMAX 50
-
-#define WILMIN 2
-#define WILMAX 50
-
-#define ACUMIN 1
-#define ACUMAX 50
-
 // List of Entities
 enum EntityType
 {
@@ -297,6 +265,34 @@ enum FerryMenu
 	NFERRY
 };
 
+enum StatType
+{
+	LEVELMIN = 1,
+	LEVELMAX = 50,
+
+	HPMIN = 25,
+	HPMAX = 750,
+	APMIN = 4,
+	APMAX = 50,
+	DPMIN = 2,
+	DPMAX = 50,
+	STRMIN = 10,
+	STRMAX = 50,
+	SPDMIN = 1,
+	SPDMAX = MAXFPS,
+
+	MPMIN = 15,
+	MPMAX = 250,
+	MAPMIN = 2,
+	MAPMAX = 50,
+	MDPMIN = 1,
+	MDPMAX = 50,
+	WILMIN = 2,
+	WILMAX = 50,
+	ACUMIN = 1,
+	ACUMAX = 50
+};
+
 // Health Status Options
 enum HealthStatus
 {
@@ -309,6 +305,14 @@ enum HealthStatus
   NSTATUS
 };
 
+enum EquipType
+{
+	WEAPON,
+	SHIELD,
+	ARMOUR,
+	ACCESSORY,
+	NEQUIPTYPE
+};
 
 // List Of Possible Messages
 enum MsgType
@@ -330,8 +334,12 @@ enum MsgType
 	MSG_GUARDIANDIALOG,
 	MSG_NPCDIALOG,
 	MSG_GAMEMENU,
-	MSG_ITEMINV,
 	MSG_EQUIPINV,
+	MSG_WEAPONINV,
+	MSG_SHIELDINV,
+	MSG_ARMOURINV,
+	MSG_ACCESSORYINV,
+	MSG_ITEMINV,
 	MSG_ITEMSHOPMENU,
 	MSG_ITEMSHOPMENUBUY,
 	MSG_ITEMSHOPMENUSELL,

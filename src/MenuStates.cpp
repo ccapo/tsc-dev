@@ -57,15 +57,14 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_ENTER:
 		{
 			// Select the item at the current cursor position
-			menu->Selection(cursor);
 			switch(cursor)
 			{
 				case MAIN_NEW:
@@ -95,17 +94,18 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 		}
 		default: break;
 	}
-	key.vk = TCODK_NONE;
-	key.c = 0;
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::white, TCODColor::lightBlue);
 
 	// Print game title and by line
 	menu->Con(STATE_01)->setAlignment(TCOD_LEFT);
 	menu->Con(STATE_01)->setBackgroundFlag(TCOD_BKGND_SET);
 	menu->Con(STATE_01)->setDefaultBackground(TCODColor::black);
 	menu->Con(STATE_01)->setDefaultForeground(TCODColor::white);
-	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::lighterYellow, TCODColor::black);
-	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::white, TCODColor::lightBlue);
+	menu->Con(STATE_01)->clear();
 
 	int x = 2, y = 2;
 	menu->Con(STATE_01)->print(x, y, "%cThe Serpentine Caves%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
@@ -116,9 +116,9 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 12, istart + i, TCOD_BKGND_NONE); istart += 32;
 	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 11, istart + i, TCOD_BKGND_NONE); istart += 32;
 	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 10, istart + i, TCOD_BKGND_NONE); istart += 32;
-	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 9,	istart + i, TCOD_BKGND_NONE); istart += 32;
-	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 8,	istart + i, TCOD_BKGND_NONE); istart += 32;
-	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 7,	istart + i, TCOD_BKGND_NONE); istart += 32;
+	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 9, istart + i, TCOD_BKGND_NONE); istart += 32;
+	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 8, istart + i, TCOD_BKGND_NONE); istart += 32;
+	//for(int i = 0; i < 32; i++) menu->Con(STATE_01)->putChar(x + i, h - 7, istart + i, TCOD_BKGND_NONE); istart += 32;
 
 	// Print the menu options
 	y = NMAIN;
@@ -136,6 +136,10 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 			menu->Con(STATE_01)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 		}
 	}
+
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
@@ -236,43 +240,44 @@ bool MenuHelp::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 	switch(key.vk)
 	{
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
 		case TCODK_ENTER:
 		{
-			menu->Selection(NONE);
 			Transmit->Send(GameEngine(), MSG_HELPSCREEN);
 			break;
 		}
-		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
-			break;
-  	}
 		default: break;
 	}
 
-	// Set colours for frame and title
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
+
+	// Set default console colours
 	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
 	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
 	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
 	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
-	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
-	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
+	menu->Con(STATE_02)->clear();
 
 	// Print frame and title
 	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Game Help");
 
 	// Print the information page contents
 	int x = 4, y = 5;
-	menu->Con(STATE_02)->print(x, y, "%cCommands%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, y++, "%cCommands%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 
-	y += 2;
+	y++;
 	for(int i = 0; i < nInfo; i++) menu->Con(STATE_02)->print(x, y++, Options[i].c_str());
 
-	x = 4; y++;
-	menu->Con(STATE_02)->print(x, y, "%cSaving%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-	y += 2;
-	menu->Con(STATE_02)->printRect(x, y, xend, yend, "Whenever the Player returns to the %cWorld Map%c, the game will automatically overwrite the existing save file.\n\nIf the Player expires, death is %cpermanent%c as the save file is %cdeleted%c.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, ++y, "%cSaving%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+	y++;
+	menu->Con(STATE_02)->printRect(x, ++y, xend, yend, "Whenever the Player returns to the %cWorld Map%c, the game will automatically overwrite the existing save file.\n\nIf the Player expires, death is %cpermanent%c as the save file is %cdeleted%c.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
 	menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 
@@ -283,7 +288,6 @@ void MenuHelp::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int x = DISPLAY_WIDTH/2 - w/2, y = SCREEN_HEIGHT/2 - h/2;
-	float ftrans = 0.9f;
 
 	// In Game specific settings
 	if(GameEngine()->Game()->InGame()) y = DISPLAY_HEIGHT/2 - h/2 + 3;
@@ -309,11 +313,8 @@ bool MenuIntro::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int xstart = 4, ystart = 7, xend = w - 8, yend = h - 4;
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
-
-  // The Introduction Screen
-  menu->Con(STATE_02, new TCODConsole(w, h));
+	// The Introduction Screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
 
 	switch(key.vk)
 	{
@@ -328,60 +329,47 @@ bool MenuIntro::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		default: break;
 	}
 
-  switch(menu->IntroPage())
-  {
-    case INTRO_01:
-    {
-      // Clear the menu screen
-      menu->Con(STATE_02)->clear();
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
 
-      // Set colours
-      menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-      menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-      menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-      menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	// Set default console colours
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_02)->clear();
 
-      // Print frame and title
-      menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Introduction");
+	// Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Introduction");
 
-      // Print the introduction page contents
-      menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "Welome brave adventurer, thank you for heeding my pleas for help.\n\n\nI am the %cGuardian of Light%c, one of the five entrusted to protect this world.\n\n\nA %cPowerful Ancient Menace%c is gathering once again in the shadows, and threatens to destroy the peace and harmony of these lands.\n\n\nThis is why I have summoned you here, I must impress upon you to persue a perilous quest to rid the world of this threat.", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	switch(menu->IntroPage())
+	{
+		case INTRO_01:
+		{
+			// Print the introduction page contents
+			menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "Welome brave adventurer, thank you for heeding my pleas for help.\n\n\nI am the %cGuardian of Light%c, one of the five entrusted to protect this world.\n\n\nA %cPowerful Ancient Menace%c is gathering once again in the shadows, and threatens to destroy the peace and harmony of these lands.\n\n\nThis is why I have summoned you here, I must impress upon you to persue a perilous quest to rid the world of this threat.", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			break;
+		}
+		case INTRO_02:
+		{
+			// Print the introduction page contents
+			menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "We know this power is gathering deep within\n%cThe Serpentine Caves%c, but where we know not.\n\n\nIt will be a difficult journey, so seek out the other four %cElemental Guardians%c for assistance. If they deem you worthy, they will grant you the ability to use their power.\n\n\nTo aid you on your quest I will grant my %cPower of Light%c, and any creature of the dark will be startled by its brilliance. Use this power wisely.\n\n\nGood luck brave hero, and may the record of your deeds be sung throughout the ages.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			break;
+		}
+		default: break;
+	}
 
-      menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 
-      break;
-    }
-    case INTRO_02:
-    {
-      // Clear the menu screen
-      menu->Con(STATE_02)->clear();
-
-      // Set colours
-      menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-      menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-      menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-      menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
-
-      // Print frame and title
-      menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Introduction");
-
-      // Print the introduction page contents
-      menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "We know this power is gathering deep within\n%cThe Serpentine Caves%c, but where we know not.\n\n\nIt will be a difficult journey, so seek out the other four %cElemental Guardians%c for assistance. If they deem you worthy, they will grant you the ability to use their power.\n\n\nTo aid you on your quest I will grant my %cPower of Light%c, and any creature of the dark will be startled by its brilliance. Use this power wisely.\n\n\nGood luck brave hero, and may the record of your deeds be sung throughout the ages.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-
-      menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-
-      break;
-    }
-    default: break;
-  }
 	return status;
 }
 
@@ -390,8 +378,8 @@ void MenuIntro::Render(MenuClass *menu)
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the introduction screen to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 0.85f);
+	// Blit the introduction screen to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 0.85f);
 }
 
 //------------------------------------------------------------------------
@@ -407,61 +395,59 @@ MenuGame *MenuGame::Instance()
 
 bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int cursor = 0;
-  static int subCursor = 0;
-  static int subSubCursor = -1;
-  bool status = true;
+	static int cursor = 0;
+	bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2, i = 0;
+	int ws = w - 17, hs = h - 2, i = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
-  int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
+	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
 	map<int, string> Options;
 	Options.insert(make_pair(i++, "%cEquipment%c"));
 	Options.insert(make_pair(i++, "%cInventory%c"));
 	Options.insert(make_pair(i++, "%cQuit Game%c"));
 
-  // Game menu screen
-  menu->Con(STATE_02, new TCODConsole(w, h));
+	// Game menu screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
 
-  // Game submenu screen
-  menu->Con(STATE_03, new TCODConsole(ws, hs));
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
 	// Update Player Stats
-  //GameEngine()->Player()->UpdateStats();
+	//GameEngine()->Player()->UpdateStats();
 
-  // Key handler
-  switch(key.vk)
-  {
-    case TCODK_DOWN:
-    {
-      // Move the cursor position down
-      cursor = (cursor + 1) % NGAME;
-      break;
-    }
-    case TCODK_UP:
-    {
-      // Move the cursor position up
-      cursor--;
-      if(cursor < 0) cursor = NGAME - 1;
-      break;
-    }
-    case TCODK_ESCAPE:
-    {
-			cursor = 0;
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
-      break;
-    }
-		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+	// Key handler
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NGAME;
 			break;
-  	}
-    case TCODK_ENTER:
-    {
-      // Select the item at the current cursor position
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NGAME - 1;
+			break;
+		}
+		case TCODK_ESCAPE:
+		{
+			// Exit Menu
+			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Select the item at the current cursor position
 			switch(cursor)
-      {
+			{
 				case GAME_EQUIP:
 				{
 					Transmit->Send(GameEngine(), MSG_EQUIPINV);
@@ -480,33 +466,36 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					break;
 				}
 				default: break;
-      }
-      break;
-    }
-    default: break;
-  }
+			}
+			break;
+		}
+		default: break;
+	}
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-  TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 
-  // Set colours for frame and title
-  menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	// Set default colours for console
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_02)->clear();
 
-  // Set colours for submenu
-  menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	// Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
 
-  // Print frame and title
-  menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Game Menu");
-  menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NGAME + 3, false, TCOD_BKGND_SET);
-  menu->Con(STATE_02)->printFrame(1, 2*NGAME + 4, 15, h - 11, false, TCOD_BKGND_SET);
+	// Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Game Menu");
+	menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NGAME + 3, false, TCOD_BKGND_SET);
+	menu->Con(STATE_02)->printFrame(1, 2*NGAME + 4, 15, h - 11, false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
 	x = 3, y = 12;
@@ -536,43 +525,42 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 	menu->Con(STATE_02)->print(x, ++y, "%s", "Feeble");
 	menu->Con(STATE_02)->print(x, ++y, "%s", "Confused");
 
-  // Compute the elapsed time in convenient units
-  int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-  float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
-  int nmins = static_cast<int>(time/60.0f);
-  int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
+	// Compute the elapsed time in convenient units
+	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
+	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nmins = static_cast<int>(time/60.0f);
+	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
-  x = 3, y = 24;
-  menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	x = 3, y = 24;
+	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
-  menu->Con(STATE_02)->print(x, y++, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-  menu->Con(STATE_02)->print(x, y, "%02d:%02d:%02d", nhours, nmins, nsecs);
+	menu->Con(STATE_02)->print(x, y++, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, y, "%02d:%02d:%02d", nhours, nmins, nsecs);
 
-  // Print the menu options
-  y = 1;
-  for(int i = 0; i < NGAME; i++)
-  {
-    y += 2;
-    if(i == cursor)
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	// Print the menu options
+	y = 1;
+	for(int i = 0; i < NGAME; i++)
+	{
+		y += 2;
+		if(i == cursor)
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-      switch(cursor)
-      {
-        case GAME_EQUIP:
-        {
-					int NEQUIPTYPE = 4;
+			switch(cursor)
+			{
+				case GAME_EQUIP:
+				{
 					int xe = 2, ye = 2;
 					menu->Con(STATE_03)->printFrame(0, 0, ws, NEQUIPTYPE + 6, false, TCOD_BKGND_SET);
 					menu->Con(STATE_03)->printFrame(0, NEQUIPTYPE + 6, 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
 					menu->Con(STATE_03)->printFrame(20, NEQUIPTYPE + 6, ws - 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
 
 					// Equipment
-  				menu->Con(STATE_03)->print(xe, ye, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					ye += 2;
 
 					for(int i = 0; i < NEQUIPTYPE; i++)
@@ -589,22 +577,22 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					menu->Con(STATE_03)->putChar(xe + 8, ye, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
 					ye += 2;
 
-//					float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
-//					int xpbar = static_cast<int>(15.0f*xpfraction);
-//					if(xpbar > 0)
-//					{
-//							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
-//							menu->Con(STATE_03)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
-//					}
-//					if(xpbar < 15)
-//					{
-//							menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
-//							menu->Con(STATE_03)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
-//					}
-//					menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-//					menu->Con(STATE_03)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.lvl);
-//					menu->Con(STATE_03)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+					//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+					//int xpbar = static_cast<int>(15.0f*xpfraction);
+					//if(xpbar > 0)
+					//{
+					//		menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
+					//		menu->Con(STATE_03)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+					//}
+					//if(xpbar < 15)
+					//{
+					//		menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
+					//		menu->Con(STATE_03)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+					//}
+					//menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+					//menu->Con(STATE_03)->print(x, y, "%cLVL%c : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.lvl);
+					//menu->Con(STATE_03)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
 					float xpfraction = static_cast<float>(0)/static_cast<float>(100);
 					int xpbar = static_cast<int>(15.0f*xpfraction);
 					if(xpbar > 0)
@@ -622,69 +610,66 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 1);
 					menu->Con(STATE_03)->printEx(xe + 7, ye, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
 
-//					y += 2;
-//					menu->Con(STATE_03)->print(x, y,   "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
-//					menu->Con(STATE_03)->print(x, y,   "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+					//y++;
+					//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+					//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
 
 					ye++;
-					menu->Con(STATE_03)->print(xe, ye,   "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 20);
-					menu->Con(STATE_03)->print(xe, ye,   "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
 
-//					y++;
-//					menu->Con(STATE_03)->print(x, y,   "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
-//					menu->Con(STATE_03)->print(x, y,   "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
+					//y++;
+					//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
+					//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
 
 					ye++;
-					menu->Con(STATE_03)->print(xe, ye,   "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 4);
-					menu->Con(STATE_03)->print(xe, ye,   "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 2);
 
-//					menu->Con(STATE_03)->print(x, y,   "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
-//					menu->Con(STATE_03)->print(x, y,   "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
+					//menu->Con(STATE_03)->print(x, y, "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
+					//menu->Con(STATE_03)->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
 
-					menu->Con(STATE_03)->print(xe, ye,   "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
-					menu->Con(STATE_03)->print(xe, ye,   "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 12);
 
-//					y++;
-//					menu->Con(STATE_03)->print(x, y,   "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
-//					menu->Con(STATE_03)->print(x, y,   "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
+					//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
+					//menu->Con(STATE_03)->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
 
-					menu->Con(STATE_03)->print(xe, ye,   "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 5);
-					menu->Con(STATE_03)->print(xe, ye,   "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 2);
 
-//					menu->Con(STATE_03)->print(x, y,   "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
-//					menu->Con(STATE_03)->print(x, y,   "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-//					menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
+					//menu->Con(STATE_03)->print(x, y, "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
+					//menu->Con(STATE_03)->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
 
-					menu->Con(STATE_03)->print(xe, ye,   "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 6);
-					menu->Con(STATE_03)->print(xe, ye,   "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe, ye, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 3);
 
-          break;
-        }
-        case GAME_ITEMS:
-        {
-					int NITEMS = 4, NHIDES = 7;
+					break;
+				}
+				case GAME_ITEMS:
+				{
+					int NITEMS = 9, NHIDES = 7;
 					int xi = 2, yi = 2;
-					//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
-
 					menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 					menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
@@ -697,9 +682,9 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					{
 						//int j = game.player.itemInv.index[i];
 						//menu->Con(STATE_03)->print(xi, ++yi, game.player.itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						//menu->Con(STATE_03)->print(xi + 24, yi, " :: %2d", game.player.itemInv.count[j]);
+						//menu->Con(STATE_03)->print(xi + 24, yi, " : %2d", game.player.itemInv.count[j]);
 						menu->Con(STATE_03)->print(xi, ++yi, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(xi + 24, yi, "  : %2d", 2);
+						menu->Con(STATE_03)->print(xi + 24, yi, " : %2d", 2);
 					}
 
 					// Hide Invetory
@@ -712,37 +697,38 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					{
 						//int j = game.player.hideInv.index[i];
 						//menu->Con(STATE_03)->print(xi, ++yi, game.player.hideInv.hides[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						//menu->Con(STATE_03)->print(xi + 24, yi, " :: %2d", game.player.hideInv.count[j]);
+						//menu->Con(STATE_03)->print(xi + 24, yi, " : %2d", game.player.hideInv.count[j]);
 						menu->Con(STATE_03)->print(xi, ++yi, "%cRare Hide%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(xi + 24, yi, "  : %2d", 3);
+						menu->Con(STATE_03)->print(xi + 24, yi, " : %2d", 3);
 					}
-          break;
-        }
-        default:
-        {
-					//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
-          break;
-        }
-      }
-    }
-    else
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-    }
-  }
+					break;
+				}
+				default: break;
+			}
+		}
+		else
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
 	return status;
 }
 
 void MenuGame::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -759,33 +745,64 @@ MenuEquipInv *MenuEquipInv::Instance()
 bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
+	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
-	int NEQUIPTYPE = 4;
+	int ws = w - 17, hs = h - 2, z, zp;
+	char tmp[CHARMAX];
 
-  // Game submenu screen
-  menu->Con(STATE_03, new TCODConsole(ws, hs));
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
 	switch(key.vk)
 	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NEQUIPTYPE;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NEQUIPTYPE - 1;
+			break;
+		}
 		case TCODK_ESCAPE:
 		{
+			// Exit Menu
 			Transmit->Send(GameEngine(), MSG_EQUIPINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
-			break;
-  	}
-		case TCODK_CHAR:
 		{
-			switch(key.c)
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Select the item at the current cursor position
+			switch(cursor)
 			{
-				case 'u':
+				case WEAPON:
 				{
-					//Transmit->Send(GameEngine(), MSG_EQUIPINVUSE);
+					Transmit->Send(GameEngine(), MSG_WEAPONINV);
+					break;
+				}
+				case SHIELD:
+				{
+					Transmit->Send(GameEngine(), MSG_SHIELDINV);
+					break;
+				}
+				case ARMOUR:
+				{
+					Transmit->Send(GameEngine(), MSG_ARMOURINV);
+					break;
+				}
+				case ACCESSORY:
+				{
+					Transmit->Send(GameEngine(), MSG_ACCESSORYINV);
 					break;
 				}
 				default: break;
@@ -795,24 +812,141 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 		default: break;
 	}
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-  TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 
-  // Set colours for submenu
-  menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	// Set default colours for console
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
 
+	// Print frames
 	menu->Con(STATE_03)->printFrame(0, 0, ws, NEQUIPTYPE + 6, false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, NEQUIPTYPE + 6, 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(20, NEQUIPTYPE + 6, ws - 20, hs - (NEQUIPTYPE + 6), false, TCOD_BKGND_SET);
 
-  // Equipment
-  int x = 2, y = 2;
-  menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	// Equipment
+	int x = 2, y = 2;
+	menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	y += 2;
+
+	// List Current Equipment
+	for(int i = 0; i < NEQUIPTYPE; i++)
+	{
+		// Highlight Selection
+		if(i == cursor)
+		{
+			//menu->Con(STATE_03)->print(x, y, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 13, y, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x + 13, y, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+		}
+		else
+		{
+			//menu->Con(STATE_03)->print(x, y, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 13, y, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x + 13, y, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+		}
+		y++;
+	}
+
+	// List Current Stats
+	y = NEQUIPTYPE + 8;
+	menu->Con(STATE_03)->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+	y += 2;
+
+	//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+	//int xpbar = static_cast<int>(15.0f*xpfraction);
+	//if(xpbar > 0)
+	//{
+	//	menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
+	//	menu->Con(STATE_03)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//if(xpbar < 15)
+	//{
+	//	menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
+	//	menu->Con(STATE_03)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	//menu->Con(STATE_03)->print(x, y, "%cLVL%c : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.lvl);
+	//menu->Con(STATE_03)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+	float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+	int xpbar = static_cast<int>(15.0f*xpfraction);
+	if(xpbar > 0)
+	{
+		menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkGreen);
+		menu->Con(STATE_03)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	if(xpbar < 15)
+	{
+		menu->Con(STATE_03)->setDefaultBackground(TCODColor::darkerGreen);
+		menu->Con(STATE_03)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 1);
+	menu->Con(STATE_03)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+	//y++;
+	//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+	//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+	y++;
+	menu->Con(STATE_03)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 20);
+	menu->Con(STATE_03)->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 10);
+
+	//y++;
+	//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
+	//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
+	y++;
+	menu->Con(STATE_03)->print(x, y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 4);
+	menu->Con(STATE_03)->print(x, y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 2);
+
+	//menu->Con(STATE_03)->print(x, y, "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
+	//menu->Con(STATE_03)->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
+	menu->Con(STATE_03)->print(x, y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 10);
+	menu->Con(STATE_03)->print(x, y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 12);
+
+	//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
+	//menu->Con(STATE_03)->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
+	menu->Con(STATE_03)->print(x, y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 5);
+	menu->Con(STATE_03)->print(x, y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 2);
+
+	//menu->Con(STATE_03)->print(x, y, "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
+	//menu->Con(STATE_03)->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
+	menu->Con(STATE_03)->print(x, y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 6);
+	menu->Con(STATE_03)->print(x, y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 3);
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
 
 	return status;
 }
@@ -820,11 +954,951 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 void MenuEquipInv::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+}
+
+//------------------------------------------------------------------------
+//
+// Methods for MenuWeaponInv
+//
+//------------------------------------------------------------------------
+MenuWeaponInv *MenuWeaponInv::Instance()
+{
+	static MenuWeaponInv instance;
+	return &instance;
+}
+
+bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
+{
+	bool status = true;
+	static int cursor = 0;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NWEAPONS = 9;
+
+	// Game submenu screen
+	menu->Con(STATE_04, new TCODConsole(ws, hs));
+
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NWEAPONS;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NWEAPONS - 1;
+			break;
+		}
+		case TCODK_ESCAPE:
+		{
+			// Exit Menu
+			Transmit->Send(GameEngine(), MSG_WEAPONINV);
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Swap equipment
+			break;
+		}
+		default: break;
+	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+	// Set default colours for console
+	menu->Con(STATE_04)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_04)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_04)->clear();
+
+	// Print frames
+	menu->Con(STATE_04)->printFrame(0, 0, 20, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_04)->printFrame(20, 0, ws - 20, hs, false, TCOD_BKGND_SET);
+
+	// Equipment
+	int x = 2, y = 2;
+	menu->Con(STATE_04)->print(x + 20, y, "%cWeapons%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	y += 2;
+
+	// List Current Equipment
+	//Stats stats = game.player.stats;
+	for(int i = 0; i < NWEAPONS; i++)
+	{
+		// Highlight Selection
+		if(i == cursor)
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_04)->print(x + 20, hs - 3, game.player.equipInv.Weapons[j].desc);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Sword%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, hs - 3, "AP +2");
+
+			//stats -= game.player.equipInv.equiped[WEAPON].stats;
+			//stats.hpmax -= game.player.equipInv.equiped[WEAPON].stats.hpmax;
+			//stats.mpmax -= game.player.equipInv.equiped[WEAPON].stats.mpmax;
+
+			//stats += game.player.equipInv.Weapons[j].stats;
+			//stats.hpmax += game.player.equipInv.Weapons[j].stats.hpmax;
+			//stats.mpmax += game.player.equipInv.Weapons[j].stats.mpmax;
+		}
+		else
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Sword%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	// List Current Stats
+	y = 2;
+	menu->Con(STATE_04)->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+	y += 2;
+
+	//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+	//int xpbar = static_cast<int>(15.0f*xpfraction);
+	//if(xpbar > 0)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+	//	menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//if(xpbar < 15)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+	//	menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	//menu->Con(STATE_04)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y++, "%2d", game.player.lvl);
+	//menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+	float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+	int xpbar = static_cast<int>(15.0f*xpfraction);
+	if(xpbar > 0)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+		menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	if(xpbar < 15)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+		menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y++, "%2d", 1);
+	menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.hpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.hpmax, stats.hpmax);
+	y++;
+	menu->Con(STATE_04)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 20);
+	menu->DisplayUpdatedStat(x, y, 20, 30);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mpmax, stats.mpmax);
+	menu->Con(STATE_04)->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.ap);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.ap, stats.ap);
+	y++;
+	menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 4);
+	menu->DisplayUpdatedStat(x, y, 4, 6);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.dp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.dp, stats.dp);
+	menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 1);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.str);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.str, stats.str);
+	menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.spd);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.spd, stats.spd);
+	menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 12);
+	menu->DisplayUpdatedStat(x, y, 12, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.map);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.map, stats.map);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 5);
+	menu->DisplayUpdatedStat(x, y, 5, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mdp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mdp, stats.mdp);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.wil);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.wil, stats.wil);
+	menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 6);
+	menu->DisplayUpdatedStat(x, y, 6, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.acu);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.acu, stats.acu);
+	menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 3);
+	menu->DisplayUpdatedStat(x, y, 3, 1);
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
+	return status;
+}
+
+void MenuWeaponInv::Render(MenuClass *menu)
+{
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6);
+	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3 + (NEQUIPTYPE + 6);
+
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_04), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+}
+
+//------------------------------------------------------------------------
+//
+// Methods for MenuShieldInv
+//
+//------------------------------------------------------------------------
+MenuShieldInv *MenuShieldInv::Instance()
+{
+	static MenuShieldInv instance;
+	return &instance;
+}
+
+bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
+{
+	bool status = true;
+	static int cursor = 0;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NSHIELDS = 9;
+
+	// Game submenu screen
+	menu->Con(STATE_04, new TCODConsole(ws, hs));
+
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NSHIELDS;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NSHIELDS - 1;
+			break;
+		}
+		case TCODK_ESCAPE:
+		{
+			// Exit Menu
+			Transmit->Send(GameEngine(), MSG_SHIELDINV);
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Swap equipment
+			break;
+		}
+		default: break;
+	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+	// Set default colours for console
+	menu->Con(STATE_04)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_04)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_04)->clear();
+
+	// Print frames
+	menu->Con(STATE_04)->printFrame(0, 0, 20, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_04)->printFrame(20, 0, ws - 20, hs, false, TCOD_BKGND_SET);
+
+	// Equipment
+	int x = 2, y = 2;
+	menu->Con(STATE_04)->print(x + 20, y, "%cShields%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	y += 2;
+
+	// List Current Equipment
+	//Stats stats = game.player.stats;
+	for(int i = 0; i < NSHIELDS; i++)
+	{
+		// Highlight Selection
+		if(i == cursor)
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_04)->print(x + 20, hs - 3, game.player.equipInv.Shields[j].desc);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Shield%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, hs - 3, "DP +2");
+
+			//stats -= game.player.equipInv.equiped[SHIELD].stats;
+			//stats.hpmax -= game.player.equipInv.equiped[SHIELD].stats.hpmax;
+			//stats.mpmax -= game.player.equipInv.equiped[SHIELD].stats.mpmax;
+
+			//stats += game.player.equipInv.Shields[j].stats;
+			//stats.hpmax += game.player.equipInv.Shields[j].stats.hpmax;
+			//stats.mpmax += game.player.equipInv.Shields[j].stats.mpmax;
+		}
+		else
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Shield%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	// List Current Stats
+	y = 2;
+	menu->Con(STATE_04)->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+	y += 2;
+
+	//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+	//int xpbar = static_cast<int>(15.0f*xpfraction);
+	//if(xpbar > 0)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+	//	menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//if(xpbar < 15)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+	//	menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	//menu->Con(STATE_04)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y++, "%2d", game.player.lvl);
+	//menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+	float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+	int xpbar = static_cast<int>(15.0f*xpfraction);
+	if(xpbar > 0)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+		menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	if(xpbar < 15)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+		menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y++, "%2d", 1);
+	menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.hpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.hpmax, stats.hpmax);
+	y++;
+	menu->Con(STATE_04)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 20);
+	menu->DisplayUpdatedStat(x, y, 20, 30);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mpmax, stats.mpmax);
+	menu->Con(STATE_04)->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.ap);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.ap, stats.ap);
+	y++;
+	menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 4);
+	menu->DisplayUpdatedStat(x, y, 4, 6);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.dp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.dp, stats.dp);
+	menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 1);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.str);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.str, stats.str);
+	menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.spd);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.spd, stats.spd);
+	menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 12);
+	menu->DisplayUpdatedStat(x, y, 12, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.map);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.map, stats.map);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 5);
+	menu->DisplayUpdatedStat(x, y, 5, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mdp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mdp, stats.mdp);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.wil);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.wil, stats.wil);
+	menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 6);
+	menu->DisplayUpdatedStat(x, y, 6, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.acu);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.acu, stats.acu);
+	menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 3);
+	menu->DisplayUpdatedStat(x, y, 3, 1);
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
+	return status;
+}
+
+void MenuShieldInv::Render(MenuClass *menu)
+{
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6);
+	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3 + (NEQUIPTYPE + 6);
+
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_04), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+}
+
+//------------------------------------------------------------------------
+//
+// Methods for MenuArmourInv
+//
+//------------------------------------------------------------------------
+MenuArmourInv *MenuArmourInv::Instance()
+{
+	static MenuArmourInv instance;
+	return &instance;
+}
+
+bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
+{
+	bool status = true;
+	static int cursor = 0;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NARMOUR = 9;
+
+	// Game submenu screen
+	menu->Con(STATE_04, new TCODConsole(ws, hs));
+
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NARMOUR;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NARMOUR - 1;
+			break;
+		}
+		case TCODK_ESCAPE:
+		{
+			// Exit Menu
+			Transmit->Send(GameEngine(), MSG_ARMOURINV);
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Swap equipment
+			break;
+		}
+		default: break;
+	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+	// Set default colours for console
+	menu->Con(STATE_04)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_04)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_04)->clear();
+
+	// Print frames
+	menu->Con(STATE_04)->printFrame(0, 0, 20, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_04)->printFrame(20, 0, ws - 20, hs, false, TCOD_BKGND_SET);
+
+	// Equipment
+	int x = 2, y = 2;
+	menu->Con(STATE_04)->print(x + 20, y, "%cArmour%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	y += 2;
+
+	// List Current Equipment
+	//Stats stats = game.player.stats;
+	for(int i = 0; i < NARMOUR; i++)
+	{
+		// Highlight Selection
+		if(i == cursor)
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_04)->print(x + 20, hs - 3, game.player.equipInv.Armours[j].desc);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Armour%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, hs - 3, "DP +4");
+
+			//stats -= game.player.equipInv.equiped[ARMOUR].stats;
+			//stats.hpmax -= game.player.equipInv.equiped[ARMOUR].stats.hpmax;
+			//stats.mpmax -= game.player.equipInv.equiped[ARMOUR].stats.mpmax;
+
+			//stats += game.player.equipInv.Armours[j].stats;
+			//stats.hpmax += game.player.equipInv.Armours[j].stats.hpmax;
+			//stats.mpmax += game.player.equipInv.Armours[j].stats.mpmax;
+		}
+		else
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Armour%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	// List Current Stats
+	y = 2;
+	menu->Con(STATE_04)->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+	y += 2;
+
+	//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+	//int xpbar = static_cast<int>(15.0f*xpfraction);
+	//if(xpbar > 0)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+	//	menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//if(xpbar < 15)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+	//	menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	//menu->Con(STATE_04)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y++, "%2d", game.player.lvl);
+	//menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+	float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+	int xpbar = static_cast<int>(15.0f*xpfraction);
+	if(xpbar > 0)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+		menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	if(xpbar < 15)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+		menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y++, "%2d", 1);
+	menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.hpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.hpmax, stats.hpmax);
+	y++;
+	menu->Con(STATE_04)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 20);
+	menu->DisplayUpdatedStat(x, y, 20, 30);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mpmax, stats.mpmax);
+	menu->Con(STATE_04)->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.ap);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.ap, stats.ap);
+	y++;
+	menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 4);
+	menu->DisplayUpdatedStat(x, y, 4, 6);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.dp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.dp, stats.dp);
+	menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 1);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.str);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.str, stats.str);
+	menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.spd);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.spd, stats.spd);
+	menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 12);
+	menu->DisplayUpdatedStat(x, y, 12, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.map);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.map, stats.map);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 5);
+	menu->DisplayUpdatedStat(x, y, 5, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mdp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mdp, stats.mdp);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.wil);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.wil, stats.wil);
+	menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 6);
+	menu->DisplayUpdatedStat(x, y, 6, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.acu);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.acu, stats.acu);
+	menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 3);
+	menu->DisplayUpdatedStat(x, y, 3, 1);
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
+	return status;
+}
+
+void MenuArmourInv::Render(MenuClass *menu)
+{
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6);
+	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3 + (NEQUIPTYPE + 6);
+
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_04), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+}
+
+//------------------------------------------------------------------------
+//
+// Methods for MenuAccessoryInv
+//
+//------------------------------------------------------------------------
+MenuAccessoryInv *MenuAccessoryInv::Instance()
+{
+	static MenuAccessoryInv instance;
+	return &instance;
+}
+
+bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
+{
+	bool status = true;
+	static int cursor = 0;
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NACCESSORY = 9;
+
+	// Game submenu screen
+	menu->Con(STATE_04, new TCODConsole(ws, hs));
+
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NACCESSORY;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NACCESSORY - 1;
+			break;
+		}
+		case TCODK_ESCAPE:
+		{
+			// Exit Menu
+			Transmit->Send(GameEngine(), MSG_ACCESSORYINV);
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Swap equipment
+			break;
+		}
+		default: break;
+	}
+
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+
+	// Set default colours for console
+	menu->Con(STATE_04)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_04)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_04)->clear();
+
+	// Print frames
+	menu->Con(STATE_04)->printFrame(0, 0, 20, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_04)->printFrame(20, 0, ws - 20, hs, false, TCOD_BKGND_SET);
+
+	// Equipment
+	int x = 2, y = 2;
+	menu->Con(STATE_04)->print(x + 20, y, "%cAccessories%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	y += 2;
+
+	// List Current Equipment
+	//Stats stats = game.player.stats;
+	for(int i = 0; i < NACCESSORY; i++)
+	{
+		// Highlight Selection
+		if(i == cursor)
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_04)->print(x + 20, hs - 3, game.player.equipInv.Accessory[j].desc);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Ring%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, hs - 3, "MAP +4");
+
+			//stats -= game.player.equipInv.equiped[ACCESSORY].stats;
+			//stats.hpmax -= game.player.equipInv.equiped[ACCESSORY].stats.hpmax;
+			//stats.mpmax -= game.player.equipInv.equiped[ACCESSORY].stats.mpmax;
+
+			//stats += game.player.equipInv.Accessory[j].stats;
+			//stats.hpmax += game.player.equipInv.Accessory[j].stats.hpmax;
+			//stats.mpmax += game.player.equipInv.Accessory[j].stats.mpmax;
+		}
+		else
+		{
+			//menu->Con(STATE_04)->print(x + 20, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 20, y++, "%cBronze Ring%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
+
+	// List Current Stats
+	y = 2;
+	menu->Con(STATE_04)->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
+	y += 2;
+
+	//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
+	//int xpbar = static_cast<int>(15.0f*xpfraction);
+	//if(xpbar > 0)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+	//	menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//if(xpbar < 15)
+	//{
+	//	menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+	//	menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	//}
+	//menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	//menu->Con(STATE_04)->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y++, "%2d", game.player.lvl);
+	//menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
+	float xpfraction = static_cast<float>(0)/static_cast<float>(100);
+	int xpbar = static_cast<int>(15.0f*xpfraction);
+	if(xpbar > 0)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkGreen);
+		menu->Con(STATE_04)->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	if(xpbar < 15)
+	{
+		menu->Con(STATE_04)->setDefaultBackground(TCODColor::darkerGreen);
+		menu->Con(STATE_04)->rect(x + xpbar, y + 1, 15 - xpbar, 1, true, TCOD_BKGND_SET);
+	}
+	menu->Con(STATE_04)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_04)->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y++, "%2d", 1);
+	menu->Con(STATE_04)->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.hpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.hpmax, stats.hpmax);
+	y++;
+	menu->Con(STATE_04)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 20);
+	menu->DisplayUpdatedStat(x, y, 20, 30);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mpmax);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mpmax, stats.mpmax);
+	menu->Con(STATE_04)->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//y++;
+	//menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.ap);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.ap, stats.ap);
+	y++;
+	menu->Con(STATE_04)->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 4);
+	menu->DisplayUpdatedStat(x, y, 4, 6);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.dp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.dp, stats.dp);
+	menu->Con(STATE_04)->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 1);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.str);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.str, stats.str);
+	menu->Con(STATE_04)->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 10);
+	menu->DisplayUpdatedStat(x, y, 10, 15);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.spd);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.spd, stats.spd);
+	menu->Con(STATE_04)->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 12);
+	menu->DisplayUpdatedStat(x, y, 12, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.map);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.map, stats.map);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 5);
+	menu->DisplayUpdatedStat(x, y, 5, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.mdp);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.mdp, stats.mdp);
+	menu->Con(STATE_04)->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 2);
+	menu->DisplayUpdatedStat(x, y, 2, 4);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.wil);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.wil, stats.wil);
+	menu->Con(STATE_04)->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 6);
+	menu->DisplayUpdatedStat(x, y, 6, 8);
+
+	//menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_04)->print(x + 7, y, "%2d", game.player.stats.acu);
+	//menu->DisplayUpdatedStat(x, y, game.player.stats.acu, stats.acu);
+	menu->Con(STATE_04)->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 7, y, "%2d", 3);
+	menu->DisplayUpdatedStat(x, y, 3, 1);
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
+
+	return status;
+}
+
+void MenuAccessoryInv::Render(MenuClass *menu)
+{
+	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6);
+	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3 + (NEQUIPTYPE + 6);
+
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_04), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -841,57 +1915,114 @@ MenuItemInv *MenuItemInv::Instance()
 bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
+	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
+	int NITEMS = 9, NHIDES = 7;
+  int yend = NITEMS + 5;
 
-  // Game submenu screen
-  menu->Con(STATE_03, new TCODConsole(ws, hs));
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
 	switch(key.vk)
 	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NITEMS;
+			break;
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NITEMS - 1;
+			break;
+		}
 		case TCODK_ESCAPE:
 		{
+			// Exit Menu
 			Transmit->Send(GameEngine(), MSG_ITEMINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
-			break;
-  	}
-		case TCODK_CHAR:
 		{
-			switch(key.c)
-			{
-				case 'u':
-				{
-					//Transmit->Send(GameEngine(), MSG_ITEMINVUSE);
-					break;
-				}
-				default: break;
-			}
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Use Item
+			//Transmit->Send(GameEngine(), MSG_ITEMUSE);
 			break;
 		}
 		default: break;
 	}
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-  TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+	// Set text colours
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 
-  // Set colours for submenu
-  menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	// Set colours for submenu
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	menu->Con(STATE_03)->clear();
 
-	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+	// Print frames
+	//menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
+	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
-  // Equipment
-  int x = 2, y = 2;
-  menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	// Item Inventory
+	int x = 2, y = 2;
+	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+	//for(int i = 0; i < game.player.itemInv.nitems; i++)
+	for(int i = 0; i < NITEMS; i++)
+	{
+		//int j = game.player.itemInv.index[i];
+		if(i == cursor)
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.itemInv.items[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 24, y, " : %2d", game.player.itemInv.count[j]);
+			//menu->Con(STATE_03)->print(x, yend, game.player.itemInv.items[j].desc);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x + 24, y, " : %2d", 2);
+			menu->Con(STATE_03)->print(x, yend, "Very Rare");
+		}
+		else
+		{
+			//menu->Con(STATE_03)->print(x, ++y, game.player.itemInv.items[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 24, y, " : %2d", game.player.itemInv.count[j]);
+			menu->Con(STATE_03)->print(x, ++y, "%cRare Item%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x + 24, y, " : %2d", 2);
+		}
+	}
+
+	// Hide Invetory
+	y = DISPLAY_HEIGHT/2 - 3;
+	menu->Con(STATE_03)->print(x, y, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+
+	//for(int i = 0; i < game.player.hideInv.nhides; i++)
+	for(int i = 0; i < NHIDES; i++)
+	{
+		//int j = game.player.hideInv.index[i];
+		//menu->Con(STATE_03)->print(x, ++y, game.player.hideInv.hides[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//menu->Con(STATE_03)->print(x + 24, y, " : %2d", game.player.hideInv.count[j]);
+		menu->Con(STATE_03)->print(x, ++y, "%cRare Hide%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		menu->Con(STATE_03)->print(x + 24, y, " : %2d", 3);
+	}
+
+	if(key.vk == TCODK_ESCAPE) cursor = 0;
+	key.vk = TCODK_NONE;
+	key.c = 0;
 
 	return status;
 }
@@ -899,11 +2030,11 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 void MenuItemInv::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -958,11 +2089,11 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -989,12 +2120,12 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 void MenuItemShop::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1019,11 +2150,11 @@ bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TC
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -1045,12 +2176,12 @@ bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TC
 void MenuItemShopBuy::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1075,11 +2206,11 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -1101,12 +2232,12 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 void MenuItemShopSell::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1131,11 +2262,11 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -1162,12 +2293,12 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 void MenuEquipShop::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1192,11 +2323,11 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -1218,12 +2349,12 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 void MenuEquipShopBuy::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1248,11 +2379,11 @@ bool MenuEquipShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, 
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -1274,12 +2405,12 @@ bool MenuEquipShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, 
 void MenuEquipShopSell::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1295,150 +2426,150 @@ MenuFerry *MenuFerry::Instance()
 
 bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int cursor = 0;
-  bool status = true;
+	static int cursor = 0;
+	bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2, i = 0;
+	int ws = w - 17, hs = h - 2, i = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
-  int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
-  //int id = game.worldID - 1, idprev = id - 1, idnext = id + 1;
+	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
+	//int id = game.worldID - 1, idprev = id - 1, idnext = id + 1;
 	map<int, string> Options;
 	Options.insert(make_pair(i++, "%cTake Ferry%c"));
 	Options.insert(make_pair(i++, "%cExit Ferry%c"));
 
-  //if(idprev < TOWN_01) idprev = TOWN_12;
-  //if(idnext > TOWN_12) idnext = TOWN_01;
+	//if(idprev < TOWN_01) idprev = TOWN_12;
+	//if(idnext > TOWN_12) idnext = TOWN_01;
 
-  //sprintf(options[0], "%s%s%s", "%c", wmap->locations[idprev].name, "%c");
-  //sprintf(options[1], "%s%s%s", "%c", wmap->locations[idnext].name, "%c");
+	//sprintf(options[0], "%s%s%s", "%c", wmap->locations[idprev].name, "%c");
+	//sprintf(options[1], "%s%s%s", "%c", wmap->locations[idnext].name, "%c");
 
-  // Game menu screen
-  menu->Con(STATE_02, new TCODConsole(w, h));
+	// Game menu screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
 
-  // Game submenu screen
-  menu->Con(STATE_03, new TCODConsole(ws, hs));
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
-  // Key handler
-  switch(key.vk)
-  {
-    case TCODK_DOWN:
-    {
-      // Move the cursor position down
-      cursor = (cursor + 1) % NFERRY;
-      break;
-    }
-    case TCODK_UP:
-    {
-      // Move the cursor position up
-      cursor--;
-      if(cursor < 0) cursor = NFERRY - 1;
-      break;
-    }
-		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+	// Key handler
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NFERRY;
 			break;
-  	}
-    case TCODK_ENTER:
-    {
-      // Select the item at the current cursor position
-      if(cursor == FERRY_TAKE)
-      {
-        //if(game.player.gp >= 25)
-        //{
-        //  game.player.gp -= 25;
-        //  game.player.takeFerry(idprev);
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NFERRY - 1;
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Select the item at the current cursor position
+			if(cursor == FERRY_TAKE)
+			{
+				//if(game.player.gp >= 25)
+				//{
+				//	game.player.gp -= 25;
+				//	game.player.takeFerry(idprev);
 				//	Transmit->Send(GameEngine(), MSG_FERRYTAKE);
-        //}
-      }
-      else
-      {
+				//}
+			}
+			else
+			{
 				cursor = 0;
 				//GameEngine()->Sound()->ToggleVolume(0.5f);
 				Transmit->Send(GameEngine(), MSG_FERRYMENU);
-      }
-      break;
-    }
-    default: break;
-  }
+			}
+			break;
+		}
+		default: break;
+	}
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-  TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
 
-  // Set colours for frame and title
-  menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	// Set colours for frame and title
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
 
-  // Set colours for submenu
-  menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
+	// Set colours for submenu
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_03)->setDefaultForeground(TCODColor::white);
 
-  // Print frame and title
-  menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Ferry");
-  menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NFERRY + 5, false, TCOD_BKGND_SET);
-  menu->Con(STATE_02)->printFrame(1, 2*NFERRY + 6, 15, h - 11, false, TCOD_BKGND_SET);
+	// Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Ferry");
+	menu->Con(STATE_02)->printFrame(1, 1, 15, 2*NFERRY + 5, false, TCOD_BKGND_SET);
+	menu->Con(STATE_02)->printFrame(1, 2*NFERRY + 6, 15, h - 11, false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
-  // Compute the elapsed time in convenient units
-  int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-  float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
-  int nmins = static_cast<int>(time/60.0f);
-  int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
+	// Compute the elapsed time in convenient units
+	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
+	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nmins = static_cast<int>(time/60.0f);
+	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
-  x = 3, y = 24;
-  menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	x = 3, y = 24;
+	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
-  menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-  menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
+	menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
 
-  // Print the menu options
-  y = 1;
-  for(int i = 0; i < NFERRY; i++)
-  {
-    y += 2;
-    if(i == cursor)
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	// Print the menu options
+	y = 1;
+	for(int i = 0; i < NFERRY; i++)
+	{
+		y += 2;
+		if(i == cursor)
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-      if(cursor == FERRY_TAKE)
-      {
-        // Travel to the previous town
-        menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-      }
-      else
-      {
-        // Hurry Back!
-        menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Come back any time.");
-      }
-    }
-    else
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-    }
-  }
+			if(cursor == FERRY_TAKE)
+			{
+				// Travel to the previous town
+				menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			}
+			else
+			{
+				// Hurry Back!
+				menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Come back any time.");
+			}
+		}
+		else
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
 	return status;
 }
 
 void MenuFerry::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1454,150 +2585,150 @@ MenuInn *MenuInn::Instance()
 
 bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
-  static int cursor = 0;
-  bool status = true;
+	static int cursor = 0;
+	bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2, i = 0;
+	int ws = w - 17, hs = h - 2, i = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
-  int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
+	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
 	map<int, string> Options;
 	Options.insert(make_pair(i++, "%cStay at Inn%c"));
 	Options.insert(make_pair(i++, "%cExit Inn   %c"));
 
-  // Game menu screen
-  menu->Con(STATE_02, new TCODConsole(w, h));
+	// Game menu screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
 
-  // Game submenu screen
-  menu->Con(STATE_03, new TCODConsole(ws, hs));
+	// Game submenu screen
+	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
-  // Key handler
-  switch(key.vk)
-  {
-    case TCODK_DOWN:
-    {
-      // Move the cursor position down
-      cursor = (cursor + 1) % NINN;
-      break;
-    }
-    case TCODK_UP:
-    {
-      // Move the cursor position up
-      cursor--;
-      if(cursor < 0) cursor = NINN - 1;
-      break;
-    }
-		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+	// Key handler
+	switch(key.vk)
+	{
+		case TCODK_DOWN:
+		{
+			// Move the cursor position down
+			cursor = (cursor + 1) % NINN;
 			break;
-  	}
-    case TCODK_ENTER:
-    {
-      // Select the item at the current cursor position
-      if(cursor == INN_STAY)
-      {
-        //if(GameEngine()->Player()->GP() >= 15)
-        //{
-          // Goodnight
-          menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
-          menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Goodnight.");
+		}
+		case TCODK_UP:
+		{
+			// Move the cursor position up
+			cursor--;
+			if(cursor < 0) cursor = NINN - 1;
+			break;
+		}
+		case TCODK_BACKSPACE:
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
+			break;
+		}
+		case TCODK_ENTER:
+		{
+			// Select the item at the current cursor position
+			if(cursor == INN_STAY)
+			{
+				//if(GameEngine()->Player()->GP() >= 15)
+				//{
+					// Goodnight
+					menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
+					menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Goodnight.");
 
-          // Blit the inn submenu to the root console
-          TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+					// Blit the inn submenu to the root console
+					TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 
-          //GameEngine()->Player()->DecreaseGP(15);
+					//GameEngine()->Player()->DecreaseGP(15);
 
 					Transmit->Send(GameEngine(), MSG_REST);
-        //}
-      }
-      else
-      {
+				//}
+			}
+			else
+			{
 				cursor = 0;
 				//GameEngine()->Sound()->ToggleVolume(0.5f);
 				Transmit->Send(GameEngine(), MSG_INNMENU);
-      }
-      break;
-    }
-    default: break;
-  }
+			}
+			break;
+		}
+		default: break;
+	}
 
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-  TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+	TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
 
-  // Set colours for frame and title
-  menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	// Set colours for frame and title
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
 
-  // Set colours for submenu
-  menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	// Set colours for submenu
+	menu->Con(STATE_03)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_03)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_03)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
 
-  // Print frame and title
-  menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Inn");
-  menu->Con(STATE_02)->printFrame(1, 1, 15, 2*(NINN + 1) + 3, false, TCOD_BKGND_SET);
-  menu->Con(STATE_02)->printFrame(1, 2*(NINN + 1) + 4, 15, h - 11, false, TCOD_BKGND_SET);
+	// Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Inn");
+	menu->Con(STATE_02)->printFrame(1, 1, 15, 2*(NINN + 1) + 3, false, TCOD_BKGND_SET);
+	menu->Con(STATE_02)->printFrame(1, 2*(NINN + 1) + 4, 15, h - 11, false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
-  // Compute the elapsed time in convenient units
-  int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-  float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
-  int nmins = static_cast<int>(time/60.0f);
-  int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
+	// Compute the elapsed time in convenient units
+	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
+	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nmins = static_cast<int>(time/60.0f);
+	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
-  x = 3, y = 24;
-  menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	x = 3, y = 24;
+	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
-  menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-  menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
+	menu->Con(STATE_02)->print(x, y, "%cTime:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(x, ++y, "%02d:%02d:%02d", nhours, nmins, nsecs);
 
-  // Print the menu options
-  y = NINN - 1;
-  for(int i = 0; i < NINN; i++)
-  {
-    y += 2;
-    if(i == cursor)
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	// Print the menu options
+	y = NINN - 1;
+	for(int i = 0; i < NINN; i++)
+	{
+		y += 2;
+		if(i == cursor)
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-      if(cursor == INN_STAY)
-      {
-        // Stay Night at Inn
-        menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Hello there young traveller.\n\n\nCan I interest you in a nice hearty meal, and a warm comfortable bed?\n\n\nWe charge %c15 GP%c per night, meal included.\n\n\nWould you care to stay?", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-      }
-      else
-      {
-        // Hurry Back!
-        menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "It is a shame to see you leave.\n\n\nPlease hurry back!");
-      }
-    }
-    else
-    {
-      // Print each item
-      menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-    }
-  }
+			if(cursor == INN_STAY)
+			{
+				// Stay Night at Inn
+				menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "Hello there young traveller.\n\n\nCan I interest you in a nice hearty meal, and a warm comfortable bed?\n\n\nWe charge %c15 GP%c per night, meal included.\n\n\nWould you care to stay?", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			}
+			else
+			{
+				// Hurry Back!
+				menu->Con(STATE_03)->printRect(xstart, ystart, xend, yend, "It is a shame to see you leave.\n\n\nPlease hurry back!");
+			}
+		}
+		else
+		{
+			// Print each item
+			menu->Con(STATE_02)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		}
+	}
 	return status;
 }
 
 void MenuInn::Render(MenuClass *menu)
 {
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-  int ws = w - 17, hs = h - 2;
+	int ws = w - 17, hs = h - 2;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the inn menu and submenu to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
-  TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
+	// Blit the inn menu and submenu to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
+	TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 }
 
 //------------------------------------------------------------------------
@@ -1641,35 +2772,35 @@ bool MenuDeath::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		default: break;
 	}
 
-  // The death message screen
-  menu->Con(STATE_02, new TCODConsole(w, h));
+	// The death message screen
+	menu->Con(STATE_02, new TCODConsole(w, h));
 
-  // Delete the current save file
-  if(TCODSystem::fileExists(SAVEGAME_FILENAME)) TCODSystem::deleteFile(SAVEGAME_FILENAME);
+	// Delete the current save file
+	if(TCODSystem::fileExists(SAVEGAME_FILENAME)) TCODSystem::deleteFile(SAVEGAME_FILENAME);
 
-  // Set colours
-  menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
-  TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
-  TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
+	// Set colours
+	menu->Con(STATE_02)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_02)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_02)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_02)->setDefaultForeground(TCODColor::white);
+	TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::lighterYellow, TCODColor::black);
+	TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::red, TCODColor::black);
 
-  // Print frame and title
-  menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Game Over");
+	// Print frame and title
+	menu->Con(STATE_02)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Game Over");
 
-  // Print the death page contents
-  menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "While your valiant efforts should be commended, they were all for naught.\n\n\nThe %cAncient Menance%c spread across these lands, killing all those that could fight and enslaving the rest.\n\n\nEventhough your part in this tale is over, perhaps a new hero will one day emerge from the remnants of these broken and shattered people.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+	// Print the death page contents
+	menu->Con(STATE_02)->printRect(xstart, ystart, xend, yend, "While your valiant efforts should be commended, they were all for naught.\n\n\nThe %cAncient Menance%c spread across these lands, killing all those that could fight and enslaving the rest.\n\n\nEventhough your part in this tale is over, perhaps a new hero will one day emerge from the remnants of these broken and shattered people.", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 
-  menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_02)->print(xend, yend + 2, "%c[Enter]%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 
 	return status;
 }
@@ -1679,8 +2810,8 @@ void MenuDeath::Render(MenuClass *menu)
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
-  // Blit the death screen to the root console
-  TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 0.85f);
+	// Blit the death screen to the root console
+	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 0.85f);
 }
 
 //------------------------------------------------------------------------
@@ -1697,121 +2828,121 @@ MenuUI *MenuUI::Instance()
 bool MenuUI::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
-  int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
+	int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
 
-  // The Message Log
-  menu->Con(STATE_01, new TCODConsole(w, h));
+	// The Message Log
+	menu->Con(STATE_01, new TCODConsole(w, h));
 
-  // Set colours for frame and title
-  menu->Con(STATE_01)->setAlignment(TCOD_LEFT);
-  menu->Con(STATE_01)->setBackgroundFlag(TCOD_BKGND_SET);
-  menu->Con(STATE_01)->setDefaultBackground(TCODColor::black);
-  menu->Con(STATE_01)->setDefaultForeground(TCODColor::white);
+	// Set colours for frame and title
+	menu->Con(STATE_01)->setAlignment(TCOD_LEFT);
+	menu->Con(STATE_01)->setBackgroundFlag(TCOD_BKGND_SET);
+	menu->Con(STATE_01)->setDefaultBackground(TCODColor::black);
+	menu->Con(STATE_01)->setDefaultForeground(TCODColor::white);
 
-  // Print frame and title
-  menu->Con(STATE_01)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Message Log");
+	// Print frame and title
+	menu->Con(STATE_01)->printFrame(0, 0, w, h, false, TCOD_BKGND_SET, "Message Log");
 
-  // Print contents of activity log to con
-  int x = 2, y = NMSGS + 1;
-  for(int i = 0; i < NMSGS; i++) menu->Con(STATE_01)->print(x, y--, menu->MessageLog[i].c_str());
+	// Print contents of activity log to con
+	int x = 2, y = NMSGS + 1;
+	for(int i = 0; i < NMSGS; i++) menu->Con(STATE_01)->print(x, y--, menu->MessageLog[i].c_str());
 
 	return status;
 }
 
 void MenuUI::Render(MenuClass *menu)
 {
-  int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
-  int x = 0, y = DISPLAY_HEIGHT + 3;
+	int w = 3*DISPLAY_WIDTH/4 - 2, h = NMSGS + 4;
+	int x = 0, y = DISPLAY_HEIGHT + 3;
 	int frame = static_cast<int>(1000.0f*TCODSystem::getLastFrameLength());
 	int fps = TCODSystem::getFps();
 
 	// Blit the Message Log to the root console
 	TCODConsole::blit(menu->Con(STATE_01), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
 
-  // Various UI stuff
+	// Various UI stuff
 	if(GameEngine()->Game()->InGame())
 	{
-  	// Render player hp bar
-  	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  	TCODConsole::root->printEx(1, 1, TCOD_BKGND_NONE, TCOD_LEFT, "HP");
-  	float hpfraction = static_cast<float>(GameEngine()->Player()->HP())/static_cast<float>(GameEngine()->Player()->HPMax());
-  	int hpbar = static_cast<int>(20.0f*hpfraction);
-  	if(hpbar > 0)
-  	{
-    	TCODConsole::root->setDefaultBackground(TCODColor::red);
-    	TCODConsole::root->rect(4, 1, hpbar, 1, true, TCOD_BKGND_SET);
-  	}
-  	if(hpbar < 20)
-  	{
-    	TCODConsole::root->setDefaultBackground(TCODColor::darkerRed);
-    	TCODConsole::root->rect(4 + hpbar, 1, 20 - hpbar, 1, true, TCOD_BKGND_SET);
-  	}
+		// Render player hp bar
+		TCODConsole::root->setDefaultForeground(TCODColor::white);
+		TCODConsole::root->printEx(1, 1, TCOD_BKGND_NONE, TCOD_LEFT, "HP");
+		float hpfraction = static_cast<float>(GameEngine()->Player()->HP())/static_cast<float>(GameEngine()->Player()->HPMax());
+		int hpbar = static_cast<int>(20.0f*hpfraction);
+		if(hpbar > 0)
+		{
+			TCODConsole::root->setDefaultBackground(TCODColor::red);
+			TCODConsole::root->rect(4, 1, hpbar, 1, true, TCOD_BKGND_SET);
+		}
+		if(hpbar < 20)
+		{
+			TCODConsole::root->setDefaultBackground(TCODColor::darkerRed);
+			TCODConsole::root->rect(4 + hpbar, 1, 20 - hpbar, 1, true, TCOD_BKGND_SET);
+		}
 
-  	// Render player mp bar
-  	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  	TCODConsole::root->printEx(DISPLAY_WIDTH - 24, 1, TCOD_BKGND_NONE, TCOD_LEFT, "MP");
-  	float mpfraction = static_cast<float>(GameEngine()->Player()->MP())/static_cast<float>(GameEngine()->Player()->MPMax());
-  	int mpbar = static_cast<int>(20.0f*mpfraction);
-  	if(mpbar > 0)
-  	{
-    	TCODConsole::root->setDefaultBackground(TCODColor::blue);
-    	TCODConsole::root->rect(DISPLAY_WIDTH - 21, 1, mpbar, 1, true, TCOD_BKGND_SET);
-  	}
-  	if(mpbar < 20)
-  	{
-    	TCODConsole::root->setDefaultBackground(TCODColor::darkerBlue);
-    	TCODConsole::root->rect(DISPLAY_WIDTH - 21 + mpbar, 1, 20 - mpbar, 1, true, TCOD_BKGND_SET);
-  	}
+		// Render player mp bar
+		TCODConsole::root->setDefaultForeground(TCODColor::white);
+		TCODConsole::root->printEx(DISPLAY_WIDTH - 24, 1, TCOD_BKGND_NONE, TCOD_LEFT, "MP");
+		float mpfraction = static_cast<float>(GameEngine()->Player()->MP())/static_cast<float>(GameEngine()->Player()->MPMax());
+		int mpbar = static_cast<int>(20.0f*mpfraction);
+		if(mpbar > 0)
+		{
+			TCODConsole::root->setDefaultBackground(TCODColor::blue);
+			TCODConsole::root->rect(DISPLAY_WIDTH - 21, 1, mpbar, 1, true, TCOD_BKGND_SET);
+		}
+		if(mpbar < 20)
+		{
+			TCODConsole::root->setDefaultBackground(TCODColor::darkerBlue);
+			TCODConsole::root->rect(DISPLAY_WIDTH - 21 + mpbar, 1, 20 - mpbar, 1, true, TCOD_BKGND_SET);
+		}
 
-  	// Render player magic selection
-  	switch(menu->MagicID())
-  	{
-    	case MAGIC_LIGHT:
-    	{
-      	TCODConsole::root->setDefaultForeground(TCODColor::white);
-      	TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Light Magic");
-      	menu->MagicIcon(new TCODImage("data/img/magic_light.png"));
-      	menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
-      	break;
-    	}
-    	case MAGIC_FIRE:
-    	{
-      	TCODConsole::root->setDefaultForeground(TCODColor::white);
-      	TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Fire Magic");
-      	menu->MagicIcon(new TCODImage("data/img/magic_fire.png"));
-      	menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
-      	break;
-    	}
-    	case MAGIC_WATER:
-    	{
-      	TCODConsole::root->setDefaultForeground(TCODColor::white);
-      	TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Water Magic");
-      	menu->MagicIcon(new TCODImage("data/img/magic_water.png"));
-      	menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
-      	break;
-    	}
-    	case MAGIC_WIND:
-    	{
-      	TCODConsole::root->setDefaultForeground(TCODColor::white);
-      	TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Wind Magic");
-      	menu->MagicIcon(new TCODImage("data/img/magic_wind.png"));
-      	menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
-      	break;
-    	}
-    	case MAGIC_EARTH:
-    	{
-      	TCODConsole::root->setDefaultForeground(TCODColor::white);
-      	TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Earth Magic");
-      	menu->MagicIcon(new TCODImage("data/img/magic_earth.png"));
-      	menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
-      	break;
-    	}
-    	default: break;
-  	}
+		// Render player magic selection
+		switch(menu->MagicID())
+		{
+			case MAGIC_LIGHT:
+			{
+				TCODConsole::root->setDefaultForeground(TCODColor::white);
+				TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Light Magic");
+				menu->MagicIcon(new TCODImage("data/img/magic_light.png"));
+				menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
+				break;
+			}
+			case MAGIC_FIRE:
+			{
+				TCODConsole::root->setDefaultForeground(TCODColor::white);
+				TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Fire Magic");
+				menu->MagicIcon(new TCODImage("data/img/magic_fire.png"));
+				menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
+				break;
+			}
+			case MAGIC_WATER:
+			{
+				TCODConsole::root->setDefaultForeground(TCODColor::white);
+				TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Water Magic");
+				menu->MagicIcon(new TCODImage("data/img/magic_water.png"));
+				menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
+				break;
+			}
+			case MAGIC_WIND:
+			{
+				TCODConsole::root->setDefaultForeground(TCODColor::white);
+				TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Wind Magic");
+				menu->MagicIcon(new TCODImage("data/img/magic_wind.png"));
+				menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
+				break;
+			}
+			case MAGIC_EARTH:
+			{
+				TCODConsole::root->setDefaultForeground(TCODColor::white);
+				TCODConsole::root->printEx(DISPLAY_WIDTH/2 - 2, 1, TCOD_BKGND_NONE, TCOD_LEFT, "Earth Magic");
+				menu->MagicIcon(new TCODImage("data/img/magic_earth.png"));
+				menu->MagicIcon()->blit2x(TCODConsole::root, DISPLAY_WIDTH/2 - 6, 0);
+				break;
+			}
+			default: break;
+		}
 
 		// Other UI Stuff
 		//TCODConsole::root->setDefaultBackground(TCODColor::lightGrey);
-  	//TCODConsole::root->setDefaultForeground(TCODColor::white);
+		//TCODConsole::root->setDefaultForeground(TCODColor::white);
 		//for(int i = 0; i < SCREEN_WIDTH; i++) TCODConsole::root->putChar(i, 4, ' ' ,TCOD_BKGND_MULTIPLY);
 		//TCODConsole::root->printEx(1, 4, TCOD_BKGND_NONE, TCOD_LEFT, "[alt+enter]: toggle fullscreen");
 		//TCODConsole::root->printEx(SCREEN_WIDTH - 3, 4, TCOD_BKGND_NONE, TCOD_RIGHT, "[backspace]: screen capture");
@@ -1825,11 +2956,11 @@ bool MenuUI::Receive(MenuClass *menu, const Message &msg)
 {
 	if(msg.Msg == MSG_MSGLOG)
 	{
-  	// Shift previous entries down one index
-  	for(int i = NMSGS - 1; i > 0; i--) menu->MessageLog[i] = menu->MessageLog[i - 1];
+		// Shift previous entries down one index
+		for(int i = NMSGS - 1; i > 0; i--) menu->MessageLog[i] = menu->MessageLog[i - 1];
 
-  	// Store new message in the first entry of the activity log
-  	menu->MessageLog[0] = msg.data;
+		// Store new message in the first entry of the activity log
+		menu->MessageLog[0] = msg.data;
 	}
 	return true;
 }
