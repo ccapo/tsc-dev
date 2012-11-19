@@ -228,7 +228,6 @@ enum GameMenu
 	GAME_ITEMS,
 	GAME_EXIT,
 	NGAME,
-	CHANGE_EQUIP
 };
 
 // Item Shop Menu Option Identifiers

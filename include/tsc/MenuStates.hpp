@@ -32,15 +32,12 @@ class MenuClass;
 #define MenuArmourInvState MenuArmourInv::Instance()
 #define MenuAccessoryInvState MenuAccessoryInv::Instance()
 #define MenuItemInvState MenuItemInv::Instance()
-
 #define MenuItemShopState MenuItemShop::Instance()
 #define MenuItemShopBuyState MenuItemShopBuy::Instance()
 #define MenuItemShopSellState MenuItemShopSell::Instance()
-
 #define MenuEquipShopState MenuEquipShop::Instance()
 #define MenuEquipShopBuyState MenuEquipShopBuy::Instance()
 #define MenuEquipShopSellState MenuEquipShopSell::Instance()
-
 #define MenuFerryState MenuFerry::Instance()
 #define MenuInnState MenuInn::Instance()
 #define MenuRestState MenuRest::Instance()
