@@ -125,7 +125,7 @@ bool SoundRest::Update(SoundClass *sound, float elapsed, TCOD_key_t &key, TCOD_m
 void SoundRest::Render(SoundClass *sound)
 {
 	// Pause for Rest Music
-	usleep(1750000);
+	//usleep(1750000);
 }
 void SoundRest::Exit(SoundClass *sound){}
 

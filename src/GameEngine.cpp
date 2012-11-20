@@ -276,7 +276,7 @@ void GameEngineClass::Startup(int narg, char *argv[])
 	TCODConsole::mapAsciiCodeToFont(CHAR_FINAL_BOSS_LR, x++, y);
 
 	// Libtcod credits
-	TCODConsole::credits();
+	//TCODConsole::credits();
 
 	// Clear root console
 	TCODConsole::root->setDefaultBackground(TCODColor::black);
@@ -304,9 +304,11 @@ void GameEngineClass::Shutdown()
 	EntityManager()->RemoveAll();
 
 	// Fade Out
-	for(int i = 1; i <= 2*MAXFPS; i++)
+	//for(int i = 1; i <= 2*MAXFPS; i++)
+	for(int i = 1; i <= 6; i++)
 	{
-		int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
+		//int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
+		int fade = 255*(6 - i)/(6 - 1);
 		TCODConsole::setFade(fade, TCODColor::black);
 		TCODConsole::root->flush();
 	}
@@ -338,9 +340,11 @@ void GameEngineClass::Render()
 	if(FadeOut())
 	{
 		FadeOut(false);
-		for(int i = 1; i <= MAXFPS; i++)
+		//for(int i = 1; i <= MAXFPS; i++)
+		for(int i = 1; i <= 6; i++)
 		{
-			int fade = 255*(MAXFPS - i)/(MAXFPS - 1);
+			//int fade = 255*(MAXFPS - i)/(MAXFPS - 1);
+			int fade = 255*(6 - i)/(6 - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}
@@ -362,9 +366,11 @@ void GameEngineClass::Render()
 	if(FadeIn())
 	{
 		FadeIn(false);
-		for(int i = 1; i <= MAXFPS; i++)
+		//for(int i = 1; i <= MAXFPS; i++)
+		for(int i = 1; i <= 6; i++)
 		{
-			int fade = 255*(i - 1)/(MAXFPS - 1);
+			//int fade = 255*(i - 1)/(MAXFPS - 1);
+			int fade = 255*(i - 1)/(6 - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}

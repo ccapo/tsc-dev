@@ -34,7 +34,7 @@ bool GameNew::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mouse
 	}
 	else
 	{
-		usleep(250000);
+		//usleep(250000);
 		game->IncrementProgress();
 	}
 
@@ -64,7 +64,7 @@ bool GameLoad::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	}
 	else
 	{
-		usleep(250000);
+		//usleep(250000);
 		game->IncrementProgress();
 	}
 
@@ -94,7 +94,7 @@ bool GameSave::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	}
 	else
 	{
-		usleep(250000);
+		//usleep(250000);
 		game->IncrementProgress();
 	}
 
