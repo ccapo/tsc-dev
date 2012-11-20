@@ -34,7 +34,9 @@ bool GameNew::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mouse
 	}
 	else
 	{
-		//usleep(250000);
+#ifndef DEV
+		usleep(250000);
+#endif
 		game->IncrementProgress();
 	}
 
@@ -64,7 +66,9 @@ bool GameLoad::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	}
 	else
 	{
-		//usleep(250000);
+#ifndef DEV
+		usleep(250000);
+#endif
 		game->IncrementProgress();
 	}
 
@@ -84,7 +88,6 @@ GameSave *GameSave::Instance()
 	return &instance;
 }
 
-
 bool GameSave::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	if(game->IsProgressComplete())
@@ -94,7 +97,9 @@ bool GameSave::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	}
 	else
 	{
-		//usleep(250000);
+#ifndef DEV
+		usleep(250000);
+#endif
 		game->IncrementProgress();
 	}
 

@@ -5,8 +5,8 @@ CPP = g++
 UPX = upx -qq
 
 #CFLAGS = -O2 -s -w -I$(INCDIR)/tsc -I$(INCDIR)/tcod -I$(INCDIR)/fmodex
-CFLAGS = -O2 -s -w -I$(INCDIR)/tsc -I$(INCDIR)/tcod -I$(INCDIR)/fmodex -DNOSOUND
-#CFLAGS = -O0 -g -Wall -I$(INCDIR)/tsc -I$(INCDIR)/tcod -I$(INCDIR)/fmodex -DNOSOUND
+CFLAGS = -O2 -s -w -I$(INCDIR)/tsc -I$(INCDIR)/tcod -I$(INCDIR)/fmodex -DNOSOUND -DDEV
+#CFLAGS = -O0 -g -Wall -I$(INCDIR)/tsc -I$(INCDIR)/tcod -I$(INCDIR)/fmodex -DNOSOUND -DDEV
 
 # Determine if operating system is 32-bit or 64-bit
 ifeq ($(shell uname -m),x86_64)

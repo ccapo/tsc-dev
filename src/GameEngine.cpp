@@ -304,14 +304,14 @@ void GameEngineClass::Shutdown()
 	EntityManager()->RemoveAll();
 
 	// Fade Out
-	//for(int i = 1; i <= 2*MAXFPS; i++)
-	for(int i = 1; i <= 6; i++)
+#ifndef DEV
+	for(int i = 1; i <= 2*MAXFPS; i++)
 	{
-		//int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
-		int fade = 255*(6 - i)/(6 - 1);
+		int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
 		TCODConsole::setFade(fade, TCODColor::black);
 		TCODConsole::root->flush();
 	}
+#endif
 }
 
 //--------------------------------- Update ------------------------------------
@@ -340,14 +340,14 @@ void GameEngineClass::Render()
 	if(FadeOut())
 	{
 		FadeOut(false);
-		//for(int i = 1; i <= MAXFPS; i++)
-		for(int i = 1; i <= 6; i++)
+#ifndef DEV
+		for(int i = 1; i <= MAXFPS; i++)
 		{
-			//int fade = 255*(MAXFPS - i)/(MAXFPS - 1);
-			int fade = 255*(6 - i)/(6 - 1);
+			int fade = 255*(MAXFPS - i)/(MAXFPS - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}
+#endif
 	}
 
 	// Clear root console
@@ -366,14 +366,14 @@ void GameEngineClass::Render()
 	if(FadeIn())
 	{
 		FadeIn(false);
-		//for(int i = 1; i <= MAXFPS; i++)
-		for(int i = 1; i <= 6; i++)
+#ifndef DEV
+		for(int i = 1; i <= MAXFPS; i++)
 		{
-			//int fade = 255*(i - 1)/(MAXFPS - 1);
-			int fade = 255*(i - 1)/(6 - 1);
+			int fade = 255*(i - 1)/(MAXFPS - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}
+#endif
 	}
 }
 
