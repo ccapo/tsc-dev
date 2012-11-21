@@ -1,5 +1,5 @@
-#ifndef GAMEENGINE_HPP
-#define GAMEENGINE_HPP
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 //------------------------------------------------------------------------
 //
 // Name: Engine.hpp
