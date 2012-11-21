@@ -30,7 +30,7 @@ bool GameNew::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mouse
 	if(game->IsProgressComplete())
 	{
 		game->ResetProgress();
-		Transmit->Send(GameEngine(), MSG_INTROGAME);
+		Transmit->Send(Engine(), MSG_INTROGAME);
 	}
 	else
 	{
@@ -62,7 +62,7 @@ bool GameLoad::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	{
 		game->ResetProgress();
 		game->InGame(true);
-		Transmit->Send(GameEngine(), MSG_ENTERWORLD);
+		Transmit->Send(Engine(), MSG_ENTERWORLD);
 	}
 	else
 	{
@@ -93,7 +93,7 @@ bool GameSave::Update(GameClass *game, float elapsed, TCOD_key_t &key, TCOD_mous
 	if(game->IsProgressComplete())
 	{
 		game->ResetProgress();
-		Transmit->Send(GameEngine(), MSG_ENTERWORLD);
+		Transmit->Send(Engine(), MSG_ENTERWORLD);
 	}
 	else
 	{

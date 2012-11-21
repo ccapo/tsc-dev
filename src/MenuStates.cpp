@@ -69,22 +69,22 @@ bool MenuMain::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 			{
 				case MAIN_NEW:
 				{
-					Transmit->Send(GameEngine(), MSG_NEWGAME);
+					Transmit->Send(Engine(), MSG_NEWGAME);
 					break;
 				}
 				case MAIN_LOAD:
 				{
-					Transmit->Send(GameEngine(), MSG_LOADGAME);
+					Transmit->Send(Engine(), MSG_LOADGAME);
 					break;
 				}
 				case MAIN_HELP:
 				{
-					Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_HELPSCREEN);
 					break;
 				}
 				case MAIN_QUIT:
 				{
-					Transmit->Send(GameEngine(), MSG_QUITGAME);
+					Transmit->Send(Engine(), MSG_QUITGAME);
 					status = false;
 					break;
 				}
@@ -169,7 +169,7 @@ bool MenuNew::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 
 void MenuNew::Render(MenuClass *menu)
 {
-	menu->DisplayProgress("Generating Serpentine Caves ", GameEngine()->Game()->FractionalProgress());
+	menu->DisplayProgress("Generating Serpentine Caves ", Engine()->Game()->FractionalProgress());
 }
 
 //------------------------------------------------------------------------
@@ -187,7 +187,7 @@ bool MenuLoad::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 void MenuLoad::Render(MenuClass *menu)
 {
-	menu->DisplayProgress("Loading Serpentine Caves", GameEngine()->Game()->FractionalProgress());
+	menu->DisplayProgress("Loading Serpentine Caves", Engine()->Game()->FractionalProgress());
 }
 
 //------------------------------------------------------------------------
@@ -205,7 +205,7 @@ bool MenuSave::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 void MenuSave::Render(MenuClass *menu)
 {
-	menu->DisplayProgress("Saving Serpentine Caves ", GameEngine()->Game()->FractionalProgress());
+	menu->DisplayProgress("Saving Serpentine Caves ", Engine()->Game()->FractionalProgress());
 }
 
 //------------------------------------------------------------------------
@@ -248,7 +248,7 @@ bool MenuHelp::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 		}
 		case TCODK_ENTER:
 		{
-			Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+			Transmit->Send(Engine(), MSG_HELPSCREEN);
 			break;
 		}
 		default: break;
@@ -290,7 +290,7 @@ void MenuHelp::Render(MenuClass *menu)
 	int x = DISPLAY_WIDTH/2 - w/2, y = SCREEN_HEIGHT/2 - h/2;
 
 	// In Game specific settings
-	if(GameEngine()->Game()->InGame()) y = DISPLAY_HEIGHT/2 - h/2 + 3;
+	if(Engine()->Game()->InGame()) y = DISPLAY_HEIGHT/2 - h/2 + 3;
 
 	// Blit the info screen to the root console
 	TCODConsole::blit(menu->Con(STATE_02), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 0.85f);
@@ -324,7 +324,7 @@ bool MenuIntro::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 			if(menu->IsIntroComplete())
 			{
 				menu->ResetIntroPage();
-				Transmit->Send(GameEngine(), MSG_BEGINGAME);
+				Transmit->Send(Engine(), MSG_BEGINGAME);
 			}
 			break;
 		}
@@ -413,7 +413,7 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 	menu->Con(STATE_03, new TCODConsole(ws, hs));
 
 	// Update Player Stats
-	//GameEngine()->Player()->UpdateStats();
+	//Engine()->Player()->UpdateStats();
 
 	// Key handler
 	switch(key.vk)
@@ -434,7 +434,7 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			Transmit->Send(Engine(), MSG_GAMEMENU);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -450,18 +450,18 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 			{
 				case GAME_EQUIP:
 				{
-					Transmit->Send(GameEngine(), MSG_EQUIPINV);
+					Transmit->Send(Engine(), MSG_EQUIPINV);
 					break;
 				}
 				case GAME_ITEMS:
 				{
-					Transmit->Send(GameEngine(), MSG_ITEMINV);
+					Transmit->Send(Engine(), MSG_ITEMINV);
 					break;
 				}
 				case GAME_EXIT:
 				{
-					//GameEngine()->Sound()->ToggleVolume(0.5f);
-					Transmit->Send(GameEngine(), MSG_QUITGAME);
+					//Engine()->Sound()->ToggleVolume(0.5f);
+					Transmit->Send(Engine(), MSG_QUITGAME);
 					status = false;
 					break;
 				}
@@ -500,12 +500,12 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 	x = 3, y = 12;
 	menu->Con(STATE_02)->print(x, y, "%cHP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", GameEngine()->Player()->Stats()->HP(), GameEngine()->Player()->Stats()->HPMax());
-	menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", GameEngine()->Player()->HP(), GameEngine()->Player()->HPMax());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", Engine()->Player()->Stats()->HP(), Engine()->Player()->Stats()->HPMax());
+	menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", Engine()->Player()->HP(), Engine()->Player()->HPMax());
 
 	menu->Con(STATE_02)->print(x, y, "%cMP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", GameEngine()->Player()->Stats()->MP(), GameEngine()->Player()->Stats()->MPMax());
-	menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", GameEngine()->Player()->MP(), GameEngine()->Player()->MPMax());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", Engine()->Player()->Stats()->MP(), Engine()->Player()->Stats()->MPMax());
+	menu->Con(STATE_02)->print(x + 4, y++, "%d/%d", Engine()->Player()->MP(), Engine()->Player()->MPMax());
 
 	menu->Con(STATE_02)->print(x, ++y, "%cStatus:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//for(int i = 0; i < 5; i++) if(GameEngin()->Player()->Health()->Status[i]) menu->Con(STATE_02)->print(x, ++y, "%s", GameEngin()->Player()->Health()->Name[i]);
@@ -513,9 +513,9 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 	//for(int i = 0; i < NSTATUS; i++)
 	//{
-	//	if(GameEngine()->Player()->Health()->Status[i])
+	//	if(Engine()->Player()->Health()->Status[i])
 	//	{
-	//		menu->Con(STATE_02)->print(x, ++y, "%s", GameEngine()->Player()->Health()->StatusName[i]);
+	//		menu->Con(STATE_02)->print(x, ++y, "%s", Engine()->Player()->Health()->StatusName[i]);
 	//	}
 	//}
 	menu->Con(STATE_02)->print(x, ++y, "%s", "Burdened");
@@ -526,14 +526,14 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 	menu->Con(STATE_02)->print(x, ++y, "%s", "Confused");
 
 	// Compute the elapsed time in convenient units
-	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nhours = static_cast<int>(Engine()->ElapsedTime()/(60.0f*60.0f));
+	float time = Engine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
 	int nmins = static_cast<int>(time/60.0f);
 	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
 	x = 3, y = 24;
 	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", Engine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
@@ -772,7 +772,7 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_EQUIPINV);
+			Transmit->Send(Engine(), MSG_EQUIPINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -788,22 +788,22 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 			{
 				case WEAPON:
 				{
-					Transmit->Send(GameEngine(), MSG_WEAPONINV);
+					Transmit->Send(Engine(), MSG_WEAPONINV);
 					break;
 				}
 				case SHIELD:
 				{
-					Transmit->Send(GameEngine(), MSG_SHIELDINV);
+					Transmit->Send(Engine(), MSG_SHIELDINV);
 					break;
 				}
 				case ARMOUR:
 				{
-					Transmit->Send(GameEngine(), MSG_ARMOURINV);
+					Transmit->Send(Engine(), MSG_ARMOURINV);
 					break;
 				}
 				case ACCESSORY:
 				{
-					Transmit->Send(GameEngine(), MSG_ACCESSORYINV);
+					Transmit->Send(Engine(), MSG_ACCESSORYINV);
 					break;
 				}
 				default: break;
@@ -1001,7 +1001,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_WEAPONINV);
+			Transmit->Send(Engine(), MSG_WEAPONINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -1049,7 +1049,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Weapons[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "AP +2");
 
 			//stats -= game.player.equipInv.equiped[WEAPON].stats;
@@ -1063,7 +1063,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1236,7 +1236,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_SHIELDINV);
+			Transmit->Send(Engine(), MSG_SHIELDINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -1284,7 +1284,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Shields[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "DP +2");
 
 			//stats -= game.player.equipInv.equiped[SHIELD].stats;
@@ -1298,7 +1298,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1471,7 +1471,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_ARMOURINV);
+			Transmit->Send(Engine(), MSG_ARMOURINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -1519,7 +1519,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Armours[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "DP +4");
 
 			//stats -= game.player.equipInv.equiped[ARMOUR].stats;
@@ -1533,7 +1533,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1706,7 +1706,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_ACCESSORYINV);
+			Transmit->Send(Engine(), MSG_ACCESSORYINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -1754,7 +1754,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Accessory[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "MAP +4");
 
 			//stats -= game.player.equipInv.equiped[ACCESSORY].stats;
@@ -1768,7 +1768,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, Engine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1943,7 +1943,7 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 		case TCODK_ESCAPE:
 		{
 			// Exit Menu
-			Transmit->Send(GameEngine(), MSG_ITEMINV);
+			Transmit->Send(Engine(), MSG_ITEMINV);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -1955,7 +1955,7 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 		case TCODK_ENTER:
 		{
 			// Use Item
-			//Transmit->Send(GameEngine(), MSG_ITEMUSE);
+			//Transmit->Send(Engine(), MSG_ITEMUSE);
 			break;
 		}
 		default: break;
@@ -2130,20 +2130,20 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 				case ITEMSHOP_BUY:
 				{
 					// Buy Something!
-					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUBUY);
+					Transmit->Send(Engine(), MSG_ITEMSHOPMENUBUY);
 					break;
 				}
 				case ITEMSHOP_SELL:
 				{
 					// Got anything I can take off your hands?
-					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUSELL);
+					Transmit->Send(Engine(), MSG_ITEMSHOPMENUSELL);
 					break;
 				}
 				case ITEMSHOP_EXIT:
 				{
 					// Exit Menu
-					//GameEngine()->Sound()->ToggleVolume(0.5f);
-					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENU);
+					//Engine()->Sound()->ToggleVolume(0.5f);
+					Transmit->Send(Engine(), MSG_ITEMSHOPMENU);
 					break;
 				}
 				default: break;
@@ -2181,14 +2181,14 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
 	// Compute the elapsed time in convenient units
-	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nhours = static_cast<int>(Engine()->ElapsedTime()/(60.0f*60.0f));
+	float time = Engine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
 	int nmins = static_cast<int>(time/60.0f);
 	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
 	int x = 3, y = 24;
 	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", Engine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
@@ -2352,12 +2352,12 @@ bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TC
 		}
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUBUY);
+			Transmit->Send(Engine(), MSG_ITEMSHOPMENUBUY);
 			break;
 		}
 		case TCODK_ENTER:
 		{
-			//GameEngine()->Player()->BuyItem(&cursor);
+			//Engine()->Player()->BuyItem(&cursor);
 			break;
 		}
 		default: break;
@@ -2477,18 +2477,18 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		}
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_ITEMSHOPMENUSELL);
+			Transmit->Send(Engine(), MSG_ITEMSHOPMENUSELL);
 			break;
 		}
 		case TCODK_ENTER:
 		{
-			//if(cursor < GameEngine()->Player()->ItemInv()->Nitems)
+			//if(cursor < Engine()->Player()->ItemInv()->Nitems)
 			//{
-			//	GameEngine()->Player()->SellItem(&cursor);
+			//	Engine()->Player()->SellItem(&cursor);
 			//}
 			//else
 			//{
-			//	GameEngine()->Player()->SellHide(&cursor);
+			//	Engine()->Player()->SellHide(&cursor);
 			//}
 			break;
 		}
@@ -2647,27 +2647,27 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		}
 		case TCODK_ENTER:
 		{
-			//GameEngine()->Player()->BuyEquip(&cursor);
-			//GameEngine()->Player()->SellEquip(&cursor);
+			//Engine()->Player()->BuyEquip(&cursor);
+			//Engine()->Player()->SellEquip(&cursor);
 			switch(cursor)
 			{
 				case EQUIPSHOP_BUY:
 				{
 					// Buy Something!
-					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUBUY);
+					Transmit->Send(Engine(), MSG_EQUIPSHOPMENUBUY);
 					break;
 				}
 				case EQUIPSHOP_SELL:
 				{
 					// Got anything I can take off your hands?
-					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUSELL);
+					Transmit->Send(Engine(), MSG_EQUIPSHOPMENUSELL);
 					break;
 				}
 				case EQUIPSHOP_EXIT:
 				{
 					// Exit Menu
-					//GameEngine()->Sound()->ToggleVolume(0.5f);
-					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENU);
+					//Engine()->Sound()->ToggleVolume(0.5f);
+					Transmit->Send(Engine(), MSG_EQUIPSHOPMENU);
 					break;
 				}
 				default: break;
@@ -2710,14 +2710,14 @@ bool MenuEquipShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 	menu->Con(STATE_03)->printFrame(0, 2*hs/3 + 1, ws, hs/3, false, TCOD_BKGND_SET);
 
 	// Compute the elapsed time in convenient units
-	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nhours = static_cast<int>(Engine()->ElapsedTime()/(60.0f*60.0f));
+	float time = Engine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
 	int nmins = static_cast<int>(time/60.0f);
 	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
 	int x = 3, y = 24;
 	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", Engine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
@@ -2926,7 +2926,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		}
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUBUY);
+			Transmit->Send(Engine(), MSG_EQUIPSHOPMENUBUY);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -2937,7 +2937,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		}
 		case TCODK_ENTER:
 		{
-			//GameEngine()->Player()->BuyEquip(&cursor);
+			//Engine()->Player()->BuyEquip(&cursor);
 			break;
 		}
 		default: break;
@@ -2990,7 +2990,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 					for(int j = 0; j < 9; j++)
 					{
 						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->WeaponNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, Engine()->Map()->WeaponNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 						y++;
 					}
 					break;
@@ -3000,7 +3000,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 					for(int j = 0; j < 9; j++)
 					{
 						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->ShieldNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, Engine()->Map()->ShieldNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 						y++;
 					}
 					break;
@@ -3010,7 +3010,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 					for(int j = 0; j < 9; j++)
 					{
 						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->ArmourNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, Engine()->Map()->ArmourNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 						y++;
 					}
 					break;
@@ -3020,7 +3020,7 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 					for(int j = 0; j < 9; j++)
 					{
 						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->AccessoryNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, Engine()->Map()->AccessoryNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 						y++;
 					}
 					break;
@@ -3129,7 +3129,7 @@ bool MenuEquipShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, 
 	{
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENUSELL);
+			Transmit->Send(Engine(), MSG_EQUIPSHOPMENUSELL);
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -3144,7 +3144,7 @@ bool MenuEquipShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, 
 			{
 				case 'u':
 				{
-					//Transmit->Send(GameEngine(), MSG_EQUIPSALE);
+					//Transmit->Send(Engine(), MSG_EQUIPSALE);
 					break;
 				}
 				default: break;
@@ -3230,17 +3230,17 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 			// Select the item at the current cursor position
 			if(cursor == FERRY_TAKE)
 			{
-				//if(GameEngine()->Player()->GP() >= 25)
+				//if(Engine()->Player()->GP() >= 25)
 				//{
-				//	GameEngine()->Player()->DecreaseGP(25);
-				//	GameEngine()->Player()->TakeFerry(idprev);
-				//	Transmit->Send(GameEngine(), MSG_FERRYTAKE);
+				//	Engine()->Player()->DecreaseGP(25);
+				//	Engine()->Player()->TakeFerry(idprev);
+				//	Transmit->Send(Engine(), MSG_FERRYTAKE);
 				//}
 			}
 			else
 			{
-				//GameEngine()->Sound()->ToggleVolume(0.5f);
-				Transmit->Send(GameEngine(), MSG_FERRYMENU);
+				//Engine()->Sound()->ToggleVolume(0.5f);
+				Transmit->Send(Engine(), MSG_FERRYMENU);
 			}
 			break;
 		}
@@ -3272,14 +3272,14 @@ bool MenuFerry::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
 	// Compute the elapsed time in convenient units
-	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nhours = static_cast<int>(Engine()->ElapsedTime()/(60.0f*60.0f));
+	float time = Engine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
 	int nmins = static_cast<int>(time/60.0f);
 	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
 	x = 3, y = 24;
 	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", Engine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
@@ -3388,7 +3388,7 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 			// Select the item at the current cursor position
 			if(cursor == INN_STAY)
 			{
-				//if(GameEngine()->Player()->GP() >= 15)
+				//if(Engine()->Player()->GP() >= 15)
 				//{
 					// Goodnight
 					menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
@@ -3397,15 +3397,15 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 					// Blit the inn submenu to the root console
 					TCODConsole::blit(menu->Con(STATE_03), 0, 0, ws, hs, TCODConsole::root, x + 16, y + 1, 1.0f, 1.0f);
 
-					//GameEngine()->Player()->DecreaseGP(15);
+					//Engine()->Player()->DecreaseGP(15);
 
-					Transmit->Send(GameEngine(), MSG_REST);
+					Transmit->Send(Engine(), MSG_REST);
 				//}
 			}
 			else
 			{
-				//GameEngine()->Sound()->ToggleVolume(0.5f);
-				Transmit->Send(GameEngine(), MSG_INNMENU);
+				//Engine()->Sound()->ToggleVolume(0.5f);
+				Transmit->Send(Engine(), MSG_INNMENU);
 			}
 			break;
 		}
@@ -3437,14 +3437,14 @@ bool MenuInn::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs, false, TCOD_BKGND_SET);
 
 	// Compute the elapsed time in convenient units
-	int nhours = static_cast<int>(GameEngine()->ElapsedTime()/(60.0f*60.0f));
-	float time = GameEngine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
+	int nhours = static_cast<int>(Engine()->ElapsedTime()/(60.0f*60.0f));
+	float time = Engine()->ElapsedTime() - (60.0f*60.0f)*static_cast<float>(nhours);
 	int nmins = static_cast<int>(time/60.0f);
 	int nsecs = static_cast<int>(time - 60.0f*static_cast<float>(nmins));
 
 	x = 3, y = 24;
 	menu->Con(STATE_02)->print(x, y, "%cGP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_02)->print(x + 4, y++, "%d", GameEngine()->Player()->GP());
+	//menu->Con(STATE_02)->print(x + 4, y++, "%d", Engine()->Player()->GP());
 	menu->Con(STATE_02)->print(x + 4, y++, "%d", 100);
 	y++;
 
@@ -3536,7 +3536,7 @@ bool MenuDeath::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mou
 	{
 		case TCODK_ENTER:
 		{
-			Transmit->Send(GameEngine(), MSG_DEATH);
+			Transmit->Send(Engine(), MSG_DEATH);
 			status = false;
 			break;
 		}
@@ -3630,12 +3630,12 @@ void MenuUI::Render(MenuClass *menu)
 	TCODConsole::blit(menu->Con(STATE_01), 0, 0, w, h, TCODConsole::root, x, y, 1.0f, 1.0f);
 
 	// Various UI stuff
-	if(GameEngine()->Game()->InGame())
+	if(Engine()->Game()->InGame())
 	{
 		// Render player hp bar
 		TCODConsole::root->setDefaultForeground(TCODColor::white);
 		TCODConsole::root->printEx(1, 1, TCOD_BKGND_NONE, TCOD_LEFT, "HP");
-		float hpfraction = static_cast<float>(GameEngine()->Player()->HP())/static_cast<float>(GameEngine()->Player()->HPMax());
+		float hpfraction = static_cast<float>(Engine()->Player()->HP())/static_cast<float>(Engine()->Player()->HPMax());
 		int hpbar = static_cast<int>(20.0f*hpfraction);
 		if(hpbar > 0)
 		{
@@ -3651,7 +3651,7 @@ void MenuUI::Render(MenuClass *menu)
 		// Render player mp bar
 		TCODConsole::root->setDefaultForeground(TCODColor::white);
 		TCODConsole::root->printEx(DISPLAY_WIDTH - 24, 1, TCOD_BKGND_NONE, TCOD_LEFT, "MP");
-		float mpfraction = static_cast<float>(GameEngine()->Player()->MP())/static_cast<float>(GameEngine()->Player()->MPMax());
+		float mpfraction = static_cast<float>(Engine()->Player()->MP())/static_cast<float>(Engine()->Player()->MPMax());
 		int mpbar = static_cast<int>(20.0f*mpfraction);
 		if(mpbar > 0)
 		{

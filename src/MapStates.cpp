@@ -94,7 +94,7 @@ void MapTemple::Exit(MapClass *map)
 	// Remove all the Entities from the Entity Manager
 	EntityManager()->RemoveAll();
 
-	GameEngine()->Player()->ResetNextValidID();
+	Engine()->Player()->ResetNextValidID();
 }
 
 //------------------------------------------------------------------------
@@ -157,7 +157,7 @@ void MapTown::Exit(MapClass *map)
 	// Remove all the Entities from the Entity Manager
 	EntityManager()->RemoveAll();
 
-	GameEngine()->Player()->ResetNextValidID();
+	Engine()->Player()->ResetNextValidID();
 }
 
 //------------------------------------------------------------------------
@@ -243,5 +243,5 @@ void MapCave::Exit(MapClass *map)
 	// Remove all the Entities from the Entity Manager
 	EntityManager()->RemoveAll();
 
-	GameEngine()->Player()->ResetNextValidID();
+	Engine()->Player()->ResetNextValidID();
 }

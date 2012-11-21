@@ -16,7 +16,7 @@
 #include "Entity.hpp"
 #include "EntityManager.hpp"
 #include "Game.hpp"
-#include "GameEngine.hpp"
+#include "Engine.hpp"
 #include "GameStates.hpp"
 #include "Menu.hpp"
 #include "MenuStates.hpp"

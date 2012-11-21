@@ -14,7 +14,7 @@ PeonPatrol *PeonPatrol::Instance()
 bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
-	LocationType loc = GameEngine()->Player()->Location();
+	LocationType loc = Engine()->Player()->Location();
 
 	if(loc == LOCATION_CAVE) Transmit->Send(peon->Superior(), MSG_THREAT);
 
@@ -25,16 +25,16 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 1:
 		{
 			if(peon->Y() <= 1) peon->Y(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -42,16 +42,16 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 2:
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -59,16 +59,16 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 3:
 		{
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
 				//{
 					peon->DecreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
 				//}
 			//}
 			break;
@@ -76,16 +76,16 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 4:
 		{
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
 				//{
 					peon->IncreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
 				//}
 			//}
 			break;
@@ -94,9 +94,9 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->DecreaseX();
@@ -104,7 +104,7 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -113,9 +113,9 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->IncreaseX();
@@ -123,7 +123,7 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -132,9 +132,9 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->DecreaseX();
@@ -142,7 +142,7 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -151,9 +151,9 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->IncreaseX();
@@ -161,7 +161,7 @@ bool PeonPatrol::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -211,7 +211,7 @@ PeonAttack *PeonAttack::Instance()
 bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
-	LocationType loc = GameEngine()->Player()->Location();
+	LocationType loc = Engine()->Player()->Location();
 
 	if(loc != LOCATION_CAVE) Transmit->Send(peon->Superior(), MSG_SAFE);
 
@@ -222,16 +222,16 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 1:
 		{
 			if(peon->Y() <= 1) peon->Y(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -239,16 +239,16 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 2:
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -256,16 +256,16 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 3:
 		{
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
 				//{
 					peon->DecreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
 				//}
 			//}
 			break;
@@ -273,16 +273,16 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 4:
 		{
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
 				//{
 					peon->IncreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
 				//}
 			//}
 			break;
@@ -291,9 +291,9 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->DecreaseX();
@@ -301,7 +301,7 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -310,9 +310,9 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->IncreaseX();
@@ -320,7 +320,7 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -329,9 +329,9 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->DecreaseX();
@@ -339,7 +339,7 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -348,9 +348,9 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->IncreaseX();
@@ -358,7 +358,7 @@ bool PeonAttack::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -408,7 +408,7 @@ PeonDefend *PeonDefend::Instance()
 bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 {
 	bool status = true;
-	LocationType loc = GameEngine()->Player()->Location();
+	LocationType loc = Engine()->Player()->Location();
 
 	if(loc != LOCATION_CAVE) Transmit->Send(peon->Superior(), MSG_SAFE);
 
@@ -419,16 +419,16 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 1:
 		{
 			if(peon->Y() <= 1) peon->Y(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -436,16 +436,16 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 2:
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X(), peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X(), peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X(), peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -453,16 +453,16 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 3:
 		{
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y()) < 0)
 				//{
 					peon->DecreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y());
 				//}
 			//}
 			break;
@@ -470,16 +470,16 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		case 4:
 		{
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y()))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y()) < 0)
 				//{
 					peon->IncreaseX();
 				//}
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y());
 				//}
 			//}
 			break;
@@ -488,9 +488,9 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->DecreaseX();
@@ -498,7 +498,7 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -507,9 +507,9 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() <= 1) peon->Y(1);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() - 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() - 1) < 0)
 				//{
 					peon->DecreaseY();
 					peon->IncreaseX();
@@ -517,7 +517,7 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() - 1);
 				//}
 			//}
 			break;
@@ -526,9 +526,9 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() <= 1) peon->X(1);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() - 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() - 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->DecreaseX();
@@ -536,7 +536,7 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() - 1, peon->Y() + 1);
 				//}
 			//}
 			break;
@@ -545,9 +545,9 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 		{
 			if(peon->Y() >= DISPLAY_HEIGHT - 2) peon->Y(DISPLAY_HEIGHT - 2);
 			if(peon->X() >= DISPLAY_WIDTH - 2) peon->X(DISPLAY_WIDTH - 2);
-			//if(GameEngine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
+			//if(Engine()->Map()->IsWalkable(peon->X() + 1, peon->Y() + 1))
 			//{
-				//if(GameEngine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
+				//if(Engine()->Map()->GetEntityID(peon->X() + 1, peon->Y() + 1) < 0)
 				//{
 					peon->IncreaseY();
 					peon->IncreaseX();
@@ -555,7 +555,7 @@ bool PeonDefend::Update(Peon *peon, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 				//else
 				//{
 					// Attack Entity!
-					//GameEngine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
+					//Engine()->Map()->AttackEntity(peon->X() + 1, peon->Y() + 1);
 				//}
 			//}
 			break;

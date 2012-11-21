@@ -21,17 +21,17 @@ int main(int narg, char *argv[])
 	TCOD_key_t key;
 	TCOD_mouse_t mouse;
 
-	// Startup the Game Engine
-	GameEngine()->Startup(narg, argv);
+	// Startup the Engine
+	Engine()->Startup(narg, argv);
 
 	// Loop through a few Update calls
 	while(status && !TCODConsole::isWindowClosed())
 	{
-		// Update the Game Engine
-		status = GameEngine()->Update(TCODSystem::getLastFrameLength(), key, mouse);
+		// Update the Engine
+		status = Engine()->Update(TCODSystem::getLastFrameLength(), key, mouse);
 
-		// Render using the Game Engine
-		GameEngine()->Render();
+		// Render using the Engine
+		Engine()->Render();
 
 		// Flush Updates to Console
 		TCODConsole::root->flush();
@@ -40,8 +40,8 @@ int main(int narg, char *argv[])
 		TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse);
 	}
 
-	// Shutdown the Game Engine
-	GameEngine()->Shutdown();
+	// Shutdown the Engine
+	Engine()->Shutdown();
 
 	return 0;
 }

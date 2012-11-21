@@ -15,7 +15,7 @@
 #include "Global.hpp"
 #include "Entity.hpp"
 #include "Module.hpp"
-#include "GameEngine.hpp"
+#include "Engine.hpp"
 
 // To make life easier...
 #define Transmit MessageTransmitter::Instance()
@@ -37,8 +37,8 @@ public:
 	// Send message msg to entity pReceiver
 	void Send(Entity *pReceiver, int msg);
 
-	// Send message msg to GameEngine pReceiver
-	void Send(GameEngineClass *pReceiver, int msg);
+	// Send message msg to Engine pReceiver
+	void Send(EngineClass *pReceiver, int msg);
 
 	// Send message msg w/ data to module pReceiver
 	void Send(Module *pReceiver, int msg, string data);

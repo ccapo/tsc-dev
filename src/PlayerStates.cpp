@@ -14,7 +14,7 @@ void PlayerIdle::Enter(PlayerClass *player){}
 bool PlayerIdle::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse){return true;}
 void PlayerIdle::Render(PlayerClass *player)
 {
-	if(GameEngine()->Game()->InGame())
+	if(Engine()->Game()->InGame())
 	{
 		TCODConsole::root->setChar(player->X(), player->Y() + 3, player->Sym());
 		TCODConsole::root->setCharForeground(player->X(), player->Y() + 3, player->Colour());
@@ -63,80 +63,80 @@ bool PlayerWorld::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TC
 	if(TCODConsole::isKeyPressed(TCODK_UP))
 	{
 		if(player->Y() <= 1) player->Y(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() - 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() - 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseY();
 				player->Sym(CHAR_PLAYER_UP);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() - 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() - 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_DOWN))
 	{
 		if(player->Y() >= DISPLAY_HEIGHT - 2) player->Y(DISPLAY_HEIGHT - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() + 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() + 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseY();
 				player->Sym(CHAR_PLAYER_DOWN);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() + 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() + 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_LEFT))
 	{
 		if(player->X() <= 1) player->X(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X() - 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() - 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseX();
 				player->Sym(CHAR_PLAYER_LEFT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() - 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() - 1, player->Y());
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_RIGHT))
 	{
 		if(player->X() >= DISPLAY_WIDTH - 2) player->X(DISPLAY_WIDTH - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X() + 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() + 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseX();
 				player->Sym(CHAR_PLAYER_RIGHT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() + 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() + 1, player->Y());
 			}
 		}
 	}
@@ -145,12 +145,12 @@ bool PlayerWorld::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TC
 	{
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			Transmit->Send(Engine(), MSG_GAMEMENU);
 			break;
 		}
 		case TCODK_CONTROL:
 		{
-			GameEngine()->Menu()->IncrementMagicID();
+			Engine()->Menu()->IncrementMagicID();
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -165,25 +165,25 @@ bool PlayerWorld::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TC
 			{
 				case 'c':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Entered Caves");
-					Transmit->Send(GameEngine(), MSG_ENTERCAVE);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Entered Caves");
+					Transmit->Send(Engine(), MSG_ENTERCAVE);
 					break;
 				}
 				case 't':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Entered Town");
-					Transmit->Send(GameEngine(), MSG_ENTERTOWN);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Entered Town");
+					Transmit->Send(Engine(), MSG_ENTERTOWN);
 					break;
 				}
 				case 's':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Entered Temple");
-					Transmit->Send(GameEngine(), MSG_ENTERTEMPLE);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Entered Temple");
+					Transmit->Send(Engine(), MSG_ENTERTEMPLE);
 					break;
 				}
 				case '?':
 				{
-					Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_HELPSCREEN);
 					break;
 				}
 				default: break;
@@ -226,80 +226,80 @@ bool PlayerTemple::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, T
 	if(TCODConsole::isKeyPressed(TCODK_UP))
 	{
 		if(player->Y() <= 1) player->Y(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() - 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() - 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseY();
 				player->Sym(CHAR_PLAYER_UP);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() - 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() - 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_DOWN))
 	{
 		if(player->Y() >= DISPLAY_HEIGHT - 2) player->Y(DISPLAY_HEIGHT - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() + 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() + 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseY();
 				player->Sym(CHAR_PLAYER_DOWN);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() + 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() + 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_LEFT))
 	{
 		if(player->X() <= 1) player->X(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X() - 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() - 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseX();
 				player->Sym(CHAR_PLAYER_LEFT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() - 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() - 1, player->Y());
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_RIGHT))
 	{
 		if(player->X() >= DISPLAY_WIDTH - 2) player->X(DISPLAY_WIDTH - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X() + 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() + 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseX();
 				player->Sym(CHAR_PLAYER_RIGHT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() + 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() + 1, player->Y());
 			}
 		}
 	}
@@ -308,12 +308,12 @@ bool PlayerTemple::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, T
 	{
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			Transmit->Send(Engine(), MSG_GAMEMENU);
 			break;
 		}
 		case TCODK_CONTROL:
 		{
-			GameEngine()->Menu()->IncrementMagicID();
+			Engine()->Menu()->IncrementMagicID();
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -328,13 +328,13 @@ bool PlayerTemple::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, T
 			{
 				case 'w':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Exited Temple");
-					Transmit->Send(GameEngine(), MSG_SAVEGAME);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Exited Temple");
+					Transmit->Send(Engine(), MSG_SAVEGAME);
 					break;
 				}
 				case '?':
 				{
-					Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_HELPSCREEN);
 					break;
 				}
 				default: break;
@@ -377,80 +377,80 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	if(TCODConsole::isKeyPressed(TCODK_UP))
 	{
 		if(player->Y() <= 1) player->Y(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() - 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() - 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseY();
 				player->Sym(CHAR_PLAYER_UP);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() - 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() - 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_DOWN))
 	{
 		if(player->Y() >= DISPLAY_HEIGHT - 2) player->Y(DISPLAY_HEIGHT - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() + 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() + 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseY();
 				player->Sym(CHAR_PLAYER_DOWN);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() + 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() + 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_LEFT))
 	{
 		if(player->X() <= 1) player->X(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X() - 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() - 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseX();
 				player->Sym(CHAR_PLAYER_LEFT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() - 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() - 1, player->Y());
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_RIGHT))
 	{
 		if(player->X() >= DISPLAY_WIDTH - 2) player->X(DISPLAY_WIDTH - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X() + 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() + 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseX();
 				player->Sym(CHAR_PLAYER_RIGHT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() + 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() + 1, player->Y());
 			}
 		}
 	}
@@ -459,12 +459,12 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	{
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			Transmit->Send(Engine(), MSG_GAMEMENU);
 			break;
 		}
 		case TCODK_CONTROL:
 		{
-			GameEngine()->Menu()->IncrementMagicID();
+			Engine()->Menu()->IncrementMagicID();
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -479,33 +479,33 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 			{
 				case 'w':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Exited Town");
-					Transmit->Send(GameEngine(), MSG_SAVEGAME);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Exited Town");
+					Transmit->Send(Engine(), MSG_SAVEGAME);
 					break;
 				}
 				case 'i':
 				{
-					Transmit->Send(GameEngine(), MSG_ITEMSHOPMENU);
+					Transmit->Send(Engine(), MSG_ITEMSHOPMENU);
 					break;
 				}
 				case 'e':
 				{
-					Transmit->Send(GameEngine(), MSG_EQUIPSHOPMENU);
+					Transmit->Send(Engine(), MSG_EQUIPSHOPMENU);
 					break;
 				}
 				case 'n':
 				{
-					Transmit->Send(GameEngine(), MSG_INNMENU);
+					Transmit->Send(Engine(), MSG_INNMENU);
 					break;
 				}
 				case 'f':
 				{
-					Transmit->Send(GameEngine(), MSG_FERRYMENU);
+					Transmit->Send(Engine(), MSG_FERRYMENU);
 					break;
 				}
 				case '?':
 				{
-					Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_HELPSCREEN);
 					break;
 				}
 				default: break;
@@ -551,8 +551,8 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	{
 		player->Sym(CHAR_SKULL);
 		player->Colour(TCODColor::darkRed);
-		Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "You Died");
-		Transmit->Send(GameEngine(), MSG_DEATH);
+		Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "You Died");
+		Transmit->Send(Engine(), MSG_DEATH);
 		key.vk = TCODK_NONE;
 		key.c = 0;
 		return status;
@@ -561,80 +561,80 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	if(TCODConsole::isKeyPressed(TCODK_UP))
 	{
 		if(player->Y() <= 1) player->Y(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() - 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() - 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() - 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseY();
 				player->Sym(CHAR_PLAYER_UP);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() - 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() - 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_DOWN))
 	{
 		if(player->Y() >= DISPLAY_HEIGHT - 2) player->Y(DISPLAY_HEIGHT - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X(), player->Y() + 1))
+		//if(Engine()->Map()->IsWalkable(player->X(), player->Y() + 1))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X(), player->Y() + 1) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseY();
 				player->Sym(CHAR_PLAYER_DOWN);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X(), player->Y() + 1);
+				//Engine()->Map()->AttackEntity(player->X(), player->Y() + 1);
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_LEFT))
 	{
 		if(player->X() <= 1) player->X(1);
-		//if(GameEngine()->Map()->IsWalkable(player->X() - 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() - 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() - 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->DecreaseX();
 				player->Sym(CHAR_PLAYER_LEFT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() - 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() - 1, player->Y());
 			}
 		}
 	}
 	if(TCODConsole::isKeyPressed(TCODK_RIGHT))
 	{
 		if(player->X() >= DISPLAY_WIDTH - 2) player->X(DISPLAY_WIDTH - 2);
-		//if(GameEngine()->Map()->IsWalkable(player->X() + 1, player->Y()))
+		//if(Engine()->Map()->IsWalkable(player->X() + 1, player->Y()))
 		{
-			//if(GameEngine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
+			//if(Engine()->Map()->GetEntityID(player->X() + 1, player->Y()) < 0)
 			{
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), false);
+				//Engine()->Map()->Visited(player->X(), player->Y(), false);
 				player->IncreaseX();
 				player->Sym(CHAR_PLAYER_RIGHT);
-				//GameEngine()->Map()->Visited(player->X(), player->Y(), true);
-				//GameEngine()->Map()->RecomputeFOV(true);
+				//Engine()->Map()->Visited(player->X(), player->Y(), true);
+				//Engine()->Map()->RecomputeFOV(true);
 			}
 			//else
 			{
 				// Attack Entity!
-				//GameEngine()->Map()->AttackEntity(player->X() + 1, player->Y());
+				//Engine()->Map()->AttackEntity(player->X() + 1, player->Y());
 			}
 		}
 	}
@@ -653,12 +653,12 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 		}
 		case TCODK_ESCAPE:
 		{
-			Transmit->Send(GameEngine(), MSG_GAMEMENU);
+			Transmit->Send(Engine(), MSG_GAMEMENU);
 			break;
 		}
 		case TCODK_CONTROL:
 		{
-			GameEngine()->Menu()->IncrementMagicID();
+			Engine()->Menu()->IncrementMagicID();
 			break;
 		}
 		case TCODK_BACKSPACE:
@@ -673,13 +673,13 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 			{
 				case 'w':
 				{
-					Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Exited Caves");
-					Transmit->Send(GameEngine(), MSG_SAVEGAME);
+					Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Exited Caves");
+					Transmit->Send(Engine(), MSG_SAVEGAME);
 					break;
 				}
 				case '?':
 				{
-					Transmit->Send(GameEngine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_HELPSCREEN);
 					break;
 				}
 				default: break;
@@ -726,8 +726,8 @@ bool PlayerRest::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	}
 	else	
 	{
-		Transmit->Send(GameEngine()->Menu(), MSG_MSGLOG, "Rested at Town Inn");
-		Transmit->Send(GameEngine(), MSG_REST);
+		Transmit->Send(Engine()->Menu(), MSG_MSGLOG, "Rested at Town Inn");
+		Transmit->Send(Engine(), MSG_REST);
 	}
 	key.vk = TCODK_NONE;
 	key.c = 0;

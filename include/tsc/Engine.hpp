@@ -2,7 +2,7 @@
 #define GAMEENGINE_HPP
 //------------------------------------------------------------------------
 //
-// Name: GameEngine.hpp
+// Name: Engine.hpp
 //
 // Desc: Singleton class to handle the management of modules
 //
@@ -19,9 +19,9 @@
 class Module;
 
 // Provide easy access
-#define GameEngine() GameEngineClass::Instance()
+#define Engine() EngineClass::Instance()
 
-class GameEngineClass
+class EngineClass
 {
 private:
 
@@ -46,20 +46,20 @@ private:
 	// Elapsed Time
 	float m_ElapsedTime;
 
-	GameEngineClass() : m_FadeIn(false), m_FadeOut(false), m_ElapsedTime(0.0f){}
+	EngineClass() : m_FadeIn(false), m_FadeOut(false), m_ElapsedTime(0.0f){}
 
 	// Copy ctor and assignment should be private
-	GameEngineClass(const GameEngineClass&);
-	GameEngineClass &operator=(const GameEngineClass&);
+	EngineClass(const EngineClass&);
+	EngineClass &operator=(const EngineClass&);
 
 public:
 
-	static GameEngineClass *Instance();
+	static EngineClass *Instance();
 
-	// Startup Game Engine
+	// Startup Engine
 	void Startup(int narg, char *argv[]);
 
-	// Shutdown Game Engine
+	// Shutdown Engine
 	void Shutdown();
 
 	// Update all the Modules

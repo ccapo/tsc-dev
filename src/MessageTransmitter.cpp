@@ -76,15 +76,15 @@ void MessageTransmitter::Send(Module *pReceiver, int msg, string data)
 
 //--------------------------------- Send --------------------------------------
 //
-// This method routes a message to a receiver GameEngineClass
+// This method routes a message to a receiver EngineClass
 //
 //-----------------------------------------------------------------------------
-void MessageTransmitter::Send(GameEngineClass *pReceiver, int msg)
+void MessageTransmitter::Send(EngineClass *pReceiver, int msg)
 {
 	// Make sure the receiver is valid
 	if(pReceiver == NULL)
 	{
-		cout << "Warning! No Valid Receiver GameEngine found" << endl;
+		cout << "Warning! No Valid Receiver Engine found" << endl;
 		return;
 	}
 
@@ -93,7 +93,7 @@ void MessageTransmitter::Send(GameEngineClass *pReceiver, int msg)
 
 #ifdef SHOW_MESSAGING_INFO
 	// Transmit the message
-	cout << "Message Transmited to GameEngine, Msg: " << msg << endl;
+	cout << "Message Transmited to Engine, Msg: " << msg << endl;
 #endif
 
 	// Send the Message to the recipient

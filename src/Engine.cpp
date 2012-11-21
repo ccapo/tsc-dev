@@ -5,15 +5,15 @@
 // This class is a singleton
 //
 //-----------------------------------------------------------------------------
-GameEngineClass *GameEngineClass::Instance()
+EngineClass *EngineClass::Instance()
 {
-	static GameEngineClass instance;
+	static EngineClass instance;
 	return &instance;
 }
 
 //-------------------------------- Startup ------------------------------------
 //-----------------------------------------------------------------------------
-void GameEngineClass::Startup(int narg, char *argv[])
+void EngineClass::Startup(int narg, char *argv[])
 {
 	int fontFlags = TCOD_FONT_LAYOUT_TCOD | TCOD_FONT_TYPE_GREYSCALE;
 	int nFont = 0, iFont = 2, nCol = 32, nRow = 13;
@@ -288,7 +288,7 @@ void GameEngineClass::Startup(int narg, char *argv[])
 	seed = static_cast<uint32>(time(NULL));
 	if(narg == 2) seed = static_cast<uint32>(atoi(argv[1]));
 
-	// Add Modules to Game Engine
+	// Add Modules to Engine
 	Game(new GameClass());			// Game Module
 	Menu(new MenuClass());			// Menu Module
 	Map(new MapClass());				// Map Module
@@ -298,7 +298,7 @@ void GameEngineClass::Startup(int narg, char *argv[])
 
 //-------------------------------- Shutdown -----------------------------------
 //-----------------------------------------------------------------------------
-void GameEngineClass::Shutdown()
+void EngineClass::Shutdown()
 {
 	// Remove all the Entities from the Entity Manager
 	EntityManager()->RemoveAll();
@@ -316,7 +316,7 @@ void GameEngineClass::Shutdown()
 
 //--------------------------------- Update ------------------------------------
 //-----------------------------------------------------------------------------
-bool GameEngineClass::Update(float elapsed, TCOD_key_t key, TCOD_mouse_t mouse)
+bool EngineClass::Update(float elapsed, TCOD_key_t key, TCOD_mouse_t mouse)
 {
 	bool status = true;
 
@@ -334,7 +334,7 @@ bool GameEngineClass::Update(float elapsed, TCOD_key_t key, TCOD_mouse_t mouse)
 
 //--------------------------------- Render ------------------------------------
 //-----------------------------------------------------------------------------
-void GameEngineClass::Render()
+void EngineClass::Render()
 {
 	// Fade Out
 	if(FadeOut())
@@ -379,7 +379,7 @@ void GameEngineClass::Render()
 
 //--------------------------------- Receive -----------------------------------
 //-----------------------------------------------------------------------------
-bool GameEngineClass::Receive(const Message &msg)
+bool EngineClass::Receive(const Message &msg)
 {
 	bool status = true;
 	static bool HelpFlag = false;
