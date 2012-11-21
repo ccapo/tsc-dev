@@ -168,7 +168,7 @@ public:
 	// Displays Preview of Player Stats 
 	void DisplayUpdatedStat(int x, int y, int oldstat, int newstat)
 	{
-		char str[STRMAX];
+		char str[CHARMAX];
 
 		// Set text colours
 		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);

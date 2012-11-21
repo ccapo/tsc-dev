@@ -1049,7 +1049,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Weapons[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Sword%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "AP +2");
 
 			//stats -= game.player.equipInv.equiped[WEAPON].stats;
@@ -1063,7 +1063,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Weapons[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Sword%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->WeaponNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1284,7 +1284,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Shields[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Shield%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "DP +2");
 
 			//stats -= game.player.equipInv.equiped[SHIELD].stats;
@@ -1298,7 +1298,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Shields[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Shield%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ShieldNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1519,7 +1519,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Armours[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Armour%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "DP +4");
 
 			//stats -= game.player.equipInv.equiped[ARMOUR].stats;
@@ -1533,7 +1533,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Armours[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Armour%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->ArmourNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -1754,7 +1754,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_04)->print(x + 18, hs - 3, game.player.equipInv.Accessory[j].desc);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Ring%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			menu->Con(STATE_04)->print(x + 18, hs - 3, "MAP +4");
 
 			//stats -= game.player.equipInv.equiped[ACCESSORY].stats;
@@ -1768,7 +1768,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 		else
 		{
 			//menu->Con(STATE_04)->print(x + 18, y++, game.player.equipInv.Accessory[j].name, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_04)->print(x + 18, y++, "%cBronze Ring%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_04)->print(x + 18, y++, GameEngine()->Map()->AccessoryNames[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		}
 	}
 
@@ -2983,68 +2983,107 @@ bool MenuEquipShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 
 			y += 5;
 
-			for(int j = 0; j < 9; j++)
+			switch(cursor)
 			{
-				menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-				y++;
+				case WEAPON:
+				{
+					for(int j = 0; j < 9; j++)
+					{
+						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->WeaponNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						y++;
+					}
+					break;
+				}
+				case SHIELD:
+				{
+					for(int j = 0; j < 9; j++)
+					{
+						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->ShieldNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						y++;
+					}
+					break;
+				}
+				case ARMOUR:
+				{
+					for(int j = 0; j < 9; j++)
+					{
+						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->ArmourNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						y++;
+					}
+					break;
+				}
+				case ACCESSORY:
+				{
+					for(int j = 0; j < 9; j++)
+					{
+						//menu->Con(STATE_03)->print(2, y, "%cWeapon%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(2, y, GameEngine()->Map()->AccessoryNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						y++;
+					}
+					break;
+				}
+				default: break;
 			}
 
-					//yb = NEQUIPTYPE + 8;
-					int xb = 2, yb = 2*hs/3 + 1 + 2;
+			//yb = NEQUIPTYPE + 8;
+			int xb = 2, yb = 2*hs/3 + 1 + 2;
 
-					//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+			//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
 
-					menu->Con(STATE_03)->print(xb, yb, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 20);
+			menu->Con(STATE_03)->print(xb, yb, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 20);
 
-					//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
-					//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
+			//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
+			//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
 
-					menu->Con(STATE_03)->print(xb, yb, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 4);
-					menu->Con(STATE_03)->print(xb, yb, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 2);
+			menu->Con(STATE_03)->print(xb, yb, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 4);
+			menu->Con(STATE_03)->print(xb, yb, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 2);
 
-					//menu->Con(STATE_03)->print(x, y, "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
-					//menu->Con(STATE_03)->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
+			//menu->Con(STATE_03)->print(x, y, "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
+			//menu->Con(STATE_03)->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
 
-					menu->Con(STATE_03)->print(xb, yb, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 10);
-					menu->Con(STATE_03)->print(xb, yb, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 12);
+			menu->Con(STATE_03)->print(xb, yb, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 10);
+			menu->Con(STATE_03)->print(xb, yb, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 12);
 
-					//x += 20; y++;
-					//menu->Con(STATE_03)->print(x + , y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+			//x += 20; y++;
+			//menu->Con(STATE_03)->print(x + , y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
 
-					xb += 18; yb = 2*hs/3 + 1 + 2;
-					menu->Con(STATE_03)->print(xb, yb, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 10);
+			xb += 18; yb = 2*hs/3 + 1 + 2;
+			menu->Con(STATE_03)->print(xb, yb, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 10);
 
-					//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
-					//menu->Con(STATE_03)->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
+			//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
+			//menu->Con(STATE_03)->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
 
-					menu->Con(STATE_03)->print(xb, yb, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 5);
-					menu->Con(STATE_03)->print(xb, yb, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 2);
+			menu->Con(STATE_03)->print(xb, yb, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 5);
+			menu->Con(STATE_03)->print(xb, yb, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 2);
 
-					//menu->Con(STATE_03)->print(x, y, "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
-					//menu->Con(STATE_03)->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
+			//menu->Con(STATE_03)->print(x, y, "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
+			//menu->Con(STATE_03)->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
 
-					menu->Con(STATE_03)->print(xb, yb, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 6);
-					menu->Con(STATE_03)->print(xb, yb, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 3);
+			menu->Con(STATE_03)->print(xb, yb, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 6);
+			menu->Con(STATE_03)->print(xb, yb, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(xb + 7, yb++, "%2d", 3);
 		}
 		else
 		{
