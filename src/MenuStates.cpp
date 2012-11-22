@@ -398,13 +398,17 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 	static int cursor = 0;
 	bool status = true;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-	int ws = w - 17, hs = h - 2, i = 0;
+	int ws = w - 17, hs = h - 2, i = 0, j = 0;
 	int x = DISPLAY_WIDTH/2 - w/2, y = DISPLAY_HEIGHT/2 - h/2 + 3;
 	int xstart = 3, ystart = 3, xend = ws - 6, yend = hs - 6;
-	map<int, string> Options;
+	map<int, string> Options, SubOptions;
 	Options.insert(make_pair(i++, "%cEquipment%c"));
 	Options.insert(make_pair(i++, "%cInventory%c"));
 	Options.insert(make_pair(i++, "%cQuit Game%c"));
+	SubOptions.insert(make_pair(j++, "%cWeapon   %c"));
+	SubOptions.insert(make_pair(j++, "%cShield   %c"));
+	SubOptions.insert(make_pair(j++, "%cArmour   %c"));
+	SubOptions.insert(make_pair(j++, "%cAccessory%c"));
 
 	// Game menu screen
 	menu->Con(STATE_02, new TCODConsole(w, h));
@@ -568,8 +572,31 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					{
 						//menu->Con(STATE_03)->print(xe, ye, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 						//menu->Con(STATE_03)->print(xe + 13, ye, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(xe, ye, "%cEquipment%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-						menu->Con(STATE_03)->print(xe + 13, ye, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+						menu->Con(STATE_03)->print(xe, ye, SubOptions[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						switch(i)
+						{
+							case WEAPON:
+							{
+								menu->Con(STATE_03)->print(xe + 13, ye, Engine()->Map()->WeaponNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+								break;
+							}
+							case SHIELD:
+							{
+								menu->Con(STATE_03)->print(xe + 13, ye, Engine()->Map()->ShieldNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+								break;
+							}
+							case ARMOUR:
+							{
+								menu->Con(STATE_03)->print(xe + 13, ye, Engine()->Map()->ArmourNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+								break;
+							}
+							case ACCESSORY:
+							{
+								menu->Con(STATE_03)->print(xe + 13, ye, Engine()->Map()->AccessoryNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+								break;
+							}
+							default: break;
+						}
 						ye++;
 					}
 
@@ -614,22 +641,16 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//y++;
 					//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
-					//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
 
 					ye++;
 					menu->Con(STATE_03)->print(xe, ye, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 20);
-					menu->Con(STATE_03)->print(xe, ye, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
 
-					//y++;
 					//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
 					//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
 
-					ye++;
 					menu->Con(STATE_03)->print(xe, ye, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 4);
 					menu->Con(STATE_03)->print(xe, ye, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -644,6 +665,14 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
 					menu->Con(STATE_03)->print(xe, ye, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 12);
+
+					//y++;
+					//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+
+					ye++;
+					menu->Con(STATE_03)->print(xe, ye, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
 
 					//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
@@ -675,8 +704,8 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 					menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
-					// Item Inventory
-					menu->Con(STATE_03)->print(xi, yi, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					// Items
+					menu->Con(STATE_03)->print(xi, yi, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xi + 27, yi++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 					//for(int i = 0; i < game.player.itemInv.nitems; i++)
@@ -691,7 +720,7 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 
 					// Hide Invetory
 					yi = DISPLAY_HEIGHT/2 - 2;
-					menu->Con(STATE_03)->print(xi, yi, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xi, yi, "%cHides%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xi + 27, yi++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 					//for(int i = 0; i < game.player.hideInv.nhides; i++)
@@ -749,7 +778,16 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 	bool status = true;
 	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-	int ws = w - 17, hs = h - 2, z, zp;
+	int ws = w - 17, hs = h - 2, i = 0, j = 0;
+	map<int, string> Options, SubOptions;
+	Options.insert(make_pair(i++, "%cWeapon   %c"));
+	Options.insert(make_pair(i++, "%cShield   %c"));
+	Options.insert(make_pair(i++, "%cArmour   %c"));
+	Options.insert(make_pair(i++, "%cAccessory%c"));
+	SubOptions.insert(make_pair(j++, "%cWeapon List%c"));
+	SubOptions.insert(make_pair(j++, "%cShield List%c"));
+	SubOptions.insert(make_pair(j++, "%cArmour List%c"));
+	SubOptions.insert(make_pair(j++, "%cAccessory List%c"));
 
 	// Game submenu screen
 	menu->Con(STATE_03, new TCODConsole(ws, hs));
@@ -844,15 +882,97 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 		{
 			//menu->Con(STATE_03)->print(x, y, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_03)->print(x + 13, y, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_03)->print(x + 13, y, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_2, TCOD_COLCTRL_STOP);
+
+			int xb = ws - 17, yb = NEQUIPTYPE + 8;
+			switch(cursor)
+			{
+				case WEAPON:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->WeaponNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+
+					menu->Con(STATE_03)->print(xb, yb, SubOptions[i].c_str(), TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					yb += 2;
+					for(int j = 0; j < 9; j++)
+					{
+						menu->Con(STATE_03)->print(xb, yb, Engine()->Map()->WeaponNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						yb++;
+					}
+					break;
+				}
+				case SHIELD:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->ShieldNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+
+					menu->Con(STATE_03)->print(xb, yb, SubOptions[i].c_str(), TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					yb += 2;
+					for(int j = 0; j < 9; j++)
+					{
+						menu->Con(STATE_03)->print(xb, yb, Engine()->Map()->ShieldNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						yb++;
+					}
+					break;
+				}
+				case ARMOUR:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->ArmourNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+
+					menu->Con(STATE_03)->print(xb, yb, SubOptions[i].c_str(), TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					yb += 2;
+					for(int j = 0; j < 9; j++)
+					{
+						menu->Con(STATE_03)->print(xb, yb, Engine()->Map()->ArmourNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						yb++;
+					}
+					break;
+				}
+				case ACCESSORY:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->AccessoryNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+
+					menu->Con(STATE_03)->print(xb, yb, SubOptions[i].c_str(), TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					yb += 2;
+					for(int j = 0; j < 9; j++)
+					{
+						menu->Con(STATE_03)->print(xb, yb, Engine()->Map()->AccessoryNames[j].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+						yb++;
+					}
+					break;
+				}
+				default: break;
+			}
 		}
 		else
 		{
 			//menu->Con(STATE_03)->print(x, y, game.player.equipInv.equiped[i].label, TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 			//menu->Con(STATE_03)->print(x + 13, y, game.player.equipInv.equiped[i].name, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_03)->print(x, y, "%cEquipment%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-			menu->Con(STATE_03)->print(x + 13, y, "%cWeapon%c", TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+			menu->Con(STATE_03)->print(x, y, Options[i].c_str(), TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+			//menu->Con(STATE_03)->print(x + 13, y, Options[i].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+
+			switch(i)
+			{
+				case WEAPON:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->WeaponNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+					break;
+				}
+				case SHIELD:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->ShieldNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+					break;
+				}
+				case ARMOUR:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->ArmourNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+					break;
+				}
+				case ACCESSORY:
+				{
+					menu->Con(STATE_03)->print(x + 13, y, Engine()->Map()->AccessoryNames[0].c_str(), TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
+					break;
+				}
+				default: break;
+			}
 		}
 		y++;
 	}
@@ -978,7 +1098,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 	bool status = true;
 	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NWEAPONS = 9;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), NWEAPONS = 9;
 
 	// Game submenu screen
 	menu->Con(STATE_04, new TCODConsole(ws, hs));
@@ -1037,7 +1157,7 @@ bool MenuWeaponInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 
 	// Equipment
 	int x = 2, y = 2;
-	menu->Con(STATE_04)->print(x + 18, y, "%cWeapons%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 18, y, "%cWeapon List%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	y += 2;
 
 	// List Current Equipment
@@ -1213,7 +1333,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 	bool status = true;
 	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NSHIELDS = 9;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), NSHIELDS = 9;
 
 	// Game submenu screen
 	menu->Con(STATE_04, new TCODConsole(ws, hs));
@@ -1272,7 +1392,7 @@ bool MenuShieldInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 
 	// Equipment
 	int x = 2, y = 2;
-	menu->Con(STATE_04)->print(x + 18, y, "%cShields%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 18, y, "%cShield List%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	y += 2;
 
 	// List Current Equipment
@@ -1448,7 +1568,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 	bool status = true;
 	static int cursor = 0;
 	int w = 3*DISPLAY_WIDTH/4 + 2, h = 3*DISPLAY_HEIGHT/4;
-	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), z, zp, NARMOUR = 9;
+	int ws = w - 17, hs = h - 2 - (NEQUIPTYPE + 6), NARMOUR = 9;
 
 	// Game submenu screen
 	menu->Con(STATE_04, new TCODConsole(ws, hs));
@@ -1507,7 +1627,7 @@ bool MenuArmourInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD
 
 	// Equipment
 	int x = 2, y = 2;
-	menu->Con(STATE_04)->print(x + 18, y, "%cArmour%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 18, y, "%cArmour List%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	y += 2;
 
 	// List Current Equipment
@@ -1743,7 +1863,7 @@ bool MenuAccessoryInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 
 	// Equipment
 	int x = 2, y = 2;
-	menu->Con(STATE_04)->print(x + 18, y, "%cAccessories%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_04)->print(x + 18, y, "%cAccessory List%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	y += 2;
 
 	// List Current Equipment
@@ -1978,9 +2098,9 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
-	// Item Inventory
+	// Items
 	int x = 2, y = 2;
-	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x, y, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 27, y++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	//for(int i = 0; i < game.player.itemInv.nitems; i++)
@@ -2007,7 +2127,7 @@ bool MenuItemInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_m
 
 	// Hide Invetory
 	y = DISPLAY_HEIGHT/2 - 2;
-	menu->Con(STATE_03)->print(x, y, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x, y, "%cHides%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 27, y++, "%cQty%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	//for(int i = 0; i < game.player.hideInv.nhides; i++)
@@ -2209,9 +2329,9 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 			{
 				case ITEMSHOP_BUY:
 				{
-					// Item Inventory
+					// Items
 					int xb = 2, yb = 2;
-					menu->Con(STATE_03)->print(xb, yb, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xb, yb, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xb + 27, yb++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 					//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
@@ -2229,9 +2349,9 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 				}
 				case ITEMSHOP_SELL:
 				{
-					// Item Inventory
+					// Items
 					int xs = 2, ys = 2;
-					menu->Con(STATE_03)->print(xs, ys, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xs, ys, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xs + 27, ys++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 					//for(int i = 0; i < game.player.itemInv.nitems; i++)
@@ -2248,7 +2368,7 @@ bool MenuItemShop::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 
 					// Hide Invetory
 					ys = DISPLAY_HEIGHT/2 - 2;
-					menu->Con(STATE_03)->print(xs, ys, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+					menu->Con(STATE_03)->print(xs, ys, "%cHides%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xs + 27, ys++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 					//for(int i = 0; i < game.player.hideInv.nhides; i++)
@@ -2380,9 +2500,9 @@ bool MenuItemShopBuy::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TC
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
-	// Item Inventory
+	// Items
 	int x = 2, y = 2;
-	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x, y, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 27, y++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
@@ -2512,9 +2632,9 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 	menu->Con(STATE_03)->printFrame(0, 0, ws, hs - (NHIDES + 6), false, TCOD_BKGND_SET);
 	menu->Con(STATE_03)->printFrame(0, hs - (NHIDES + 6), ws, NHIDES + 6, false, TCOD_BKGND_SET);
 
-	// Item Inventory
+	// Items
 	int x = 2, y = 2;
-	menu->Con(STATE_03)->print(x, y, "%cItem Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x, y, "%cItems%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 27, y++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	//for(int i = 0; i < wmap->locations[id].itemInv.nitems; i++)
@@ -2540,8 +2660,8 @@ bool MenuItemShopSell::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, T
 	}
 
 	y = DISPLAY_HEIGHT/2 - 2;
-	menu->Con(STATE_03)->print(x, y, "%cHide Inventory%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
-	menu->Con(STATE_03)->print(x + 27, y++, "%cQty  GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x, y, "%cHides%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 27, y++, "%cQty GP%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
 
 	//for(int i = 0; i < game.player.hideInv.nhides; i++)
 	for(int i = 0; i < NHIDES; i++)
