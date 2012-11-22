@@ -641,7 +641,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//y++;
 					//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
-
 					ye++;
 					menu->Con(STATE_03)->print(xe, ye, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 20);
@@ -650,7 +649,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
 					//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
-
 					menu->Con(STATE_03)->print(xe, ye, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 4);
 					menu->Con(STATE_03)->print(xe, ye, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -660,7 +658,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.str);
 					//menu->Con(STATE_03)->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.spd);
-
 					menu->Con(STATE_03)->print(xe, ye, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
 					menu->Con(STATE_03)->print(xe, ye, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -669,7 +666,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//y++;
 					//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
-
 					ye++;
 					menu->Con(STATE_03)->print(xe, ye, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 10);
@@ -678,7 +674,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
 					//menu->Con(STATE_03)->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mdp);
-
 					menu->Con(STATE_03)->print(xe, ye, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 5);
 					menu->Con(STATE_03)->print(xe, ye, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -688,7 +683,6 @@ bool MenuGame::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mous
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.wil);
 					//menu->Con(STATE_03)->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.acu);
-
 					menu->Con(STATE_03)->print(xe, ye, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 					menu->Con(STATE_03)->print(xe + 7, ye++, "%2d", 6);
 					menu->Con(STATE_03)->print(xe, ye, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -1019,20 +1013,14 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 	//y++;
 	//menu->Con(STATE_03)->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.hpmax);
-	//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
 	y++;
 	menu->Con(STATE_03)->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 20);
-	menu->Con(STATE_03)->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 10);
 
-	//y++;
 	//menu->Con(STATE_03)->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.ap);
 	//menu->Con(STATE_03)->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.dp);
-	y++;
 	menu->Con(STATE_03)->print(x, y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 4);
 	menu->Con(STATE_03)->print(x, y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
@@ -1046,6 +1034,13 @@ bool MenuEquipInv::Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_
 	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 10);
 	menu->Con(STATE_03)->print(x, y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 12);
+
+	//y++;
+	//menu->Con(STATE_03)->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+	y++;
+	menu->Con(STATE_03)->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+	menu->Con(STATE_03)->print(x + 7, y++, "%2d", 10);
 
 	//menu->Con(STATE_03)->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 	//menu->Con(STATE_03)->print(x + 7, y++, "%2d", game.player.stats.map);
