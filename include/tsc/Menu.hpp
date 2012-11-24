@@ -48,7 +48,12 @@ private:
 public:
 
 	// Message Log
-	std::map<int, string> MessageLog;
+	map<int, string> MessageLog;
+
+	map<int, string> MainOptions, HelpOptions, GameOptions, EquipOptions, EquipOptionsHorizontal;
+	map<int, string> EquipListOptions, EquipShopOptions, ItemShopOptions, InnOptions, FerryOptions;
+
+	string HelpText, IntroText[2], FerryText, InnText[2], DeathText;
 
 	// The Menu Constructor
 	MenuClass() : m_IntroPage(INTRO_01), m_MagicID(0), m_ActiveStateID(0)
@@ -75,6 +80,78 @@ public:
 
 		// Initialize the Message Log
 		for(int i = 0; i < NMSGS; i++) MessageLog.insert(make_pair(i, ""));
+
+		int i = 0;
+		MainOptions.insert(make_pair(i++, "%cNew Game %c"));
+		MainOptions.insert(make_pair(i++, "%cLoad Game%c"));
+		MainOptions.insert(make_pair(i++, "%cGame Help%c"));
+		MainOptions.insert(make_pair(i++, "%cQuit Game%c"));
+
+		i = 0;
+		HelpOptions.insert(make_pair(i++, "Move/Attack        :: Arrow Keys       "));
+		HelpOptions.insert(make_pair(i++, "Use Magic          :: Left Mouse Button"));
+		HelpOptions.insert(make_pair(i++, "Select Magic       :: Control          "));
+		HelpOptions.insert(make_pair(i++, "Toggle Menu/Cancel :: Escape           "));
+		HelpOptions.insert(make_pair(i++, "Select/Action      :: Enter            "));
+		HelpOptions.insert(make_pair(i++, "Toggle Music       :: Pause            "));
+		HelpOptions.insert(make_pair(i++, "Toggle Fullscreen  :: Alt + Enter      "));
+		HelpOptions.insert(make_pair(i++, "Screen Capture     :: Backspace        "));
+		HelpOptions.insert(make_pair(i++, "Game Help          :: ?                "));
+
+		HelpText = "Whenever the Player returns to the %cWorld Map%c, the game will automatically overwrite the existing save file.\n\nIf the Player expires, death is %cpermanent%c as the save file is %cdeleted%c.";
+
+		i = 0;
+		IntroText[i++] = "Welome brave adventurer, thank you for heeding my pleas for help.\n\n\nI am the %cGuardian of Light%c, one of the five entrusted to protect this world.\n\n\nA %cPowerful Ancient Menace%c is gathering once again in the shadows, and threatens to destroy the peace and harmony of these lands.\n\n\nThis is why I have summoned you here, I must impress upon you to persue a perilous quest to rid the world of this threat.";
+		IntroText[i++] = "We know this power is gathering deep within\n%cThe Serpentine Caves%c, but where we know not.\n\n\nIt will be a difficult journey, so seek out the other four %cElemental Guardians%c for assistance. If they deem you worthy, they will grant you the ability to use their power.\n\n\nTo aid you on your quest I will grant my %cPower of Light%c, and any creature of the dark will be startled by its brilliance. Use this power wisely.\n\n\nGood luck brave hero, and may the record of your deeds be sung throughout the ages.";
+
+		i = 0;
+		GameOptions.insert(make_pair(i++, "%cEquipment%c"));
+		GameOptions.insert(make_pair(i++, "%cInventory%c"));
+		GameOptions.insert(make_pair(i++, "%cQuit Game%c"));
+
+		i = 0;
+		EquipOptions.insert(make_pair(i++, "%cWeapon   %c ::"));
+		EquipOptions.insert(make_pair(i++, "%cShield   %c ::"));
+		EquipOptions.insert(make_pair(i++, "%cArmour   %c ::"));
+		EquipOptions.insert(make_pair(i++, "%cAccessory%c ::"));
+
+		i = 0;
+		EquipOptionsHorizontal.insert(make_pair(i++, "%cWeapon%c"));
+		EquipOptionsHorizontal.insert(make_pair(i++, "%cShield%c"));
+		EquipOptionsHorizontal.insert(make_pair(i++, "%cArmour%c"));
+		EquipOptionsHorizontal.insert(make_pair(i++, "%cAccessory%c"));
+
+		i = 0;
+		EquipListOptions.insert(make_pair(i++, "%cWeapon List   %c"));
+		EquipListOptions.insert(make_pair(i++, "%cShield List   %c"));
+		EquipListOptions.insert(make_pair(i++, "%cArmour List   %c"));
+		EquipListOptions.insert(make_pair(i++, "%cAccessory List%c"));
+
+		i = 0;
+		EquipShopOptions.insert(make_pair(i++, "%cBuy Equip %c"));
+		EquipShopOptions.insert(make_pair(i++, "%cSell Equip%c"));
+		EquipShopOptions.insert(make_pair(i++, "%cExit Shop %c"));
+
+		i = 0;
+		ItemShopOptions.insert(make_pair(i++, "%cBuy Items %c"));
+		ItemShopOptions.insert(make_pair(i++, "%cSell Items%c"));
+		ItemShopOptions.insert(make_pair(i++, "%cExit Shop %c"));
+
+		i = 0;
+		FerryOptions.insert(make_pair(i++, "%cTake Ferry%c"));
+		FerryOptions.insert(make_pair(i++, "%cExit Ferry%c"));
+
+		FerryText = "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.";
+
+		i = 0;
+		InnOptions.insert(make_pair(i++, "%cStay at Inn%c"));
+		InnOptions.insert(make_pair(i++, "%cExit Inn   %c"));
+
+		i = 0;
+		InnText[i++] = "Hello there young traveller.\n\n\nCan I interest you in a nice hearty meal, and a warm comfortable bed?\n\n\nWe charge %c15 GP%c per night, meal included.\n\n\nWould you care to stay?";
+		InnText[i++] = "It is a shame to see you leave.\n\n\nPlease hurry back!";
+
+		DeathText = "While your valiant efforts should be commended, they were all for naught.\n\n\nThe %cAncient Menance%c spread across these lands, killing all those that could fight and enslaving the rest.\n\n\nEventhough your part in this tale is over, perhaps a new hero will one day emerge from the remnants of these broken and shattered people.";
 	}
 
 	// The Menu Destructor
@@ -162,34 +239,6 @@ public:
 		{
 			TCODConsole::root->setDefaultBackground(TCODColor::darkestRed);
 			TCODConsole::root->rect(SCREEN_WIDTH/4 + length, SCREEN_HEIGHT/2, SCREEN_WIDTH/2 - length, 2, false, TCOD_BKGND_SET);
-		}
-	}
-
-	// Displays Preview of Player Stats 
-	void DisplayUpdatedStat(int x, int y, int oldstat, int newstat)
-	{
-		char str[CHARMAX];
-
-		// Set text colours
-		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
-		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
-		TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
-		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
-		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
-
-		Con(STATE_04)->print(x + 10, y, "%c", TCOD_CHAR_ARROW_E);
-		sprintf(str, "%s%2d%s", "%c", newstat, "%c");
-		if(newstat > oldstat)
-		{
-			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_5, TCOD_COLCTRL_STOP);
-		}
-		else if(newstat < oldstat)
-		{
-			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
-		}
-		else
-		{
-			Con(STATE_04)->print(x + 12, y, str, TCOD_COLCTRL_1, TCOD_COLCTRL_STOP);
 		}
 	}
 };

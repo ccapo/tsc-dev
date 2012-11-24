@@ -92,7 +92,7 @@ public:
 	}
 
 	// Returns true if the current state's type is equal to the type of the class passed as a parameter. 
-	bool isInState(State<state_type> *st) const
+	bool IsInState(State<state_type> *st) const
 	{
 		if(typeid(*m_CurrentState) == typeid(*st)) return true;
 		return false;

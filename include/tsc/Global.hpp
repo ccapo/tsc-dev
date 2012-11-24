@@ -119,6 +119,9 @@ using namespace std;
 // Maximum frame rate
 #define MAXFPS 25
 
+// Number of Commands in Help Screen
+#define NHELP 9
+
 // Range of the height map
 #define HM_MIN 0.75f
 #define HM_MAX 0.95f
@@ -202,7 +205,7 @@ enum MenuStates
 	NSTATES
 };
 
-// Main Menu Pption Identifiers
+// Main Menu Option Identifiers
 enum MainMenu
 {
 	NONE = -1,
@@ -311,6 +314,88 @@ enum EquipType
 	ARMOUR,
 	ACCESSORY,
 	NEQUIPTYPE
+};
+
+enum WeaponType
+{
+	WEAPON_01,
+	WEAPON_02,
+	WEAPON_03,
+	WEAPON_04,
+	WEAPON_05,
+	WEAPON_06,
+	WEAPON_07,
+	WEAPON_08,
+	WEAPON_09,
+	NWEAPONS
+};
+
+enum ShieldType
+{
+	SHIELD_01,
+	SHIELD_02,
+	SHIELD_03,
+	SHIELD_04,
+	SHIELD_05,
+	SHIELD_06,
+	SHIELD_07,
+	SHIELD_08,
+	SHIELD_09,
+	NSHIELDS
+};
+
+enum ArmourType
+{
+	ARMOUR_01,
+	ARMOUR_02,
+	ARMOUR_03,
+	ARMOUR_04,
+	ARMOUR_05,
+	ARMOUR_06,
+	ARMOUR_07,
+	ARMOUR_08,
+	ARMOUR_09,
+	NARMOUR
+};
+
+enum AccessoryType
+{
+	ACCESSORY_01,
+	ACCESSORY_02,
+	ACCESSORY_03,
+	ACCESSORY_04,
+	ACCESSORY_05,
+	ACCESSORY_06,
+	ACCESSORY_07,
+	ACCESSORY_08,
+	ACCESSORY_09,
+	NACCESSORY
+};
+
+enum ItemType
+{
+	ITEM_01,
+	ITEM_02,
+	ITEM_03,
+	ITEM_04,
+	ITEM_05,
+	ITEM_06,
+	ITEM_07,
+	ITEM_08,
+	ITEM_09,
+	ITEM_10,
+	NITEMS
+};
+
+enum HideType
+{
+	HIDE_01,
+	HIDE_02,
+	HIDE_03,
+	HIDE_04,
+	HIDE_05,
+	HIDE_06,
+	NHIDES
 };
 
 // List Of Possible Messages
