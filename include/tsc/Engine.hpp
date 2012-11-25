@@ -101,6 +101,8 @@ public:
 	// Update Status Panel
 	void UpdateStatusPanel(TCODConsole *con)
 	{
+		int x = 3, y = 12;
+
 		// Set text colours
 		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
@@ -108,7 +110,6 @@ public:
 		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
 
-		int x = 3, y = 12;
 		con->print(x, y, "%cHP:%c", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 4, y++, "%d/%d", Player()->HP(), Player()->HPMax());
 
@@ -152,6 +153,8 @@ public:
 	// Update Stats Panel
 	void UpdateStatsPanel(TCODConsole *con)
 	{
+		int x = 2, y = NEQUIPTYPE + 6;
+
 		// Set text colours
 		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
@@ -159,92 +162,63 @@ public:
 		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
 
-		int x = 2, y = NEQUIPTYPE + 8;
-		con->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
-		con->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
-		y += 2;
-
 		//float xpfraction = static_cast<float>(game.Player.xp)/static_cast<float>(game.Player.xpnext);
-		//int xpbar = static_cast<int>(14.0f*xpfraction);
-		//if(xpbar > 0)
-		//{
-		//		con->setDefaultBackground(TCODColor::darkGreen);
-		//		con->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
-		//}
-		//if(xpbar < 14)
-		//{
-		//		con->setDefaultBackground(TCODColor::darkerGreen);
-		//		con->rect(x + xpbar, y + 1, 14 - xpbar, 1, true, TCOD_BKGND_SET);
-		//}
-		//con->setDefaultBackground(TCODColor::black);
-		//con->print(x, y, "%cLVL%c : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.lvl);
-		//con->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.Player.xp, game.Player.xpnext);
 		float xpfraction = static_cast<float>(0)/static_cast<float>(100);
 		int xpbar = static_cast<int>(14.0f*xpfraction);
 		if(xpbar > 0)
 		{
 			con->setDefaultBackground(TCODColor::darkGreen);
-			con->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+			con->rect(x, y + 2, xpbar, 1, true, TCOD_BKGND_SET);
 		}
 		if(xpbar < 14)
 		{
 			con->setDefaultBackground(TCODColor::darkerGreen);
-			con->rect(x + xpbar, y + 1, 14 - xpbar, 1, true, TCOD_BKGND_SET);
+			con->rect(x + xpbar, y + 2, 14 - xpbar, 1, true, TCOD_BKGND_SET);
 		}
 		con->setDefaultBackground(TCODColor::black);
 		con->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.lvl);
 		con->print(x + 7, y++, "%2d", 1);
-		con->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+		con->print(x, y++, "%cXP   :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->printEx(x + 7, y++, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.Player.xp, game.Player.xpnext);
+		con->printEx(x + 7, y++, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
 
-		//y++;
-		//con->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.hpmax);
-		y++;
+		y += 2;
 		con->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.hpmax);
 		con->print(x + 7, y++, "%2d", 20);
 
-		//con->print(x, y, "%cATK%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.ap);
-		//con->print(x, y, "%cDEF%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.dp);
 		con->print(x, y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.ap);
 		con->print(x + 7, y++, "%2d", 4);
 		con->print(x, y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.dp);
 		con->print(x + 7, y++, "%2d", 2);
 
-		//con->print(x, y, "%cSTR%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.str);
-		//con->print(x, y, "%cSPD%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.spd);
 		con->print(x, y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.str);
 		con->print(x + 7, y++, "%2d", 10);
 		con->print(x, y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.spd);
 		con->print(x + 7, y++, "%2d", 12);
 
-		//y++;
-		//con->print(x, y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.mpmax);
-		y++;
+		y += 2;
 		con->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.mpmax);
 		con->print(x + 7, y++, "%2d", 10);
 
-		//con->print(x, y, "%cM.ATK%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.map);
-		//con->print(x, y, "%cM.DEF%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.mdp);
 		con->print(x, y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.map);
 		con->print(x + 7, y++, "%2d", 5);
 		con->print(x, y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.mdp);
 		con->print(x + 7, y++, "%2d", 2);
 
-		//con->print(x, y, "%cWIL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.wil);
-		//con->print(x, y, "%cACU%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.Player.stats.acu);
 		con->print(x, y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.wil);
 		con->print(x + 7, y++, "%2d", 6);
 		con->print(x, y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.stats.acu);
 		con->print(x + 7, y++, "%2d", 3);
 	}
 
@@ -252,6 +226,9 @@ public:
 	//void UpdateStatsPanel(TCODConsole *con, Stats stats)
 	void UpdateStatsPanel(TCODConsole *con, int stats[10])
 	{
+		int x = 2, y = NEQUIPTYPE + 6, i = 0;
+		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = 2;
+
 		// Set text colours
 		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
@@ -259,116 +236,217 @@ public:
 		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
 		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
 
-		int x = 2, y = NEQUIPTYPE + 8, i = 0;
-		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = 2;
-		con->print(x, y, "%cStats%c", TCOD_COLCTRL_4, TCOD_COLCTRL_STOP);
-		con->putChar(x + 8, y, CHAR_PLAYER_RIGHT, TCOD_BKGND_NONE);
-		y += 2;
-
 		//float xpfraction = static_cast<float>(game.player.xp)/static_cast<float>(game.player.xpnext);
-		//int xpbar = static_cast<int>(14.0f*xpfraction);
-		//if(xpbar > 0)
-		//{
-		//	con->setDefaultBackground(TCODColor::darkGreen);
-		//	con->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
-		//}
-		//if(xpbar < 14)
-		//{
-		//	con->setDefaultBackground(TCODColor::darkerGreen);
-		//	con->rect(x + xpbar, y + 1, 14 - xpbar, 1, true, TCOD_BKGND_SET);
-		//}
-		//con->setDefaultBackground(TCODColor::black);
-		//con->print(x, y, "%cLVL%c  : ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
-		//con->print(x + 7, y++, "%2d", game.player.lvl);
-		//con->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.player.xp, game.player.xpnext);
 		float xpfraction = static_cast<float>(0)/static_cast<float>(100);
 		int xpbar = static_cast<int>(14.0f*xpfraction);
 		if(xpbar > 0)
 		{
 			con->setDefaultBackground(TCODColor::darkGreen);
-			con->rect(x, y + 1, xpbar, 1, true, TCOD_BKGND_SET);
+			con->rect(x, y + 2, xpbar, 1, true, TCOD_BKGND_SET);
 		}
 		if(xpbar < 14)
 		{
 			con->setDefaultBackground(TCODColor::darkerGreen);
-			con->rect(x + xpbar, y + 1, 14 - xpbar, 1, true, TCOD_BKGND_SET);
+			con->rect(x + xpbar, y + 2, 14 - xpbar, 1, true, TCOD_BKGND_SET);
 		}
 		con->setDefaultBackground(TCODColor::black);
 		con->print(x, y, "%cLVL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.Player.lvl);
 		con->print(x + 7, y++, "%2d", 1);
-		con->printEx(x + 7, y, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
+		con->print(x, y++, "%cXP   :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->printEx(x + 7, y++, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", game.Player.xp, game.Player.xpnext);
+		con->printEx(x + 7, y++, TCOD_BKGND_NONE, TCOD_CENTER, "%d/%d", 0, 100);
 
-		//y++;
-		//con->print(x, y, "%cHPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		y += 2;
+		con->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.hpmax);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.hpmax, stats.hpmax);
-		y++;
-		con->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 20);
 		DisplayUpdatedStat(con, x, y, 20, stats[i++]);
 
-		//con->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.ap);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.ap, stats.ap);
-		con->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 4);
 		DisplayUpdatedStat(con, x, y, 4, stats[i++]);
 
-		//con->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.dp);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.dp, stats.dp);
-		con->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 2);
 		DisplayUpdatedStat(con, x, y, 2, stats[i++]);
 
-		//con->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.str);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.str, stats.str);
-		con->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 10);
 		DisplayUpdatedStat(con, x, y, 10, stats[i++]);
 
-		//con->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.spd);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.spd, stats.spd);
-		con->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 12);
 		DisplayUpdatedStat(con, x, y, 12, stats[i++]);
 
-		//y++;
-		//con->print(x, ++y, "%cMPMAX%c: ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		y += 2;
+		con->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.mpmax);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.mpmax, stats.mpmax);
-		y++;
-		con->print(x, ++y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 10);
 		DisplayUpdatedStat(con, x, y, 10, stats[i++]);
 
-		//con->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.map);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.map, stats.map);
-		con->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 5);
 		DisplayUpdatedStat(con, x, y, 5, stats[i++]);
 
-		//con->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.mdp);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.mdp, stats.mdp);
-		con->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 2);
 		DisplayUpdatedStat(con, x, y, 2, stats[i++]);
 
-		//con->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.wil);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.wil, stats.wil);
-		con->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		con->print(x + 7, y, "%2d", 6);
 		DisplayUpdatedStat(con, x, y, 6, stats[i++]);
 
-		//con->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		con->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
 		//con->print(x + 7, y, "%2d", game.player.stats.acu);
 		//DisplayUpdatedStat(con, x, y, game.player.stats.acu, stats.acu);
+		con->print(x + 7, y, "%2d", 3);
+		DisplayUpdatedStat(con, x, y, 3, stats[i++]);
+	}
+
+	// Update Equip Stats Panel
+	void UpdateEquipStatsPanel(TCODConsole *con)
+	{
+		int h = 3*DISPLAY_HEIGHT/4, hs = h - 2;
+		int x = 2, y = 2*hs/3 + 1 + 2;
+		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = (hs - 5)/2 + 3 + 2;
+
+		// Set text colours
+		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+		TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
+
+		con->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+		con->print(x + 7, y++, "%2d", 20);
+
+		con->print(x, y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.ap);
+		con->print(x + 7, y++, "%2d", 4);
+		con->print(x, y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.dp);
+		con->print(x + 7, y++, "%2d", 2);
+
+		con->print(x, y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.str);
+		con->print(x + 7, y++, "%2d", 10);
+		con->print(x, y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.spd);
+		con->print(x + 7, y++, "%2d", 12);
+
+		x += 20; y = 2*hs/3 + 1 + 2;
+		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = (hs - 5)/2 + 3 + 2;
+		con->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.mpmax);
+		con->print(x + 7, y++, "%2d", 10);
+
+		con->print(x, y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.map);
+		con->print(x + 7, y++, "%2d", 5);
+		con->print(x, y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.mdp);
+		con->print(x + 7, y++, "%2d", 2);
+
+		con->print(x, y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.wil);
+		con->print(x + 7, y++, "%2d", 6);
+		con->print(x, y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.acu);
+		con->print(x + 7, y++, "%2d", 3);
+	}
+
+	// Update Equip Stats Panel
+	//void UpdateEquipStatsPanel(TCODConsole *con, Stats stats)
+	void UpdateEquipStatsPanel(TCODConsole *con, int stats[10])
+	{
+		int h = 3*DISPLAY_HEIGHT/4, hs = h - 2;
+		int x = 2, y = 2*hs/3 + 1 + 2, i = 0;
+		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = (hs - 5)/2 + 3 + 2;
+
+		// Set text colours
+		TCODConsole::setColorControl(TCOD_COLCTRL_1, TCODColor::white, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_2, TCODColor::white, TCODColor::lightBlue);
+		TCODConsole::setColorControl(TCOD_COLCTRL_3, TCODColor::lighterYellow, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_4, TCODColor::red, TCODColor::black);
+		TCODConsole::setColorControl(TCOD_COLCTRL_5, TCODColor::green, TCODColor::black);
+
+		con->print(x, y, "%cHPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y++, "%2d", game.player.stats.hpmax);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.hpmax, stats.hpmax);
+		con->print(x + 7, y, "%2d", 20);
+		DisplayUpdatedStat(con, x, y, 20, stats[i++]);
+
+		con->print(x, ++y, "%cATK  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.ap);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.ap, stats.ap);
+		con->print(x + 7, y, "%2d", 4);
+		DisplayUpdatedStat(con, x, y, 4, stats[i++]);
+
+		con->print(x, ++y, "%cDEF  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.dp);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.dp, stats.dp);
+		con->print(x + 7, y, "%2d", 2);
+		DisplayUpdatedStat(con, x, y, 2, stats[i++]);
+
+		con->print(x, ++y, "%cSTR  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.str);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.str, stats.str);
+		con->print(x + 7, y, "%2d", 10);
+		DisplayUpdatedStat(con, x, y, 10, stats[i++]);
+
+		con->print(x, ++y, "%cSPD  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.spd);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.spd, stats.spd);
+		con->print(x + 7, y, "%2d", 12);
+		DisplayUpdatedStat(con, x, y, 12, stats[i++]);
+
+		x += 20; y = 2*hs/3 + 1 + 2;
+		if(!Menu()->StateMgr(STATE_04)->IsInState(MenuIdleState)) y = (hs - 5)/2 + 3 + 2;
+		con->print(x, y, "%cMPMAX:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.mpmax);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.mpmax, stats.mpmax);
+		con->print(x + 7, y, "%2d", 10);
+		DisplayUpdatedStat(con, x, y, 10, stats[i++]);
+
+		con->print(x, ++y, "%cM.ATK:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.map);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.map, stats.map);
+		con->print(x + 7, y, "%2d", 5);
+		DisplayUpdatedStat(con, x, y, 5, stats[i++]);
+
+		con->print(x, ++y, "%cM.DEF:%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.mdp);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.mdp, stats.mdp);
+		con->print(x + 7, y, "%2d", 2);
+		DisplayUpdatedStat(con, x, y, 2, stats[i++]);
+
+		con->print(x, ++y, "%cWIL  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.wil);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.wil, stats.wil);
+		con->print(x + 7, y, "%2d", 6);
+		DisplayUpdatedStat(con, x, y, 6, stats[i++]);
+
 		con->print(x, ++y, "%cACU  :%c ", TCOD_COLCTRL_3, TCOD_COLCTRL_STOP);
+		//con->print(x + 7, y, "%2d", game.player.stats.acu);
+		//DisplayUpdatedStat(con, x, y, game.player.stats.acu, stats.acu);
 		con->print(x + 7, y, "%2d", 3);
 		DisplayUpdatedStat(con, x, y, 3, stats[i++]);
 	}

@@ -183,7 +183,7 @@ bool PlayerWorld::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TC
 				}
 				case '?':
 				{
-					Transmit->Send(Engine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_GAMEHELP);
 					break;
 				}
 				default: break;
@@ -334,7 +334,7 @@ bool PlayerTemple::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, T
 				}
 				case '?':
 				{
-					Transmit->Send(Engine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_GAMEHELP);
 					break;
 				}
 				default: break;
@@ -485,12 +485,12 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 				}
 				case 'i':
 				{
-					Transmit->Send(Engine(), MSG_ITEMSHOPMENU);
+					Transmit->Send(Engine(), MSG_ITEMSHOP);
 					break;
 				}
 				case 'e':
 				{
-					Transmit->Send(Engine(), MSG_EQUIPSHOPMENU);
+					Transmit->Send(Engine(), MSG_EQUIPSHOP);
 					break;
 				}
 				case 'n':
@@ -505,7 +505,7 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 				}
 				case '?':
 				{
-					Transmit->Send(Engine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_GAMEHELP);
 					break;
 				}
 				default: break;
@@ -679,7 +679,7 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 				}
 				case '?':
 				{
-					Transmit->Send(Engine(), MSG_HELPSCREEN);
+					Transmit->Send(Engine(), MSG_GAMEHELP);
 					break;
 				}
 				default: break;

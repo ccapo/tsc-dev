@@ -23,9 +23,6 @@ private:
 	// The instances of the State Manager class
 	StateManager<MenuClass> *m_StateManager[NSTATES];
 
-	// Dialog Page Indicators
-	int m_IntroPage;
-
 	// Magic ID
 	int m_MagicID;
 
@@ -49,14 +46,12 @@ public:
 
 	// Message Log
 	map<int, string> MessageLog;
-
 	map<int, string> MainOptions, HelpOptions, GameOptions, EquipOptions, EquipOptionsHorizontal;
 	map<int, string> EquipListOptions, EquipShopOptions, ItemShopOptions, InnOptions, FerryOptions;
-
-	string HelpText, IntroText[2], FerryText, InnText[2], DeathText;
+	string HelpText, IntroText[2], FerryText[2], InnText[2], DeathText;
 
 	// The Menu Constructor
-	MenuClass() : m_IntroPage(INTRO_01), m_MagicID(0), m_ActiveStateID(0)
+	MenuClass() : m_MagicID(0), m_ActiveStateID(0)
 	{
 		// Setup State Managers and Off-Screen Consoles
 		for(int i = 0; i < NSTATES; i++)
@@ -122,10 +117,10 @@ public:
 		EquipOptionsHorizontal.insert(make_pair(i++, "%cAccessory%c"));
 
 		i = 0;
-		EquipListOptions.insert(make_pair(i++, "%cWeapon List   %c"));
-		EquipListOptions.insert(make_pair(i++, "%cShield List   %c"));
-		EquipListOptions.insert(make_pair(i++, "%cArmour List   %c"));
-		EquipListOptions.insert(make_pair(i++, "%cAccessory List%c"));
+		EquipListOptions.insert(make_pair(i++, "Weapons"));
+		EquipListOptions.insert(make_pair(i++, "Shields"));
+		EquipListOptions.insert(make_pair(i++, "Armour"));
+		EquipListOptions.insert(make_pair(i++, "Accessories"));
 
 		i = 0;
 		EquipShopOptions.insert(make_pair(i++, "%cBuy Equip %c"));
@@ -141,11 +136,13 @@ public:
 		FerryOptions.insert(make_pair(i++, "%cTake Ferry%c"));
 		FerryOptions.insert(make_pair(i++, "%cExit Ferry%c"));
 
-		FerryText = "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.";
+		i = 0;
+		FerryText[i++] = "Where are you headed?\n\n\nMy fee is %c25 GP%c per trip.";
+		FerryText[i++] = "Come back any time.";
 
 		i = 0;
-		InnOptions.insert(make_pair(i++, "%cStay at Inn%c"));
-		InnOptions.insert(make_pair(i++, "%cExit Inn   %c"));
+		InnOptions.insert(make_pair(i++, "%cStay Inn%c"));
+		InnOptions.insert(make_pair(i++, "%cExit Inn%c"));
 
 		i = 0;
 		InnText[i++] = "Hello there young traveller.\n\n\nCan I interest you in a nice hearty meal, and a warm comfortable bed?\n\n\nWe charge %c15 GP%c per night, meal included.\n\n\nWould you care to stay?";
@@ -207,11 +204,6 @@ public:
 	void ActiveStateID(int pActiveStateID){m_ActiveStateID = pActiveStateID;}
 	void IncreaseStateID(){m_ActiveStateID++; Clamp<int>(m_ActiveStateID, 0, NSTATES);}
 	void DecreaseStateID(){m_ActiveStateID--; Clamp<int>(m_ActiveStateID, -1, NSTATES);}
-
-	int IntroPage() const {return m_IntroPage;}
-	bool IsIntroComplete() const {return m_IntroPage >= NINTRO;}
-	void ResetIntroPage(){m_IntroPage = INTRO_01;}
-	void IncrementIntroPage(){m_IntroPage++;}
 
 	int MagicID() const {return m_MagicID;}
 	void IncrementMagicID(){m_MagicID = (m_MagicID + 1) % NMAGIC;}

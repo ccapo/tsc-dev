@@ -17,7 +17,7 @@ void EngineClass::Startup(int narg, char *argv[])
 {
 	int fontFlags = TCOD_FONT_LAYOUT_TCOD | TCOD_FONT_TYPE_GREYSCALE;
 	int nFont = 0, iFont = 2, nCol = 32, nRow = 13;
-	int initialDelay = 100, interval = 1000/MAX(1,MAXFPS);
+	int initialDelay = 100, interval = 1000/MAX(1,FPSMAX);
 	bool fullscreen = false;
 	map<int, string> Fonts;
 	Fonts.insert(make_pair(nFont++, "data/fonts/arial4x4.png"));
@@ -38,7 +38,7 @@ void EngineClass::Startup(int narg, char *argv[])
 	TCODMouse::showCursor(true);
 
 	// Limit the framerate to maxFps FPS
-	TCODSystem::setFps(MAXFPS);
+	TCODSystem::setFps(FPSMAX);
 
 	// Assign extra ascii keys
 	int x = 0, y = 8;
@@ -305,9 +305,9 @@ void EngineClass::Shutdown()
 
 	// Fade Out
 #ifndef DEV
-	for(int i = 1; i <= 2*MAXFPS; i++)
+	for(int i = 1; i <= 2*FPSMAX; i++)
 	{
-		int fade = 255*(2*MAXFPS - i)/(2*MAXFPS - 1);
+		int fade = 255*(2*FPSMAX - i)/(2*FPSMAX - 1);
 		TCODConsole::setFade(fade, TCODColor::black);
 		TCODConsole::root->flush();
 	}
@@ -341,9 +341,9 @@ void EngineClass::Render()
 	{
 		FadeOut(false);
 #ifndef DEV
-		for(int i = 1; i <= MAXFPS; i++)
+		for(int i = 1; i <= FPSMAX; i++)
 		{
-			int fade = 255*(MAXFPS - i)/(MAXFPS - 1);
+			int fade = 255*(FPSMAX - i)/(FPSMAX - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}
@@ -367,9 +367,9 @@ void EngineClass::Render()
 	{
 		FadeIn(false);
 #ifndef DEV
-		for(int i = 1; i <= MAXFPS; i++)
+		for(int i = 1; i <= FPSMAX; i++)
 		{
-			int fade = 255*(i - 1)/(MAXFPS - 1);
+			int fade = 255*(i - 1)/(FPSMAX - 1);
 			TCODConsole::setFade(fade, TCODColor::black);
 			TCODConsole::root->flush();
 		}
@@ -390,12 +390,20 @@ bool EngineClass::Receive(const Message &msg)
 	static bool ArmourInvFlag = false;
 	static bool AccessoryInvFlag = false;
 	static bool ItemInvFlag = false;
+	static bool EquipShopFlag = false;
+	static bool EquipShopBuyFlag = false;
+	static bool EquipShopBuyWeaponFlag = false;
+	static bool EquipShopBuyShieldFlag = false;
+	static bool EquipShopBuyArmourFlag = false;
+	static bool EquipShopBuyAccessoryFlag = false;
+	static bool EquipShopSellFlag = false;
+	static bool EquipShopSellWeaponFlag = false;
+	static bool EquipShopSellShieldFlag = false;
+	static bool EquipShopSellArmourFlag = false;
+	static bool EquipShopSellAccessoryFlag = false;
 	static bool ItemShopFlag = false;
 	static bool ItemShopBuyFlag = false;
 	static bool ItemShopSellFlag = false;
-	static bool EquipShopFlag = false;
-	static bool EquipShopBuyFlag = false;
-	static bool EquipShopSellFlag = false;
 	static bool FerryFlag = false;
 	static bool InnFlag = false;
 	static bool RestFlag = false;
@@ -424,7 +432,6 @@ bool EngineClass::Receive(const Message &msg)
 		{
 			FadeIn(true);
 			FadeOut(true);
-
 			Game()->StateMgr()->ChangeState(GameSaveState);
 			Player()->StateMgr()->ChangeState(PlayerIdleState);
 			Menu()->StateMgr(STATE_01)->ChangeState(MenuSaveState);
@@ -493,7 +500,7 @@ bool EngineClass::Receive(const Message &msg)
 			Player()->StateMgr()->ChangeState(PlayerCaveState);
 			break;
 		}
-		case MSG_HELPSCREEN:
+		case MSG_GAMEHELP:
 		{
 			HelpFlag = !HelpFlag;
 			if(HelpFlag)
@@ -536,7 +543,6 @@ bool EngineClass::Receive(const Message &msg)
 			}
 			break;
 		}
-
 		case MSG_WEAPONINV:
 		{
 			WeaponInvFlag = !WeaponInvFlag;
@@ -602,48 +608,7 @@ bool EngineClass::Receive(const Message &msg)
 			}
 			break;
 		}
-		case MSG_ITEMSHOPMENU:
-		{
-			ItemShopFlag = !ItemShopFlag;
-			if(ItemShopFlag)
-			{
-				Player()->StateMgr()->ChangeState(PlayerIdleState);
-				Menu()->StateMgr(STATE_02)->ChangeState(MenuItemShopState);
-			}
-			else
-			{
-				Player()->StateMgr()->RevertToPreviousState();
-				Menu()->StateMgr(STATE_02)->ChangeState(MenuIdleState);
-			}
-			break;
-		}
-		case MSG_ITEMSHOPMENUBUY:
-		{
-			ItemShopBuyFlag = !ItemShopBuyFlag;
-			if(ItemShopBuyFlag)
-			{
-				Menu()->StateMgr(STATE_03)->ChangeState(MenuItemShopBuyState);
-			}
-			else
-			{
-				Menu()->StateMgr(STATE_03)->ChangeState(MenuIdleState);
-			}
-			break;
-		}
-		case MSG_ITEMSHOPMENUSELL:
-		{
-			ItemShopSellFlag = !ItemShopSellFlag;
-			if(ItemShopSellFlag)
-			{
-				Menu()->StateMgr(STATE_03)->ChangeState(MenuItemShopSellState);
-			}
-			else
-			{
-				Menu()->StateMgr(STATE_03)->ChangeState(MenuIdleState);
-			}
-			break;
-		}
-		case MSG_EQUIPSHOPMENU:
+		case MSG_EQUIPSHOP:
 		{
 			EquipShopFlag = !EquipShopFlag;
 			if(EquipShopFlag)
@@ -658,7 +623,7 @@ bool EngineClass::Receive(const Message &msg)
 			}
 			break;
 		}
-		case MSG_EQUIPSHOPMENUBUY:
+		case MSG_EQUIPSHOPBUY:
 		{
 			EquipShopBuyFlag = !EquipShopBuyFlag;
 			if(EquipShopBuyFlag)
@@ -671,12 +636,157 @@ bool EngineClass::Receive(const Message &msg)
 			}
 			break;
 		}
-		case MSG_EQUIPSHOPMENUSELL:
+		case MSG_EQUIPSHOPBUYWEAPON:
+		{
+			EquipShopBuyWeaponFlag = !EquipShopBuyWeaponFlag;
+			if(EquipShopBuyWeaponFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopBuyWeaponState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPBUYSHIELD:
+		{
+			EquipShopBuyShieldFlag = !EquipShopBuyShieldFlag;
+			if(EquipShopBuyShieldFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopBuyShieldState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPBUYARMOUR:
+		{
+			EquipShopBuyArmourFlag = !EquipShopBuyArmourFlag;
+			if(EquipShopBuyArmourFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopBuyArmourState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPBUYACCESSORY:
+		{
+			EquipShopBuyAccessoryFlag = !EquipShopBuyAccessoryFlag;
+			if(EquipShopBuyAccessoryFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopBuyAccessoryState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPSELL:
 		{
 			EquipShopSellFlag = !EquipShopSellFlag;
 			if(EquipShopSellFlag)
 			{
 				Menu()->StateMgr(STATE_03)->ChangeState(MenuEquipShopSellState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_03)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPSELLWEAPON:
+		{
+			EquipShopSellWeaponFlag = !EquipShopSellWeaponFlag;
+			if(EquipShopSellWeaponFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopSellWeaponState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPSELLSHIELD:
+		{
+			EquipShopSellShieldFlag = !EquipShopSellShieldFlag;
+			if(EquipShopSellShieldFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopSellShieldState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPSELLARMOUR:
+		{
+			EquipShopSellArmourFlag = !EquipShopSellArmourFlag;
+			if(EquipShopSellArmourFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopSellArmourState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_EQUIPSHOPSELLACCESSORY:
+		{
+			EquipShopSellAccessoryFlag = !EquipShopSellAccessoryFlag;
+			if(EquipShopSellAccessoryFlag)
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuEquipShopSellAccessoryState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_04)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_ITEMSHOP:
+		{
+			ItemShopFlag = !ItemShopFlag;
+			if(ItemShopFlag)
+			{
+				Player()->StateMgr()->ChangeState(PlayerIdleState);
+				Menu()->StateMgr(STATE_02)->ChangeState(MenuItemShopState);
+			}
+			else
+			{
+				Player()->StateMgr()->RevertToPreviousState();
+				Menu()->StateMgr(STATE_02)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_ITEMSHOPBUY:
+		{
+			ItemShopBuyFlag = !ItemShopBuyFlag;
+			if(ItemShopBuyFlag)
+			{
+				Menu()->StateMgr(STATE_03)->ChangeState(MenuItemShopBuyState);
+			}
+			else
+			{
+				Menu()->StateMgr(STATE_03)->ChangeState(MenuIdleState);
+			}
+			break;
+		}
+		case MSG_ITEMSHOPSELL:
+		{
+			ItemShopSellFlag = !ItemShopSellFlag;
+			if(ItemShopSellFlag)
+			{
+				Menu()->StateMgr(STATE_03)->ChangeState(MenuItemShopSellState);
 			}
 			else
 			{

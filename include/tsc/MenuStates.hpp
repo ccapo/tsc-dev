@@ -32,12 +32,24 @@ class MenuClass;
 #define MenuArmourInvState MenuArmourInv::Instance()
 #define MenuAccessoryInvState MenuAccessoryInv::Instance()
 #define MenuItemInvState MenuItemInv::Instance()
+#define MenuEquipShopState MenuEquipShop::Instance()
+#define MenuEquipShopBuyState MenuEquipShopBuy::Instance()
+
+#define MenuEquipShopBuyWeaponState MenuEquipShopBuyWeapon::Instance()
+#define MenuEquipShopBuyShieldState MenuEquipShopBuyShield::Instance()
+#define MenuEquipShopBuyArmourState MenuEquipShopBuyArmour::Instance()
+#define MenuEquipShopBuyAccessoryState MenuEquipShopBuyAccessory::Instance()
+
+#define MenuEquipShopSellState MenuEquipShopSell::Instance()
+
+#define MenuEquipShopSellWeaponState MenuEquipShopSellWeapon::Instance()
+#define MenuEquipShopSellShieldState MenuEquipShopSellShield::Instance()
+#define MenuEquipShopSellArmourState MenuEquipShopSellArmour::Instance()
+#define MenuEquipShopSellAccessoryState MenuEquipShopSellAccessory::Instance()
+
 #define MenuItemShopState MenuItemShop::Instance()
 #define MenuItemShopBuyState MenuItemShopBuy::Instance()
 #define MenuItemShopSellState MenuItemShopSell::Instance()
-#define MenuEquipShopState MenuEquipShop::Instance()
-#define MenuEquipShopBuyState MenuEquipShopBuy::Instance()
-#define MenuEquipShopSellState MenuEquipShopSell::Instance()
 #define MenuFerryState MenuFerry::Instance()
 #define MenuInnState MenuInn::Instance()
 #define MenuRestState MenuRest::Instance()
@@ -522,7 +534,7 @@ public:
 
 //------------------------------------------------------------------------
 //
-// This is the Item Shop Buy Menu Sub State for the MenuClass
+// This is the Item Shop Buy Menu State for the MenuClass
 //
 //------------------------------------------------------------------------
 class MenuItemShopBuy : public State<MenuClass>
@@ -550,7 +562,7 @@ public:
 
 //------------------------------------------------------------------------
 //
-// This is the Item Shop Sell Menu Sub State for the MenuClass
+// This is the Item Shop Sell Menu State for the MenuClass
 //
 //------------------------------------------------------------------------
 class MenuItemShopSell : public State<MenuClass>
@@ -606,7 +618,7 @@ public:
 
 //------------------------------------------------------------------------
 //
-// This is the Equip Shop Buy Menu Sub State for the MenuClass
+// This is the Equip Shop Buy Menu State for the MenuClass
 //
 //------------------------------------------------------------------------
 class MenuEquipShopBuy : public State<MenuClass>
@@ -634,7 +646,119 @@ public:
 
 //------------------------------------------------------------------------
 //
-// This is the Equip Shop Sell Menu Sub State for the MenuClass
+// This is the Equip Shop Buy Weapon Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopBuyWeapon : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopBuyWeapon(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopBuyWeapon(const MenuEquipShopBuyWeapon&);
+	MenuEquipShopBuyWeapon &operator=(const MenuEquipShopBuyWeapon&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopBuyWeapon *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Buy Shield Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopBuyShield : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopBuyShield(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopBuyShield(const MenuEquipShopBuyShield&);
+	MenuEquipShopBuyShield &operator=(const MenuEquipShopBuyShield&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopBuyShield *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Buy Armour Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopBuyArmour : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopBuyArmour(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopBuyArmour(const MenuEquipShopBuyArmour&);
+	MenuEquipShopBuyArmour &operator=(const MenuEquipShopBuyArmour&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopBuyArmour *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Buy Accessory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopBuyAccessory : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopBuyAccessory(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopBuyAccessory(const MenuEquipShopBuyAccessory&);
+	MenuEquipShopBuyAccessory &operator=(const MenuEquipShopBuyAccessory&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopBuyAccessory *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Sell Menu State for the MenuClass
 //
 //------------------------------------------------------------------------
 class MenuEquipShopSell : public State<MenuClass>
@@ -651,6 +775,118 @@ public:
 
 	// This is a singleton
 	static MenuEquipShopSell *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Sell Weapon Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopSellWeapon : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopSellWeapon(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopSellWeapon(const MenuEquipShopSellWeapon&);
+	MenuEquipShopSellWeapon &operator=(const MenuEquipShopSellWeapon&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopSellWeapon *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Sell Shield Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopSellShield : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopSellShield(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopSellShield(const MenuEquipShopSellShield&);
+	MenuEquipShopSellShield &operator=(const MenuEquipShopSellShield&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopSellShield *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Sell Armour Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopSellArmour : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopSellArmour(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopSellArmour(const MenuEquipShopSellArmour&);
+	MenuEquipShopSellArmour &operator=(const MenuEquipShopSellArmour&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopSellArmour *Instance();
+	
+	void Enter(MenuClass *menu){}
+	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);
+	void Render(MenuClass *menu);
+	void Exit(MenuClass *menu){}
+	bool Receive(MenuClass *menu, const Message &msg){return true;}
+
+};
+
+//------------------------------------------------------------------------
+//
+// This is the Equip Shop Sell Accessory Menu State for the MenuClass
+//
+//------------------------------------------------------------------------
+class MenuEquipShopSellAccessory : public State<MenuClass>
+{
+private:
+	
+	MenuEquipShopSellAccessory(){}
+
+	// Copy ctor and assignment should be private
+	MenuEquipShopSellAccessory(const MenuEquipShopSellAccessory&);
+	MenuEquipShopSellAccessory &operator=(const MenuEquipShopSellAccessory&);
+ 
+public:
+
+	// This is a singleton
+	static MenuEquipShopSellAccessory *Instance();
 	
 	void Enter(MenuClass *menu){}
 	bool Update(MenuClass *menu, float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse);

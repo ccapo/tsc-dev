@@ -48,42 +48,37 @@ public:
   	m_Img = new TCODImage("data/img/worldmap_new.png");
   	m_ImgThumb = new TCODImage("data/img/worldmap_new.png");
 
-		int n = 9;
 		string tmp;
 		TCODNamegen::parse("data/namegen/equip_names.cfg");
-		for(int i = 0; i < n; i++)
+		for(int i = 0; i < NWEAPONS; i++)
 		{
 			tmp.clear();
 			tmp.append("%c");
 			tmp.append(TCODNamegen::generate("Weapon Name", RNG));
-			tmp.resize(17,' ');
+			tmp.resize(18,' ');
 			tmp.append("%c");
 			WeaponNames.insert(make_pair(i, tmp));
-			//cout << tmp << endl;
 
 			tmp.clear();
 			tmp.append("%c");
 			tmp.append(TCODNamegen::generate("Shield Name", RNG));
-			tmp.resize(17,' ');
+			tmp.resize(18,' ');
 			tmp.append("%c");
 			ShieldNames.insert(make_pair(i, tmp));
-			//cout << tmp << endl;
 
 			tmp.clear();
 			tmp.append("%c");
 			tmp.append(TCODNamegen::generate("Armour Name", RNG));
-			tmp.resize(17,' ');
+			tmp.resize(18,' ');
 			tmp.append("%c");
 			ArmourNames.insert(make_pair(i, tmp));
-			//cout << tmp << endl;
 
 			tmp.clear();
 			tmp.append("%c");
 			tmp.append(TCODNamegen::generate("Accessory Name", RNG));
-			tmp.resize(17,' ');
+			tmp.resize(18,' ');
 			tmp.append("%c");
 			AccessoryNames.insert(make_pair(i, tmp));
-			//cout << tmp << endl;
 		}
 	}
 
