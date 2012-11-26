@@ -600,6 +600,7 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 	}
 	if(TCODConsole::isKeyPressed(TCODK_LEFT))
 	{
+
 		if(player->X() <= 1) player->X(1);
 		//if(Engine()->Map()->IsWalkable(player->X() - 1, player->Y()))
 		{

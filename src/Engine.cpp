@@ -16,17 +16,13 @@ EngineClass *EngineClass::Instance()
 void EngineClass::Startup(int narg, char *argv[])
 {
 	int fontFlags = TCOD_FONT_LAYOUT_TCOD | TCOD_FONT_TYPE_GREYSCALE;
-	int nFont = 0, iFont = 2, nCol = 32, nRow = 13;
+	int nCol = 32, nRow = 13;
 	int initialDelay = 100, interval = 1000/MAX(1,FPSMAX);
 	bool fullscreen = false;
-	map<int, string> Fonts;
-	Fonts.insert(make_pair(nFont++, "data/fonts/arial4x4.png"));
-	Fonts.insert(make_pair(nFont++, "data/fonts/arial8x8.png"));
-	Fonts.insert(make_pair(nFont++, "data/fonts/arial16x16.png"));
 	TCOD_renderer_t renderer = TCOD_RENDERER_SDL;
 
 	// Initialize Fonts
-	TCODConsole::setCustomFont(Fonts[iFont].c_str(), fontFlags, nCol, nRow);
+	TCODConsole::setCustomFont(Font(), fontFlags, nCol, nRow);
 
 	// Initialize Root Console
 	TCODConsole::initRoot(SCREEN_WIDTH, SCREEN_HEIGHT, "The Serpentine Caves v"VERSION, fullscreen, renderer);

@@ -40,13 +40,24 @@ private:
 	// A pointer to the Player module
 	PlayerClass *m_Player;
 
+	// Font information
+	int m_iFont, m_nFont;
+	map<int, string> m_Font;
+
 	// Fade In and Flag Out flags
 	bool m_FadeIn, m_FadeOut;
 
 	// Elapsed Time
 	float m_ElapsedTime;
 
-	EngineClass() : m_FadeIn(false), m_FadeOut(false), m_ElapsedTime(0.0f){}
+	EngineClass() : m_FadeIn(false), m_FadeOut(false), m_ElapsedTime(0.0f)
+	{
+		m_nFont = 0;
+		m_Font.insert(make_pair(m_nFont++, "data/fonts/arial4x4.png"));
+		m_Font.insert(make_pair(m_nFont++, "data/fonts/arial8x8.png"));
+		m_Font.insert(make_pair(m_nFont, "data/fonts/arial16x16.png"));
+		m_iFont = m_nFont;
+	}
 
 	// Copy ctor and assignment should be private
 	EngineClass(const EngineClass&);
@@ -88,6 +99,11 @@ public:
 
 	PlayerClass *Player() const {return m_Player;}
 	void Player(PlayerClass *pPlayer){m_Player = pPlayer;}
+
+	int iFont() const {return m_iFont;}
+	void iFontUp(){m_iFont++; Clamp<int>(m_iFont, 0, m_nFont);}
+	void iFontDown(){m_iFont--; Clamp<int>(m_iFont, 0, m_nFont);}
+	const char *Font(){return m_Font[m_iFont].c_str();}
 
 	bool FadeIn() const {return m_FadeIn;}
 	void FadeIn(bool pFadeIn){m_FadeIn = pFadeIn;}
