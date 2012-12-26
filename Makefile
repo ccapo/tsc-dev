@@ -43,7 +43,7 @@ clean:
 	rm -f $(OBJECTS)
 	rm -f tsc
 
-all_test: worldmap cavemap cellmap townmap scrollingmap itemlist economy scentmap classtest dictionarytest image2char
+all_test: worldmap cavemap cellmap townmap scrollingmap itemlist economy scentmap classtest dictionarytest image2char cavesystem
 
 worldmap: test/worldmap.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
@@ -88,6 +88,9 @@ image2char: test/image2char.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
 	$(UPX) $@
 
+cavesystem: test/cavesystem.cpp
+	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
+
 clean_test:
 	rm -f worldmap
 	rm -f cavemap
@@ -100,3 +103,4 @@ clean_test:
 	rm -f classtest
 	rm -f dictionarytest
 	rm -f image2char
+	rm -f cavesystem
