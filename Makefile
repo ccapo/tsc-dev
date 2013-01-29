@@ -70,7 +70,6 @@ itemlist: test/itemlist.cpp
 
 economy: test/economy.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
-	$(UPX) $@
 
 scentmap: test/scentmap.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
@@ -78,7 +77,6 @@ scentmap: test/scentmap.cpp
 
 classtest: test/classtest.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
-	$(UPX) $@
 
 dictionarytest: test/dictionarytest.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
@@ -86,10 +84,13 @@ dictionarytest: test/dictionarytest.cpp
 
 image2char: test/image2char.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
-	$(UPX) $@
 
 cavesystem: test/cavesystem.cpp
 	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
+
+scrollingmenu: test/scrollingmenu.cpp
+	$(CPP) $(CFLAGS) $< -o $@ $(LFLAGS)
+	$(UPX) $@
 
 clean_test:
 	rm -f worldmap
@@ -104,3 +105,4 @@ clean_test:
 	rm -f dictionarytest
 	rm -f image2char
 	rm -f cavesystem
+	rm -f scrollingmenu
