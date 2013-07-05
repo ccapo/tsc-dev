@@ -1,6 +1,6 @@
 /*
-* libtcod 1.5.1
-* Copyright (c) 2008,2009,2010,2012 Jice & Mingos
+* libtcod 1.6.0
+* Copyright (c) 2008,2009,2010,2012,2013 Jice & Mingos
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _TCODLIB_HPP
-#define _TCODLIB_HPP
+#ifndef _LIBTCOD_HPP
+#define _LIBTCOD_HPP
 
 #include "libtcod.h"
 #include "list.hpp"

@@ -38,15 +38,15 @@ bool MapWorld::Update(MapClass *map, float elapsed, TCOD_key_t &key, TCOD_mouse_
 
 void MapWorld::Render(MapClass *map)
 {
-  int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
-  int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
-  int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
+	int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
+	int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
+	int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
 
-  map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
-  map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
+	map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
+	map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
 	TCODConsole::root->setDefaultBackground(TCODColor::black);
 	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "World Map");
+	TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "World Map");
 }
 
 void MapWorld::Exit(MapClass *map){}
@@ -78,15 +78,15 @@ bool MapTemple::Update(MapClass *map, float elapsed, TCOD_key_t &key, TCOD_mouse
 
 void MapTemple::Render(MapClass *map)
 {
-  int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
-  int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
-  int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
+	int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
+	int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
+	int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
 
-  map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
-  map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
+	map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
+	map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
 	TCODConsole::root->setDefaultBackground(TCODColor::black);
 	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Temple Map");
+	TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Temple Map");
 }
 
 void MapTemple::Exit(MapClass *map)
@@ -141,15 +141,15 @@ bool MapTown::Update(MapClass *map, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 
 void MapTown::Render(MapClass *map)
 {
-  int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
-  int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
-  int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
+	int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
+	int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
+	int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
 
-  map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
-  map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
+	map->Img()->blit2x(TCODConsole::root, 0, 3, 0, 0, w, h);
+	map->ImgThumb()->blit2x(TCODConsole::root, tx, ty);
 	TCODConsole::root->setDefaultBackground(TCODColor::black);
 	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Town Map");
+	TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Town Map");
 }
 
 void MapTown::Exit(MapClass *map)
@@ -225,13 +225,13 @@ bool MapCave::Update(MapClass *map, float elapsed, TCOD_key_t &key, TCOD_mouse_t
 
 void MapCave::Render(MapClass *map)
 {
-  int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
-  int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
-  int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
+	int w = 2*DISPLAY_WIDTH, h = 2*DISPLAY_HEIGHT;
+	int w2 = DISPLAY_WIDTH/4 + 3, h2 = NMSGS + 4;
+	int tx = 3*DISPLAY_WIDTH/4 - 1, ty = DISPLAY_HEIGHT + 4;
 
 	TCODConsole::root->setDefaultBackground(TCODColor::black);
 	TCODConsole::root->setDefaultForeground(TCODColor::white);
-  TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Cave Map");
+	TCODConsole::root->printFrame(tx - 1, ty - 1, w2, h2, false, TCOD_BKGND_SET, "Cave Map");
 }
 
 void MapCave::Exit(MapClass *map)

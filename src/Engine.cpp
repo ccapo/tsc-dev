@@ -422,6 +422,7 @@ bool EngineClass::Receive(const Message &msg)
 			FadeOut(true);
 			Game()->StateMgr()->ChangeState(GameLoadState);
 			Menu()->StateMgr(STATE_01)->ChangeState(MenuLoadState);
+
 			break;
 		}
 		case MSG_SAVEGAME:

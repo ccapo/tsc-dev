@@ -44,9 +44,9 @@ public:
 		m_StateManager = new StateManager<MapClass>(this);
 		m_StateManager->SetCurrentState(MapIdleState);
 
-  	// Image and thumbnail
-  	m_Img = new TCODImage("data/img/worldmap_new.png");
-  	m_ImgThumb = new TCODImage("data/img/worldmap_new.png");
+		// Image and thumbnail
+		m_Img = new TCODImage("data/img/worldmap_new.png");
+		m_ImgThumb = new TCODImage("data/img/worldmap_new.png");
 
 		string tmp;
 		TCODNamegen::parse("data/namegen/equip_names.cfg");

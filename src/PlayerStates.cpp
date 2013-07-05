@@ -154,11 +154,11 @@ bool PlayerWorld::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TC
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+  		{
+    		// Save a screenshot
+    		TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+  		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -317,11 +317,11 @@ bool PlayerTemple::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, T
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+  		{
+    		// Save a screenshot
+    		TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+  		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -468,11 +468,11 @@ bool PlayerTown::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+    		// Save a screenshot
+    		TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+  		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)
@@ -663,11 +663,11 @@ bool PlayerCave::Update(PlayerClass *player, float elapsed, TCOD_key_t &key, TCO
 			break;
 		}
 		case TCODK_BACKSPACE:
-  	{
-    	// Save a screenshot
-    	TCODSystem::saveScreenshot(NULL);
+		{
+			// Save a screenshot
+			TCODSystem::saveScreenshot(NULL);
 			break;
-  	}
+		}
 		case TCODK_CHAR:
 		{
 			switch(key.c)

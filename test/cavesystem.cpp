@@ -6,8 +6,8 @@
 #include <string.h>
 #include <time.h>
 
-#define NSIZE 32
-#define NMAPS 64
+#define NSIZE (4*32)
+#define NMAPS (8*64)
 #define NBORDER 8
 
 int main()
@@ -93,7 +93,7 @@ int main()
 		//}
 		//printf("\n");
 	}
-	//printf("Max Depth: %d\n", g_depthMax);
+	printf("Max Depth: %d\n", g_depthMax);
 
 	// Store Map Information In A PGM Image
 	FILE *fout = fopen("image.pgm", "w");

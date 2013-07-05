@@ -30,7 +30,7 @@ private:
 	TCODImage *m_ImgBG;
 
 	// Magic Icon
-  TCODImage *m_MagicIcon;
+	TCODImage *m_MagicIcon;
 
 	// Off-Screen Consoles
 	TCODConsole *m_Con[NSTATES];
@@ -164,8 +164,8 @@ public:
 	bool Update(float elapsed, TCOD_key_t &key, TCOD_mouse_t &mouse)
 	{
 		bool status = true;
-		TCOD_key_t k0 = {TCODK_NONE, 0};
-		TCOD_mouse_t m0 = {0,0, 0,0, 0,0, 0,0};
+		TCOD_key_t k = {TCODK_NONE, 0};
+		TCOD_mouse_t m = {0,0, 0,0, 0,0, 0,0};
 
 		//cout << "Active State ID: " << m_ActiveStateID << endl;
 		for(int i = 0; i < NSTATES; i++)
@@ -177,7 +177,7 @@ public:
 			}
 			else
 			{
-				status = status && m_StateManager[i]->Update(elapsed, k0, m0);
+				status = status && m_StateManager[i]->Update(elapsed, k, m);
 			}
 		}
 		return status;

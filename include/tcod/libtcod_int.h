@@ -1,6 +1,6 @@
 /*
-* libtcod 1.5.1
-* Copyright (c) 2008,2009,2010,2012 Jice & Mingos
+* libtcod 1.6.0
+* Copyright (c) 2008,2009,2010,2012,2013 Jice & Mingos
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,15 @@
 #define _TCODLIB_INT_H
 #include <stdarg.h>
 #include <assert.h>
+#if defined (__HAIKU__) || defined(__ANDROID__)
+#include <SDL.h>
+#include <android/log.h>
+#elif defined (TCOD_SDL2)
+#include <SDL2/SDL.h>
+#else
+#include <SDL/SDL.h>
+#endif
+
 /* tcodlib internal stuff */
 #ifdef __cplusplus
 extern "C" {
@@ -125,6 +134,12 @@ typedef struct {
 	/* fading data */
 	TCOD_color_t fading_color;
 	uint8 fade;
+	/* application window was closed */
+	bool is_window_closed;
+	/* application has mouse focus */
+	bool app_has_mouse_focus;
+	/* application is active (not iconified) */
+	bool app_is_active;
 } TCOD_internal_context_t;
 
 extern TCOD_internal_context_t TCOD_ctx;
@@ -181,7 +196,6 @@ bool TCOD_console_init(TCOD_console_t con,const char *title, bool fullscreen);
 int TCOD_console_print_internal(TCOD_console_t con,int x,int y, int w, int h, TCOD_bkgnd_flag_t flag, TCOD_alignment_t align, char *msg, bool can_split, bool count_only);
 int TCOD_console_stringLength(const unsigned char *s);
 unsigned char * TCOD_console_forward(unsigned char *s,int l);
-void TCOD_console_set_window_closed();
 char *TCOD_console_vsprint(const char *fmt, va_list ap);
 char_t *TCOD_console_get_buf(TCOD_console_t con);
 /* fatal errors */
@@ -205,6 +219,10 @@ void TCOD_sys_restore_fps();
 
 /* switch fullscreen mode */
 void TCOD_sys_set_fullscreen(bool fullscreen);
+void TCOD_sys_set_clear_screen();
+void TCOD_sys_set_scale_factor(float value);
+void TCOD_sys_convert_console_to_screen_coords(int cx, int cy, int *sx, int *sy);
+void TCOD_sys_convert_screen_to_console_coords(int sx, int sy, int *cx, int *cy);
 void TCOD_sys_flush(bool render);
 TCOD_key_t TCOD_sys_check_for_keypress(int flags);
 TCOD_key_t TCOD_sys_wait_for_keypress(bool flush);
@@ -229,6 +247,69 @@ bool TCOD_sys_check_magic_number(const char *filename, int size, uint8 *data);
 
 /* TCOD_list nonpublic methods */
 void TCOD_list_set_size(TCOD_list_t l, int size);
+
+/*
+	SDL12/SDL2 abstraction layer
+*/
+typedef struct {
+	/* get a fullscreen mode suitable for the console */
+	void (*get_closest_mode)(int *w, int *h);
+	/* render the console on a surface/texture */
+	void (*render)(void *vbitmap, int console_width, int console_height, char_t *console_buffer, char_t *prev_console_buffer);
+	/* create a new surface */
+	SDL_Surface *(*create_surface) (int width, int height, bool with_alpha);
+	/* create the game window */
+	void (*create_window)(int w, int h, bool fullscreen);
+	/* switch fullscreen on/off */
+	void (*set_fullscreen)(bool fullscreen);
+	/* change the game window title */
+	void (*set_window_title)(const char *title);
+	/* save game screenshot */
+	void (*save_screenshot)(const char *filename);
+	/* get desktop resolution */
+	void (*get_current_resolution)(int *w, int *h);
+	/* change the mouse cursor position */
+	void (*set_mouse_position)(int x, int y);
+	/* android compatible file access functions */
+	bool (*file_read)(const char *filename, unsigned char **buf, size_t *size);
+	bool (*file_exists)(const char * filename);
+	bool (*file_write)(const char *filename, unsigned char *buf, uint32 size);
+	/* clean stuff */
+	void (*term)();
+} TCOD_SDL_driver_t;
+
+/* defined in TCOD_sys_sdl12_c.c and TCOD_sys_sdl2_c.c */
+TCOD_SDL_driver_t *SDL_implementation_factory();
+void find_resolution();
+void TCOD_sys_init_screen_offset();
+extern SDL_Surface* screen;
+extern int oldFade;
+extern bool *ascii_updated;
+extern bool any_ascii_updated;
+extern SDL_Surface* charmap;
+typedef struct {
+	float force_recalc;
+	float last_scale_xc, last_scale_yc;
+	float last_scale_factor;
+	float last_fullscreen;
+
+	float min_scale_factor;
+
+	float src_height_width_ratio;
+	float dst_height_width_ratio;
+	int src_x0, src_y0;
+	int src_copy_width, src_copy_height;
+	int src_proportionate_width, src_proportionate_height;
+	int dst_display_width, dst_display_height;
+	int dst_offset_x, dst_offset_y;
+	int surface_width, surface_height;
+} scale_data_t;
+extern scale_data_t scale_data;
+#ifdef TCOD_SDL2
+extern float scale_factor;
+extern SDL_Window* window;
+extern SDL_Renderer* renderer;
+#endif
 
 /* color values */
 #define TCOD_BLACK 0,0,0

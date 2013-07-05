@@ -1,6 +1,6 @@
 /*
-* libtcod 1.5.1
-* Copyright (c) 2008,2009,2010,2012 Jice & Mingos
+* libtcod 1.6.0
+* Copyright (c) 2008,2009,2010,2012,2013 Jice & Mingos
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -42,9 +42,10 @@ TCODLIB_API void TCOD_sys_get_current_resolution(int *w, int *h);
 TCODLIB_API void TCOD_sys_get_fullscreen_offsets(int *offx, int *offy);
 TCODLIB_API void TCOD_sys_update_char(int asciiCode, int fontx, int fonty, TCOD_image_t img, int x, int y);
 TCODLIB_API void TCOD_sys_get_char_size(int *w, int *h);
-TCODLIB_API void *TCOD_sys_get_sdl_window();
+TCODLIB_API void *TCOD_sys_get_SDL_window();
 
 typedef enum {
+  TCOD_EVENT_NONE=0,
   TCOD_EVENT_KEY_PRESS=1,
   TCOD_EVENT_KEY_RELEASE=2,
   TCOD_EVENT_KEY=TCOD_EVENT_KEY_PRESS|TCOD_EVENT_KEY_RELEASE,
@@ -52,7 +53,13 @@ typedef enum {
   TCOD_EVENT_MOUSE_PRESS=8,
   TCOD_EVENT_MOUSE_RELEASE=16,
   TCOD_EVENT_MOUSE=TCOD_EVENT_MOUSE_MOVE|TCOD_EVENT_MOUSE_PRESS|TCOD_EVENT_MOUSE_RELEASE,
-  TCOD_EVENT_ANY=TCOD_EVENT_KEY|TCOD_EVENT_MOUSE,
+/* #ifdef TCOD_TOUCH_INPUT */
+  TCOD_EVENT_FINGER_MOVE=32,
+  TCOD_EVENT_FINGER_PRESS=64,
+  TCOD_EVENT_FINGER_RELEASE=128,
+  TCOD_EVENT_FINGER=TCOD_EVENT_FINGER_MOVE|TCOD_EVENT_FINGER_PRESS|TCOD_EVENT_FINGER_RELEASE,
+/* #endif */
+  TCOD_EVENT_ANY=TCOD_EVENT_KEY|TCOD_EVENT_MOUSE|TCOD_EVENT_FINGER,
 } TCOD_event_t;
 TCODLIB_API TCOD_event_t TCOD_sys_wait_for_event(int eventMask, TCOD_key_t *key, TCOD_mouse_t *mouse, bool flush);
 TCODLIB_API TCOD_event_t TCOD_sys_check_for_event(int eventMask, TCOD_key_t *key, TCOD_mouse_t *mouse);
@@ -64,7 +71,7 @@ TCODLIB_API bool TCOD_sys_delete_directory(const char *path);
 TCODLIB_API bool TCOD_sys_is_directory(const char *path);
 TCODLIB_API TCOD_list_t TCOD_sys_get_directory_content(const char *path, const char *pattern);
 TCODLIB_API bool TCOD_sys_file_exists(const char * filename, ...);
-TCODLIB_API bool TCOD_sys_read_file(const char *filename, unsigned char **buf, uint32 *size);
+TCODLIB_API bool TCOD_sys_read_file(const char *filename, unsigned char **buf, size_t *size);
 TCODLIB_API bool TCOD_sys_write_file(const char *filename, unsigned char *buf, uint32 size);
 
 /* clipboard */
@@ -103,6 +110,10 @@ TCODLIB_API TCOD_library_t TCOD_load_library(const char *path);
 TCODLIB_API void * TCOD_get_function_address(TCOD_library_t library, const char *function_name);
 TCODLIB_API void TCOD_close_library(TCOD_library_t);
 /* SDL renderer callback */
+#ifdef TCOD_SDL2
+typedef void (*SDL_renderer_t) (void *sdl_renderer);
+#else
 typedef void (*SDL_renderer_t) (void *sdl_surface);
+#endif
 TCODLIB_API void TCOD_sys_register_SDL_renderer(SDL_renderer_t renderer);
 #endif
